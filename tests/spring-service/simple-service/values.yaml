@@ -1,0 +1,49 @@
+serviceName: myservice
+namespace: team-supercool
+
+image:
+  repository: docker.pkg.github.com/my-company/myservice
+  tag: "1.30.7"
+
+replicaCount: 5
+
+livenessProbe:
+  delay: 50
+
+readinessProbe:
+  delay: 50
+
+resources:
+  memory: 1000Mi
+  cpu:
+    guarantee: 500m
+    limit: 2
+
+ingress:
+  host: "myservice.mycompany.tld"
+
+env:
+  copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
+  additional:
+    - name: "SPRING_RABBITMQ_HOST"
+      valueFrom:
+        secretKeyRef:
+          name: rabbitmq
+          key: hostname
+    - name: "SPRING_RABBITMQ_USERNAME"
+      valueFrom:
+        secretKeyRef:
+          name: rabbitmq
+          key: username
+    - name: "SPRING_RABBITMQ_PASSWORD"
+      valueFrom:
+        secretKeyRef:
+          name: rabbitmq
+          key: password
+
+alertingRules:
+  - name: ServiceDown
+    expr: and absent(myservice_up)
+    for: 1m
+    description: No pods of this service are currently running in this cluster
+    summary: Service MyService is down

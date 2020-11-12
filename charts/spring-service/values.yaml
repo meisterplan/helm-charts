@@ -24,11 +24,6 @@ resources:
     guarantee: 100m
     limit: 1000m
 
-# port and endpoint to use for Prometheus
-prometheus:
-  port: 8081
-  endpoint: /actuator/prometheus
-
 ingress:
   host: "" # Hostname under which the service is available, normally configured per deployment target
 
@@ -63,3 +58,10 @@ env:
   additionalPerRegion: []
   #  - name: "SOME_OTHER_VARIABLE"
   #    value: "some-other-value"
+
+alertingRules: []
+# - name: HighLatency
+#   expr: avg(service_latency[5m]) > 2
+#   for: 5m # optional
+#   summary: SLO for Project Fields ACL broken
+#   description: 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour

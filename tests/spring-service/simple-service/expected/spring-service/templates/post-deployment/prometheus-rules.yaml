@@ -1,0 +1,23 @@
+---
+# Source: spring-service/templates/post-deployment/prometheus-rules.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "team-supercool"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+  name: "myservice"
+spec:
+  groups:
+    - name: "myservice"
+      rules:
+        - alert: "myservice_ServiceDown"
+          expr: "and absent(myservice_up)"
+          for: "1m"
+          labels:
+            service: "myservice"
+            namespace: "team-supercool"
+          annotations:
+            summary: "Service MyService is down"
+            description: "No pods of this service are currently running in this cluster"
