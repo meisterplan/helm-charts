@@ -3,6 +3,9 @@ kind: PodMonitor
 metadata:
   name: "{{ .Values.serviceName }}"
   namespace: "{{ .Values.namespace }}"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
 spec:
   selector:
     matchLabels:
