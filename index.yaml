@@ -2,12 +2,12 @@ apiVersion: v1
 entries:
   spring-service:
   - apiVersion: v1
-    created: "2020-11-12T17:56:00.013968525+01:00"
+    created: "2020-11-13T09:41:43.657946859+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
-    digest: 0bdc6638e5f2165c9ab3f40e7e956d129de5c3efce501a1b569f609f4c052274
+    digest: 2b5779152df4697d223fbeb0355fbb7584c785cb9ab9269f5308ccb49f6a3bc2
     name: spring-service
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2020-11-12T17:56:00.013607838+01:00"
+generated: "2020-11-13T09:41:43.65743171+01:00"
