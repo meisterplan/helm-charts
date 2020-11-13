@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.serviceName }}
+  namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+  {{- if .Values.ingress.overwriteCustomHttpErrors }}
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: {{ .Values.ingress.overwriteCustomHttpErrors }}
+  {{- end }}
+spec:
+  rules:
+    - host: {{ required "Ingress Host must be set!" .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Values.serviceName }}
+              servicePort: 80

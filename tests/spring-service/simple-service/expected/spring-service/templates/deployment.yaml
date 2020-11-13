@@ -1,0 +1,99 @@
+---
+# Source: spring-service/templates/deployment.yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "myservice-1.30.7"
+  namespace: "team-supercool"
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "myservice"
+      app.kubernetes.io/version: "1.30.7"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "myservice"
+        app.kubernetes.io/version: "1.30.7"
+    spec:
+      imagePullSecrets:
+        - name: docker.pkg.github.com
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                    - myservice
+      containers:
+        - name: myservice
+          image: "docker.pkg.github.com/my-company/myservice:1.30.7"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: service
+            - containerPort: 8081
+              protocol: TCP
+              name: management
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1000Mi
+            limits:
+              cpu: 2
+              memory: 1000Mi
+
+          livenessProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            initialDelaySeconds: 50
+          readinessProbe:
+            exec:
+              command: ["check", "run", "-type", "readiness"]
+            initialDelaySeconds: 50
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "15"]
+          env:
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: "prod"
+            - name: "CLUSTER_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: cluster-name
+            - name: 'SENTRY_DSN'
+              valueFrom:
+                secretKeyRef:
+                  name: sentry
+                  key: "dsn-myservice"
+            - name: "SERVICE_OAUTH2_PUBLIC_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: authenticorn
+                  key: public-key
+            - name: "SERVICE_MYSERVICE_BASE_URL"
+              value: "https://myservice.mycompany.tld"
+            - name: SPRING_RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: hostname
+                  name: rabbitmq
+            - name: SPRING_RABBITMQ_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: rabbitmq
+            - name: SPRING_RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: rabbitmq

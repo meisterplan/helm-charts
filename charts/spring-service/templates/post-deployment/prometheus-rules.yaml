@@ -1,0 +1,27 @@
+{{- if .Values.alertingRules }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+  name: "{{ .Values.serviceName }}"
+spec:
+  groups:
+    - name: "{{ .Values.serviceName }}"
+      rules:
+        {{- range .Values.alertingRules }}
+        - alert: "{{ $.Values.serviceName }}_{{ .name }}"
+          expr: {{ .expr | quote }}
+          {{- if .for }}
+          for: {{ .for | quote }}
+          {{- end }}
+          labels:
+            service: {{ $.Values.serviceName | quote }}
+            namespace: {{ $.Values.namespace | quote }}
+          annotations:
+            summary: {{ .summary | quote }}
+            description: {{ .description | quote }}
+        {{- end }}
+{{- end }}

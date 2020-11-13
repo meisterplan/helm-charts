@@ -1,0 +1,14 @@
+---
+# Source: spring-service/templates/post-deployment/service.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: myservice
+  namespace: "team-supercool"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: myservice
+    app.kubernetes.io/version: 1.30.7

@@ -1,0 +1,67 @@
+# how to call deployment, service and ingress
+serviceName: servicename
+
+# namespace to use, typically team-<yourteamname>
+namespace: team-superpower
+
+# what Docker image to run
+# image:
+#  repository: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+#  tag: "" # Tag is normally configured during deployment
+
+# how many replicas to launch
+replicaCount: 2
+
+livenessProbe:
+  delay: 30 # delay after which liveness probe get armed
+readinessProbe:
+  delay: 30 # delay after which readiness probe get armed
+
+# k8s resource definitions for required minimum and maximum growth
+resources:
+  memory: 600Mi
+  cpu:
+    guarantee: 100m
+    limit: 1000m
+
+ingress:
+  host: "" # Hostname under which the service is available, normally configured per deployment target
+
+env:
+  # name of env variable that should also receive the external base url
+  # copyOwnBaseUrlIn: "SERVICE_BASE_URL_EXTERNAL"
+
+  # Use this to provision a JDBC data source from a k8s secret
+  # springDatasourceFromSecret: "aws-rds-staging-servicename"
+
+  # custom k8s env definition
+  additional: []
+  #  - name: 'SOME_VARIABLE'
+  #    value: 'some-value'
+  #  - name: "SPRING_RABBITMQ_HOST"
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: rabbitmq
+  #        key: hostname
+  #  - name: "SPRING_RABBITMQ_USERNAME"
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: rabbitmq
+  #        key: username
+  #  - name: "SPRING_RABBITMQ_PASSWORD"
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: rabbitmq
+  #        key: password
+
+  # custom k8s env definitions by region
+  additionalPerRegion: []
+  #  - name: "SOME_OTHER_VARIABLE"
+  #    value: "some-other-value"
+
+alertingRules: []
+# - name: HighLatency
+#   expr: avg(service_latency[5m]) > 2
+#   for: 5m # optional
+#   summary: SLO for Project Fields ACL broken
+#   description: 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour
