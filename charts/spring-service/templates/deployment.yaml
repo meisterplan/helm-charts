@@ -31,7 +31,7 @@ spec:
                     - {{ .Values.serviceName }}
       containers:
         - name: {{ .Values.serviceName }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -71,37 +71,59 @@ spec:
             - name: 'SENTRY_DSN'
               valueFrom:
                 secretKeyRef:
-                  name: sentry
-                  key: "dsn-{{ .Values.serviceName }}"
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "sentry/dsn-{{ .Values.serviceName }}"
             {{- if .Values.env.springDatasourceFromSecret }}
             - name: "SPRING_DATASOURCE_URL"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.env.springDatasourceFromSecret }}
-                  key: jdbc-url
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "{{ .Values.env.springDatasourceFromSecret }}/jdbc-url"
             - name: "SPRING_DATASOURCE_USERNAME"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.env.springDatasourceFromSecret }}
-                  key: username
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "{{ .Values.env.springDatasourceFromSecret }}/username"
             - name: "SPRING_DATASOURCE_PASSWORD"
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.env.springDatasourceFromSecret }}
-                  key: password
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "{{ .Values.env.springDatasourceFromSecret }}/password"
+            {{- end }}
+            {{- if .Values.env.springRabbitMQSecret }}
+            - name: "SPRING_RABBITMQ_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "rabbitmq/hostname"
+            - name: "SPRING_RABBITMQ_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "rabbitmq/username"
+            - name: "SPRING_RABBITMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "rabbitmq/password"
             {{- end }}
             - name: "SERVICE_OAUTH2_PUBLIC_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authenticorn
-                  key: public-key
+                  name: "{{ .Values.serviceName }}-external-secret"
+                  key: authenticorn/public-key
             {{- if .Values.env.copyOwnExternalBaseURLIn }}
             - name: "{{ .Values.env.copyOwnExternalBaseURLIn }}"
               value: "https://{{ .Values.ingress.host }}"
             {{- end }}
-{{- if .Values.env.additional }}
-{{ toYaml .Values.env.additional | indent 12 }}
-{{- end }}
-{{- if .Values.env.additionalPerRegion }}
-{{ toYaml .Values.env.additionalPerRegion | indent 12 }}
-{{- end }}
+            {{- range $key, $value := .Values.env.fromSecret }}
+            - name: "{{ $key }}"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ $.Values.serviceName }}-external-secret"
+                  key: "{{ $value.parameterName }}"
+            {{- end }}
+            {{- range $key, $value := .Values.env.additional }}
+            - name: {{ $key }}
+              {{ toYaml $value }}
+            {{- end }}

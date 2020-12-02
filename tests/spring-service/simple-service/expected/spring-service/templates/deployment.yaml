@@ -73,27 +73,51 @@ spec:
             - name: 'SENTRY_DSN'
               valueFrom:
                 secretKeyRef:
-                  name: sentry
-                  key: "dsn-myservice"
+                  name: myservice-external-secret
+                  key: "sentry/dsn-myservice"
+            - name: "SPRING_DATASOURCE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rds/myservice/jdbc-url"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rds/myservice/username"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rds/myservice/password"
+            - name: "SPRING_RABBITMQ_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rabbitmq/hostname"
+            - name: "SPRING_RABBITMQ_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rabbitmq/username"
+            - name: "SPRING_RABBITMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "rabbitmq/password"
             - name: "SERVICE_OAUTH2_PUBLIC_KEY"
               valueFrom:
                 secretKeyRef:
-                  name: authenticorn
-                  key: public-key
+                  name: "myservice-external-secret"
+                  key: authenticorn/public-key
             - name: "SERVICE_MYSERVICE_BASE_URL"
               value: "https://myservice.mycompany.tld"
-            - name: SPRING_RABBITMQ_HOST
+            - name: "SOME_SECRET"
               valueFrom:
                 secretKeyRef:
-                  key: hostname
-                  name: rabbitmq
-            - name: SPRING_RABBITMQ_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  key: username
-                  name: rabbitmq
-            - name: SPRING_RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: rabbitmq
+                  name: "myservice-external-secret"
+                  key: "other-system/secret"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: REGION
+              value: EU

@@ -1,6 +1,9 @@
 serviceName: myservice
 namespace: team-supercool
 
+clusterName: staging
+secretsRoleArn: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower
+
 image:
   repository: docker.pkg.github.com/my-company/myservice
   tag: "1.30.7"
@@ -24,22 +27,17 @@ ingress:
 
 env:
   copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
+
+  springDatasourceFromSecret: "rds/myservice"
+  springRabbitMQSecret: true
+
+  fromSecret:
+    SOME_SECRET:
+      parameterName: other-system/secret
+
   additional:
-    - name: "SPRING_RABBITMQ_HOST"
-      valueFrom:
-        secretKeyRef:
-          name: rabbitmq
-          key: hostname
-    - name: "SPRING_RABBITMQ_USERNAME"
-      valueFrom:
-        secretKeyRef:
-          name: rabbitmq
-          key: username
-    - name: "SPRING_RABBITMQ_PASSWORD"
-      valueFrom:
-        secretKeyRef:
-          name: rabbitmq
-          key: password
+    LOG_LEVEL:
+      value: "DEBUG"
 
 alertingRules:
   - name: ServiceDown
