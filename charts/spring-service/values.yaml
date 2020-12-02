@@ -4,10 +4,13 @@ serviceName: servicename
 # namespace to use, typically team-<yourteamname>
 namespace: team-superpower
 
+clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
+secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)
+
 # what Docker image to run
-# image:
-#  repository: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
-#  tag: "" # Tag is normally configured during deployment
+image:
+  repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+  tag: "" # Tag is normally configured during deployment
 
 # how many replicas to launch
 replicaCount: 2
@@ -31,33 +34,19 @@ env:
   # name of env variable that should also receive the external base url
   # copyOwnBaseUrlIn: "SERVICE_BASE_URL_EXTERNAL"
 
-  # Use this to provision a JDBC data source from a k8s secret
-  # springDatasourceFromSecret: "aws-rds-staging-servicename"
+  # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password"
+  # or remove it if it isn't required
+  springDatasourceFromSecret: "" # "rds/templatetiger"
+  springRabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
+
+  fromSecret: {}
+  #  SOME_SECRET:
+  #    parameterName: other-system/secret
 
   # custom k8s env definition
-  additional: []
-  #  - name: 'SOME_VARIABLE'
+  additional: {}
+  #  SOME_VARIABLE:
   #    value: 'some-value'
-  #  - name: "SPRING_RABBITMQ_HOST"
-  #    valueFrom:
-  #      secretKeyRef:
-  #        name: rabbitmq
-  #        key: hostname
-  #  - name: "SPRING_RABBITMQ_USERNAME"
-  #    valueFrom:
-  #      secretKeyRef:
-  #        name: rabbitmq
-  #        key: username
-  #  - name: "SPRING_RABBITMQ_PASSWORD"
-  #    valueFrom:
-  #      secretKeyRef:
-  #        name: rabbitmq
-  #        key: password
-
-  # custom k8s env definitions by region
-  additionalPerRegion: []
-  #  - name: "SOME_OTHER_VARIABLE"
-  #    value: "some-other-value"
 
 alertingRules: []
 # - name: HighLatency
