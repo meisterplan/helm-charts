@@ -1,3 +1,6 @@
+# 2.0.1
+- Fixed invalid YAML when `.env.additional` created multi-line strings
+
 # 2.0.0
 
 - Secrets are now generated from ExternalSecrets. Fitted deployment.yaml and added pre-deploy/secret.yaml for this.
