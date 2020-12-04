@@ -1,0 +1,34 @@
+# how to call cronJob
+cronJobName: ""
+
+# namespace to use, typically team-<yourteamname>
+namespace: ""
+
+clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
+secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)
+
+# schedule to run in cronjob-format, see https://crontab.guru/ e.g. "25 1 * * */2"
+schedule: ""
+
+# what Docker image to run
+image:
+  repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+  tag: "" # Tag is normally configured during deployment
+
+# k8s resource definitions for required minimum and maximum growth
+resources:
+  memory: 64Mi
+  cpu:
+    guarantee: 100m
+    limit: 1000m
+
+env:
+  fromSecret: {}
+  #  SOME_SECRET:
+  #    parameterName: other-system/secret
+
+  # custom k8s env definition
+  additional: {}
+  #  SOME_VARIABLE:
+  #    value: 'some-value'
+

@@ -1,0 +1,24 @@
+namespace: team-superpower
+
+clusterName: staging
+secretsRoleArn: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower
+
+schedule: "22 */5 * * *"
+
+image:
+  repository: docker.pkg.github.com/my-company/myservice
+  tag: "1.30.7"
+
+resources:
+  memory: 64Mi
+  cpu:
+    guarantee: 100m
+    limit: 1
+    
+env:
+  fromSecret:
+    AWS_ACCESS_KEY_ID:
+      parameterName: aws/access-key-id
+  additional:
+    ENVIRONMENT:
+      value: "production"

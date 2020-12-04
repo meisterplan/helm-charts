@@ -1,0 +1,4 @@
+apiVersion: v1
+name: cronjob
+description: A generalized cronjob that can access secrets.
+version: 1.0.0
