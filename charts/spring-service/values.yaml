@@ -1,8 +1,8 @@
 # how to call deployment, service and ingress
-serviceName: servicename
+serviceName: ""
 
 # namespace to use, typically team-<yourteamname>
-namespace: team-superpower
+namespace: ""
 
 clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
 secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)

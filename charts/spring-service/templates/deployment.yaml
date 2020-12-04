@@ -72,46 +72,46 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "sentry/dsn-{{ .Values.serviceName }}"
+                  key: "SENTRY_DSN"
             {{- if .Values.env.springDatasourceFromSecret }}
             - name: "SPRING_DATASOURCE_URL"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "{{ .Values.env.springDatasourceFromSecret }}/jdbc-url"
+                  key: "SPRING_DATASOURCE_URL"
             - name: "SPRING_DATASOURCE_USERNAME"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "{{ .Values.env.springDatasourceFromSecret }}/username"
+                  key: "SPRING_DATASOURCE_USERNAME"
             - name: "SPRING_DATASOURCE_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "{{ .Values.env.springDatasourceFromSecret }}/password"
+                  key: "SPRING_DATASOURCE_PASSWORD"
             {{- end }}
             {{- if .Values.env.springRabbitMQSecret }}
             - name: "SPRING_RABBITMQ_HOST"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "rabbitmq/hostname"
+                  key: "SPRING_RABBITMQ_HOST"
             - name: "SPRING_RABBITMQ_USERNAME"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "rabbitmq/username"
+                  key: "SPRING_RABBITMQ_USERNAME"
             - name: "SPRING_RABBITMQ_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "rabbitmq/password"
+                  key: "SPRING_RABBITMQ_PASSWORD"
             {{- end }}
             - name: "SERVICE_OAUTH2_PUBLIC_KEY"
               valueFrom:
                 secretKeyRef:
                   name: "{{ .Values.serviceName }}-external-secret"
-                  key: authenticorn/public-key
+                  key: SERVICE_OAUTH2_PUBLIC_KEY
             {{- if .Values.env.copyOwnExternalBaseURLIn }}
             - name: "{{ .Values.env.copyOwnExternalBaseURLIn }}"
               value: "https://{{ .Values.ingress.host }}"
@@ -121,7 +121,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: "{{ $.Values.serviceName }}-external-secret"
-                  key: "{{ $value.parameterName }}"
+                  key: "{{ $key }}"
             {{- end }}
             {{- range $key, $value := .Values.env.additional }}
             - name: {{ $key }}

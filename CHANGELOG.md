@@ -1,3 +1,7 @@
+# 2.0.2
+- Fixed invalid secret names
+- Fixed confusing default values for `.serviceName` and `.namespace` which have required Checks
+
 # 2.0.1
 - Fixed invalid YAML when `.env.additional` created multi-line strings
 
