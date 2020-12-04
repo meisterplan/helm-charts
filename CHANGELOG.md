@@ -1,3 +1,6 @@
+# 2.0.3
+- New mandatory parameter: `playbook_url`, necessary for alerting rules
+
 # 2.0.2
 - Fixed invalid secret names
 - Fixed confusing default values for `.serviceName` and `.namespace` which have required Checks
@@ -8,7 +11,7 @@
 # 2.0.0
 
 - Secrets are now generated from ExternalSecrets. Fitted deployment.yaml and added pre-deploy/secret.yaml for this.
--- Secrets can be accessed via new `.env.fromSecret` map
+  -- Secrets can be accessed via new `.env.fromSecret` map
 - Converted `env.additional` secrets to map so that `env.additionalPerRegion` becomes superfluous (it is automatically merged, see test case)
 - New option `env.springRabbitMQSecret` that can be set to true to reduce boilerplate when using RabbitMQ secrets
 - Tag is now mandatory
