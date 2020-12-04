@@ -21,7 +21,8 @@ spec:
             service: {{ $.Values.serviceName | quote }}
             namespace: {{ $.Values.namespace | quote }}
           annotations:
-            summary: {{ .summary | quote }}
+            summary: {{ required "Summary must be set!" .summary | quote }}
             description: {{ .description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
         {{- end }}
 {{- end }}

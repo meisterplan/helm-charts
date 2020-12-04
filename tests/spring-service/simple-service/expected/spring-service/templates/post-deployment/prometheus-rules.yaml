@@ -21,3 +21,4 @@ spec:
           annotations:
             summary: "Service MyService is down"
             description: "No pods of this service are currently running in this cluster"
+            playbook_url: "http://xconfluence/x/aBcDeFg"

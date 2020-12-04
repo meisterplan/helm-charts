@@ -54,3 +54,4 @@ alertingRules: []
 #   for: 5m # optional
 #   summary: SLO for Project Fields ACL broken
 #   description: 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour
+#   playbook_url: http://xconfluence/x/aBcDeFg
