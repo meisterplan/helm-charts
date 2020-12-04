@@ -125,5 +125,5 @@ spec:
             {{- end }}
             {{- range $key, $value := .Values.env.additional }}
             - name: {{ $key }}
-              {{ toYaml $value }}
+{{ toYaml $value | indent 14 }}
             {{- end }}
