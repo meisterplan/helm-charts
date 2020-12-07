@@ -7,7 +7,7 @@ metadata:
   namespace: "team-superpower"
 spec:
   concurrencyPolicy: "Replace"
-  schedule: 22 */5 * * *
+  schedule: "22 */5 * * *"
   suspend: false
   jobTemplate:
     spec:

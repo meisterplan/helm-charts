@@ -5,7 +5,7 @@ metadata:
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
 spec:
   concurrencyPolicy: "Replace"
-  schedule: {{ required "Schedule must be set!" .Values.schedule }}
+  schedule: {{ required "Schedule must be set!" .Values.schedule | quote }}
   suspend: false
   jobTemplate:
     spec:
