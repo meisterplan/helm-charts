@@ -23,5 +23,8 @@
 
 # cronjob
 
+## 1.0.1
+- Fix missing quoting in schedule (asterisk has special meaning in YAML)
+
 ## 1.0.0
 - Initial release
