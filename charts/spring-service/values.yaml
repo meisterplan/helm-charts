@@ -32,7 +32,7 @@ ingress:
 
 env:
   # name of env variable that should also receive the external base url
-  # copyOwnBaseUrlIn: "SERVICE_BASE_URL_EXTERNAL"
+  # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
 
   # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password"
   # or remove it if it isn't required
