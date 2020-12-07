@@ -1,5 +1,6 @@
 test:
 	$(MAKE) test-case CHART=spring-service CASE=simple-service
+	$(MAKE) test-case CHART=cronjob CASE=simple-cronjob
 
 test-case:
 	rm -rf .test-output && 	mkdir -p .test-output
@@ -15,6 +16,7 @@ test-case-promote-to-expected:
 
 release:
 	$(MAKE) release-chart CHART=spring-service
+	$(MAKE) release-chart CHART=cronjob
 
 release-chart: 
 	rm -rf .gh-pages-branch

@@ -1,0 +1,43 @@
+kind: CronJob
+apiVersion: batch/v1beta1
+metadata:
+  name: "{{ required "cronJobName must be set!" .Values.cronJobName }}"
+  namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+spec:
+  concurrencyPolicy: "Replace"
+  schedule: {{ required "Schedule must be set!" .Values.schedule }}
+  suspend: false
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      parallelism: 1
+      completions: 1
+      template:
+        spec:
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: docker.pkg.github.com
+          containers:
+            - name: "{{ .Values.cronJobName }}"
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  cpu: {{ required "CPU guarantee must be set!" .Values.resources.cpu.guarantee }}
+                  memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
+                limits:
+                  cpu: {{ required "CPU limit must be set!" .Values.resources.cpu.limit }}
+                  memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
+
+              env:
+                {{- range $key, $value := .Values.env.fromSecret }}
+                - name: "{{ $key }}"
+                  valueFrom:
+                    secretKeyRef:
+                      name: "{{ $.Values.cronJobName }}-external-secret"
+                      key: "{{ $key }}"
+                {{- end }}
+                {{- range $key, $value := .Values.env.additional }}
+                - name: {{ $key }}
+{{ toYaml $value | indent 18 }}
+                {{- end }}

@@ -1,0 +1,8 @@
+cronJobName: "simple-job-staging"
+env:
+  fromSecret:
+    THIRD_PARTY_API_KEY:
+      parameterName: third-party/api-key
+  additional:
+    VARIANT:
+      value: staging
