@@ -24,6 +24,7 @@ resources:
 
 ingress:
   host: "myservice.mycompany.tld"
+  overwriteCustomHttpErrors: "502"
 
 env:
   copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"

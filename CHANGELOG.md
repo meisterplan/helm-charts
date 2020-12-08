@@ -1,5 +1,8 @@
 # spring-service
 
+## 2.0.4
+- Add more ingress annotation methods (proxy read timeout + body size)
+
 ## 2.0.3
 - New mandatory parameter: `playbook_url`, necessary for alerting rules
 

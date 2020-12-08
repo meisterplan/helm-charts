@@ -5,6 +5,8 @@ kind: Ingress
 metadata:
   name: myservice
   namespace: "team-supercool"
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: 502
 spec:
   rules:
     - host: myservice.mycompany.tld

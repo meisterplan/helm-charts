@@ -3,10 +3,16 @@ kind: Ingress
 metadata:
   name: {{ .Values.serviceName }}
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
-  {{- if .Values.ingress.overwriteCustomHttpErrors }}
   annotations:
+    {{- if .Values.ingress.overwriteCustomHttpErrors }}
     nginx.ingress.kubernetes.io/custom-http-errors: {{ .Values.ingress.overwriteCustomHttpErrors }}
-  {{- end }}
+    {{- end }}
+    {{- if .Values.ingress.overwriteProxyReadTimeout }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .Values.ingress.overwriteProxyReadTimeout }}
+    {{- end }}
+    {{- if .Values.ingress.overwriteCustomBodySize }}
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.overwriteCustomBodySize }}
+    {{- end }}
 spec:
   rules:
     - host: {{ required "Ingress Host must be set!" .Values.ingress.host }}
