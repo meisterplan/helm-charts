@@ -1,16 +1,24 @@
 # spring-service
 
+## 2.0.5
+
+- Add basicAuthSecretParameterName to ingress annotation methods
+
 ## 2.0.4
+
 - Add more ingress annotation methods (proxy read timeout + body size)
 
 ## 2.0.3
+
 - New mandatory parameter: `playbook_url`, necessary for alerting rules
 
 ## 2.0.2
+
 - Fixed invalid secret names
 - Fixed confusing default values for `.serviceName` and `.namespace` which have required Checks
 
 ## 2.0.1
+
 - Fixed invalid YAML when `.env.additional` created multi-line strings
 
 ## 2.0.0
@@ -27,7 +35,9 @@
 # cronjob
 
 ## 1.0.1
+
 - Fix missing quoting in schedule (asterisk has special meaning in YAML)
 
 ## 1.0.0
+
 - Initial release

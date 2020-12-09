@@ -7,6 +7,9 @@ metadata:
   namespace: "team-supercool"
   annotations:
     nginx.ingress.kubernetes.io/custom-http-errors: 502
+    nginx.ingress.kubernetes.io/auth-type: "basic"
+    nginx.ingress.kubernetes.io/auth-secret: myservice-external-secret
+    nginx.ingress.kubernetes.io/auth-realm: myservice
 spec:
   rules:
     - host: myservice.mycompany.tld
