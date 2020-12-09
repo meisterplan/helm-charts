@@ -1,5 +1,8 @@
 # spring-service
 
+## 2.1.0
+- Support `.timeouts` for overriding several deployment timeouts
+
 ## 2.0.5
 
 - Add basicAuthSecretParameterName to ingress annotation methods
