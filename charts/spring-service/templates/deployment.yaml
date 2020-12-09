@@ -5,6 +5,9 @@ metadata:
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
 spec:
   replicas: {{ .Values.replicaCount }}
+  {{- if .Values.timeouts.progressDeadlineSeconds }}
+  progressDeadlineSeconds: {{ .Values.timeouts.progressDeadlineSeconds }}
+  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.serviceName | quote }}
@@ -17,6 +20,9 @@ spec:
     spec:
       imagePullSecrets:
         - name: docker.pkg.github.com
+      {{- if .Values.timeouts.terminationTimeBeforeKillSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.timeouts.terminationTimeBeforeKillSeconds }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -59,7 +65,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: ["sleep", "15"]
+                command: ["sleep", "{{ .Values.timeouts.terminationTimeBeforeSigTermSeconds }}"]
           env:
             - name: "SPRING_PROFILES_ACTIVE"
               value: "prod"

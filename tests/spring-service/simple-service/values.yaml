@@ -27,6 +27,11 @@ ingress:
   overwriteCustomHttpErrors: "502"
   basicAuthSecretParameterName: myservice/auth
 
+timeouts:
+  progressDeadlineSeconds: 120
+  terminationTimeBeforeKillSeconds: 60
+  terminationTimeBeforeSigTermSeconds: 45
+
 env:
   copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
 
