@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   cronjob:
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.814982+01:00"
+    created: "2020-12-09T12:23:45.226147+01:00"
     description: A generalized cronjob that can access secrets.
     digest: ba2a924cf4f30cc4bdea2ba8b5f6521d3ab7f69bbbc90a549f71af9954f7ba59
     name: cronjob
@@ -10,7 +10,7 @@ entries:
     - cronjob-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.814684+01:00"
+    created: "2020-12-09T12:23:45.22588+01:00"
     description: A generalized cronjob that can access secrets.
     digest: 3630040877b6d588b76024c4864081851b94e291aef6df08b389d144876556f2
     name: cronjob
@@ -19,7 +19,7 @@ entries:
     version: 1.0.0
   spring-service:
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.818649+01:00"
+    created: "2020-12-09T12:23:45.228874+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: 3035ce8e5873326a436ff2b24a7da37fcdb7cb66bdcc42189b9d3a266bbcbadc
@@ -28,16 +28,16 @@ entries:
     - spring-service-2.0.5.tgz
     version: 2.0.5
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.818029+01:00"
+    created: "2020-12-09T12:23:45.228471+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
-    digest: e3f808c2b4dc22c383f6210bb9010ae591dc96d1a851a631463d8454c7736dee
+    digest: 456a63c74462f84db68208cd7801e652822d7ec1d10111c7c2398b117b9daf9a
     name: spring-service
     urls:
     - spring-service-2.0.4.tgz
     version: 2.0.4
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.817554+01:00"
+    created: "2020-12-09T12:23:45.228059+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: e350e1eb4b4b32be34ea3e7e8f759fa52f0a85a55517333d183cfef809fc6022
@@ -46,7 +46,7 @@ entries:
     - spring-service-2.0.3.tgz
     version: 2.0.3
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.81692+01:00"
+    created: "2020-12-09T12:23:45.227653+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: f603e220ffe8d089b37bce04bc4f9b88d60b907ecf4eee13670b80b028924f67
@@ -55,7 +55,7 @@ entries:
     - spring-service-2.0.2.tgz
     version: 2.0.2
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.816276+01:00"
+    created: "2020-12-09T12:23:45.227237+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: 2f9e8c9415e6bce22ce233585cb625e537cfb4ddbea0e4e1bacf56fa6334e78f
@@ -64,7 +64,7 @@ entries:
     - spring-service-2.0.1.tgz
     version: 2.0.1
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.815835+01:00"
+    created: "2020-12-09T12:23:45.226867+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: c7a9326b3752ad7e5ff8f20974db513ad68958f021bbede462eee3d92bd48400
@@ -73,7 +73,7 @@ entries:
     - spring-service-2.0.0.tgz
     version: 2.0.0
   - apiVersion: v1
-    created: "2020-12-09T12:19:28.815398+01:00"
+    created: "2020-12-09T12:23:45.226482+01:00"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
     digest: 33783b081e609248bdc553104034b1786b72cef83ba7b5a94bd877ae697f4c7a
@@ -81,4 +81,4 @@ entries:
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2020-12-09T12:19:28.814191+01:00"
+generated: "2020-12-09T12:23:45.22548+01:00"
