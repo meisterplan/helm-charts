@@ -37,6 +37,10 @@
 
 # cronjob
 
+## 1.0.2
+
+- add args to let cronjobs do something
+
 ## 1.0.1
 
 - Fix missing quoting in schedule (asterisk has special meaning in YAML)

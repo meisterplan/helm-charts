@@ -9,6 +9,10 @@ image:
   repository: docker.pkg.github.com/my-company/myservice
   tag: "1.30.7"
 
+args:
+  - /bin/bash
+  - echo "42"
+
 resources:
   memory: 64Mi
   cpu:
