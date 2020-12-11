@@ -39,7 +39,7 @@
 
 ## 1.0.2
 
-- add args to let cronjobs do something
+- add `args` to allow passing arguments to the container's entrypoint
 
 ## 1.0.1
 
