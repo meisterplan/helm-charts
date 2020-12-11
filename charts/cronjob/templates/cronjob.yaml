@@ -20,6 +20,8 @@ spec:
           containers:
             - name: "{{ .Values.cronJobName }}"
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              args:
+{{ toYaml .Values.args | indent 14 }}
               imagePullPolicy: IfNotPresent
               resources:
                 requests:

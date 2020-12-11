@@ -15,6 +15,9 @@ image:
   repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
   tag: "" # Tag is normally configured during deployment
 
+# list of startup argument(s) for the job
+args: []
+
 # k8s resource definitions for required minimum and maximum growth
 resources:
   memory: 64Mi

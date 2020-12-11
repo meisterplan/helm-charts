@@ -22,6 +22,9 @@ spec:
           containers:
             - name: "simple-job-staging"
               image: "docker.pkg.github.com/my-company/myservice:1.30.7"
+              args:
+              - /bin/bash
+              - echo "42"
               imagePullPolicy: IfNotPresent
               resources:
                 requests:
