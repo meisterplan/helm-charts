@@ -1,3 +1,4 @@
+{{- if .Values.prometheusScraping }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -13,3 +14,4 @@ spec:
   podMetricsEndpoints:
     - port: management
       path: /actuator/prometheus
+{{- end }}

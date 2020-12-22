@@ -31,7 +31,7 @@ ingress:
   host: "" # Hostname under which the service is available, normally configured per deployment target
 
 # Optional: Manual configuration of special timeouts for deployments.
-timeouts: 
+timeouts:
   terminationTimeBeforeSigTermSeconds: 15 # how many seconds to wait in "PreStop hook", i.e. after terminating pod but before SIGTERM to the container (e.g. for completing pending requests). If changed, the option below can also become relevant.
 #  terminationTimeBeforeKillSeconds: ? # see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
 #  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
@@ -53,6 +53,9 @@ env:
   additional: {}
   #  SOME_VARIABLE:
   #    value: 'some-value'
+
+# If set to "false" prometheus scraping is not enabled
+prometheusScraping: true
 
 alertingRules: []
 # - name: HighLatency

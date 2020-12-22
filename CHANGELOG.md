@@ -1,6 +1,11 @@
 # spring-service
 
+## 2.1.1
+
+- Add option to disable prometheusScraping
+
 ## 2.1.0
+
 - Support `.timeouts` for overriding several deployment timeouts
 
 ## 2.0.5
