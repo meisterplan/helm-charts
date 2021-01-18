@@ -7,6 +7,11 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
+    {{- range $port := .Values.internalPorts }}
+    - port: {{ $port.port }}
+      protocol: {{ $port.protocol }}
+      targetPort: {{ $port.targetPort }}
+    {{- end }}
   selector:
     app.kubernetes.io/name: {{ .Values.serviceName }}
     app.kubernetes.io/version: {{ .Values.image.tag }}
