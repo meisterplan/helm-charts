@@ -53,3 +53,13 @@ alertingRules:
     description: No pods of this service are currently running in this cluster
     summary: Service MyService is down
     playbook_url: http://xconfluence/x/aBcDeFg
+
+internalPorts:
+  - name: nfshp-tcp
+    port: 8030
+    targetPort: 1030
+    protocol: TCP
+  - name: nfshp-udp
+    port: 8030
+    targetPort: 1030
+    protocol: UDP

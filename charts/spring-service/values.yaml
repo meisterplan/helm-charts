@@ -36,6 +36,13 @@ timeouts:
 #  terminationTimeBeforeKillSeconds: ? # see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
 #  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
 
+# Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
+internalPorts: {}
+  # - name: ftp
+  #   port: 21 # exposed port inside the cluster for others
+  #   targetPort: 1221 #  port to connect to at the running service
+  #   protocol: TCP # which protocol to use
+
 env:
   # name of env variable that should also receive the external base url
   # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"

@@ -46,6 +46,11 @@ spec:
             - containerPort: 8081
               protocol: TCP
               name: management
+            {{- range $port := .Values.internalPorts }}
+            - name: {{ $port.name }}
+              protocol: {{ $port.protocol }}
+              containerPort: {{ $port.targetPort }}
+            {{- end }}
           resources:
             requests:
               cpu: {{ required "CPU guarantee must be set!" .Values.resources.cpu.guarantee }}

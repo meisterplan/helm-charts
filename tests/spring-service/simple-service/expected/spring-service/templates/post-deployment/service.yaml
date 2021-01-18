@@ -9,6 +9,12 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
+    - port: 8030
+      protocol: TCP
+      targetPort: 1030
+    - port: 8030
+      protocol: UDP
+      targetPort: 1030
   selector:
     app.kubernetes.io/name: myservice
     app.kubernetes.io/version: 1.30.7
