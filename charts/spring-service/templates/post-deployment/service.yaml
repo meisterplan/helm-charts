@@ -5,10 +5,12 @@ metadata:
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
 spec:
   ports:
-    - port: 80
+    - name: service
+      port: 80
       targetPort: 8080
     {{- range $port := .Values.internalPorts }}
-    - port: {{ $port.port }}
+    - name: {{ $port.name }}
+      port: {{ $port.port }}
       protocol: {{ $port.protocol }}
       targetPort: {{ $port.targetPort }}
     {{- end }}

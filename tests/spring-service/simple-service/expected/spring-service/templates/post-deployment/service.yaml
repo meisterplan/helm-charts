@@ -7,12 +7,15 @@ metadata:
   namespace: "team-supercool"
 spec:
   ports:
-    - port: 80
+    - name: service
+      port: 80
       targetPort: 8080
-    - port: 8030
+    - name: nfshp-tcp
+      port: 8030
       protocol: TCP
       targetPort: 1030
-    - port: 8030
+    - name: nfshp-udp
+      port: 8030
       protocol: UDP
       targetPort: 1030
   selector:

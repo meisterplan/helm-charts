@@ -1,5 +1,9 @@
 # spring-service
 
+## 2.2.1
+
+- Fix `.internalPorts` not working due to missing port names in service
+
 ## 2.2.0
 
 - Add `.internalPorts` for additional interfaces inside cluster
