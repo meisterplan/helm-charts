@@ -11,10 +11,12 @@ image:
 replicaCount: 5
 
 livenessProbe:
-  delay: 50
-
+  failAfterCount: 8
 readinessProbe:
-  delay: 50
+  failAfterCount: 2
+startupProbe:
+  periodSeconds: 6
+  failAfterCount: 7
 
 resources:
   memory: 1000Mi

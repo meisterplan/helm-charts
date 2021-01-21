@@ -59,14 +59,19 @@ spec:
               cpu: {{ required "CPU limit must be set!" .Values.resources.cpu.limit }}
               memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
 
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failAfterCount }}
           livenessProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]
-            initialDelaySeconds: {{ .Values.livenessProbe.delay }}
+            failureThreshold: {{ .Values.livenessProbe.failAfterCount }}
           readinessProbe:
             exec:
               command: ["check", "run", "-type", "readiness"]
-            initialDelaySeconds: {{ .Values.readinessProbe.delay }}
+            failureThreshold: {{ .Values.readinessProbe.failAfterCount }}
           lifecycle:
             preStop:
               exec:
