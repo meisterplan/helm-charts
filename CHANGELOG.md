@@ -1,5 +1,13 @@
 # spring-service
 
+## 3.0.0
+
+**Breaking Changes**
+
+- Support for `livenessProbe.delay` and `readinessProbe.delay` was dropped in favor of `startupProbe.periodSeconds` and `startupProbe.failAfterCount`
+
+- Add `livenessProbe.failAfterCount` and `readinessProbe.failAfterCount` to control how many must fail before corrective action is taken
+
 ## 2.2.1
 
 - Fix `.internalPorts` not working due to missing port names in service

@@ -15,10 +15,13 @@ image:
 # how many replicas to launch
 replicaCount: 2
 
+startupProbe:
+  periodSeconds: 5  # interval how often startup should be checked
+  failAfterCount: 10  # amount of retries until startup must have completed and liveness & readiness probe get armed
 livenessProbe:
-  delay: 30 # delay after which liveness probe get armed
+  failAfterCount: 3  # amount of retries before container is considered dead and killed
 readinessProbe:
-  delay: 30 # delay after which readiness probe get armed
+  failAfterCount: 3 # amount of retries before container is considered unready and stops receiving traffic (until next probe works)
 
 # k8s resource definitions for required minimum and maximum growth
 resources:

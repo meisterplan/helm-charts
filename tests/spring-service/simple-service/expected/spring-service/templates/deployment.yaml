@@ -58,14 +58,19 @@ spec:
               cpu: 2
               memory: 1000Mi
 
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: 6
+            failureThreshold: 7
           livenessProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]
-            initialDelaySeconds: 50
+            failureThreshold: 8
           readinessProbe:
             exec:
               command: ["check", "run", "-type", "readiness"]
-            initialDelaySeconds: 50
+            failureThreshold: 2
           lifecycle:
             preStop:
               exec:
