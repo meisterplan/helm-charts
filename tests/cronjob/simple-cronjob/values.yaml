@@ -28,7 +28,7 @@ env:
       value: "production"
 
 alertingRules:
-  - name: MyCronjobFailed
+  MyCronjobFailed:
     expr: absent(cronjob_up)
     for: 5m
     summary: The job {{ $labels.job_name }} has failed

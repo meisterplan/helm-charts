@@ -7,8 +7,8 @@ env:
     VARIANT:
       value: staging
 
-additionalAlertingRules:
-  - name: MyCronjobStagingAlert
+alertingRules:
+  MyCronjobStagingAlert:
     expr: rate(cronjob_executions) < 1000
     for: 5m
     summary: The job {{ $labels.job_name }} has too few executions

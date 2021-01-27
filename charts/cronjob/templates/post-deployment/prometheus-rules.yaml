@@ -11,32 +11,18 @@ spec:
   groups:
     - name: "{{ .Values.cronJobName }}"
       rules:
-        {{- range .Values.alertingRules }}
-        - alert: "{{ $.Values.cronJobName }}_{{ .name }}"
-          expr: {{ .expr | quote }}
-          {{- if .for }}
-          for: {{ .for | quote }}
+        {{- range $key, $value := .Values.alertingRules }}
+        - alert: "{{ $.Values.cronJobName }}_{{ $key }}"
+          expr: {{ $value.expr | quote }}
+          {{- if $value.for }}
+          for: {{ $value.for | quote }}
           {{- end }}
           labels:
             service: {{ $.Values.cronJobName | quote }}
             namespace: {{ $.Values.namespace | quote }}
           annotations:
-            summary: {{ required "Summary must be set!" .summary | quote }}
-            description: {{ .description | quote }}
-            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
-        {{- end }}
-        {{- range .Values.additionalAlertingRules }}
-        - alert: "{{ $.Values.cronJobName }}_{{ .name }}"
-          expr: {{ .expr | quote }}
-          {{- if .for }}
-          for: {{ .for | quote }}
-          {{- end }}
-          labels:
-            service: {{ $.Values.cronJobName | quote }}
-            namespace: {{ $.Values.namespace | quote }}
-          annotations:
-            summary: {{ required "Summary must be set!" .summary | quote }}
-            description: {{ .description | quote }}
-            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
+            summary: {{ required "Summary must be set!" $value.summary | quote }}
+            description: {{ $value.description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" $value.playbook_url | quote }}
         {{- end }}
 {{- end }}
