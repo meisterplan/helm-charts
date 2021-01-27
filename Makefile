@@ -18,7 +18,7 @@ release:
 	$(MAKE) release-chart CHART=spring-service
 	$(MAKE) release-chart CHART=cronjob
 
-release-chart: 
+release-chart:
 	rm -rf .gh-pages-branch
 	git clone --branch gh-pages git@github.com:meisterplan/helm-charts .gh-pages-branch
 

@@ -1,0 +1,42 @@
+{{- if or .Values.alertingRules .Values.additionalAlertingRules }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+  name: "{{ .Values.cronJobName }}"
+spec:
+  groups:
+    - name: "{{ .Values.cronJobName }}"
+      rules:
+        {{- range .Values.alertingRules }}
+        - alert: "{{ $.Values.cronJobName }}_{{ .name }}"
+          expr: {{ .expr | quote }}
+          {{- if .for }}
+          for: {{ .for | quote }}
+          {{- end }}
+          labels:
+            service: {{ $.Values.cronJobName | quote }}
+            namespace: {{ $.Values.namespace | quote }}
+          annotations:
+            summary: {{ required "Summary must be set!" .summary | quote }}
+            description: {{ .description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
+        {{- end }}
+        {{- range .Values.additionalAlertingRules }}
+        - alert: "{{ $.Values.cronJobName }}_{{ .name }}"
+          expr: {{ .expr | quote }}
+          {{- if .for }}
+          for: {{ .for | quote }}
+          {{- end }}
+          labels:
+            service: {{ $.Values.cronJobName | quote }}
+            namespace: {{ $.Values.namespace | quote }}
+          annotations:
+            summary: {{ required "Summary must be set!" .summary | quote }}
+            description: {{ .description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
+        {{- end }}
+{{- end }}
