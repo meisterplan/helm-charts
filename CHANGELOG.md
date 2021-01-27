@@ -58,6 +58,9 @@
 
 # cronjob
 
+# 1.1.0
+- add alerting rules for Prometheus
+
 ## 1.0.2
 
 - add `args` to allow passing arguments to the container's entrypoint

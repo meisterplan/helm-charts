@@ -1,0 +1,28 @@
+{{- if or .Values.alertingRules .Values.additionalAlertingRules }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "{{ .Values.namespace }}"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+  name: "{{ .Values.cronJobName }}"
+spec:
+  groups:
+    - name: "{{ .Values.cronJobName }}"
+      rules:
+        {{- range $key, $value := .Values.alertingRules }}
+        - alert: "{{ $.Values.cronJobName }}_{{ $key }}"
+          expr: {{ $value.expr | quote }}
+          {{- if $value.for }}
+          for: {{ $value.for | quote }}
+          {{- end }}
+          labels:
+            service: {{ $.Values.cronJobName | quote }}
+            namespace: {{ $.Values.namespace | quote }}
+          annotations:
+            summary: {{ required "Summary must be set!" $value.summary | quote }}
+            description: {{ $value.description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" $value.playbook_url | quote }}
+        {{- end }}
+{{- end }}

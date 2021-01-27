@@ -1,0 +1,34 @@
+---
+# Source: cronjob/templates/post-deployment/prometheus-rules.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "team-superpower"
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+  name: "simple-job-staging"
+spec:
+  groups:
+    - name: "simple-job-staging"
+      rules:
+        - alert: "simple-job-staging_MyCronjobFailed"
+          expr: "absent(cronjob_up)"
+          for: "5m"
+          labels:
+            service: "simple-job-staging"
+            namespace: "team-superpower"
+          annotations:
+            summary: "The job {{ $labels.job_name }} has failed"
+            description: "The job {{ $labels.job_name }} has exited with failure exit code."
+            playbook_url: "https://my-playbook-collection/abc"
+        - alert: "simple-job-staging_MyCronjobStagingAlert"
+          expr: "rate(cronjob_executions) < 1000"
+          for: "5m"
+          labels:
+            service: "simple-job-staging"
+            namespace: "team-superpower"
+          annotations:
+            summary: "The job {{ $labels.job_name }} has too few executions"
+            description: "The job {{ $labels.job_name }} has too few executions"
+            playbook_url: "https://my-playbook-collection/xyz"

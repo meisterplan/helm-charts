@@ -6,3 +6,11 @@ env:
   additional:
     VARIANT:
       value: staging
+
+alertingRules:
+  MyCronjobStagingAlert:
+    expr: rate(cronjob_executions) < 1000
+    for: 5m
+    summary: The job {{ $labels.job_name }} has too few executions
+    description: The job {{ $labels.job_name }} has too few executions
+    playbook_url: https://my-playbook-collection/xyz
