@@ -1,5 +1,11 @@
 # spring-service
 
+## 3.0.1
+
+**Breaking Changes**
+
+- Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
+
 ## 3.0.0
 
 **Breaking Changes**
