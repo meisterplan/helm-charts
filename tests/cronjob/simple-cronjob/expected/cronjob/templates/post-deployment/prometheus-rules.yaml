@@ -19,7 +19,6 @@ spec:
             service: "simple-job-staging"
             namespace: "team-superpower"
           annotations:
-            summary: "The job {{ $labels.job_name }} has failed"
             description: "The job {{ $labels.job_name }} has exited with failure exit code."
             playbook_url: "https://my-playbook-collection/abc"
         - alert: "simple-job-staging_MyCronjobStagingAlert"
@@ -29,6 +28,5 @@ spec:
             service: "simple-job-staging"
             namespace: "team-superpower"
           annotations:
-            summary: "The job {{ $labels.job_name }} has too few executions"
-            description: "The job {{ $labels.job_name }} has too few executions"
+            description: "Simple-Job {{ $labels.job_name }} has too few executions"
             playbook_url: "https://my-playbook-collection/xyz"

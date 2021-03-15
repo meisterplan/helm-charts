@@ -52,8 +52,7 @@ alertingRules:
   - name: ServiceDown
     expr: and absent(myservice_up)
     for: 1m
-    description: No pods of this service are currently running in this cluster
-    summary: Service MyService is down
+    description: Service MyService is down
     playbook_url: http://xconfluence/x/aBcDeFg
 
 internalPorts:

@@ -19,6 +19,5 @@ spec:
             service: "myservice"
             namespace: "team-supercool"
           annotations:
-            summary: "Service MyService is down"
-            description: "No pods of this service are currently running in this cluster"
+            description: "Service MyService is down"
             playbook_url: "http://xconfluence/x/aBcDeFg"
