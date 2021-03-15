@@ -21,8 +21,7 @@ spec:
             service: {{ $.Values.cronJobName | quote }}
             namespace: {{ $.Values.namespace | quote }}
           annotations:
-            summary: {{ required "Summary must be set!" $value.summary | quote }}
-            description: {{ $value.description | quote }}
-            playbook_url: {{ required "Playbook URL must be set!" $value.playbook_url | quote }}
+            description: {{ required "Description must be set!" .description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
         {{- end }}
 {{- end }}
