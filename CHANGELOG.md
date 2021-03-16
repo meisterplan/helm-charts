@@ -4,17 +4,25 @@
 
 **Breaking Changes**
 
-- Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
+> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
 
 ## 3.0.0
 
 **Breaking Changes**
 
-- Support for `livenessProbe.delay` and `readinessProbe.delay` was dropped in favor of `startupProbe.periodSeconds` and `startupProbe.failAfterCount`
+> Support for `livenessProbe.delay` and `readinessProbe.delay` was dropped in favor of `startupProbe.periodSeconds` and `startupProbe.failAfterCount`
 
 - Add `livenessProbe.failAfterCount` and `readinessProbe.failAfterCount` to control how many must fail before corrective action is taken
 
 ## 2.2.1
+
+**Breaking changes**
+
+> :warning: **WARNING**: The first time *2.2.1 or any version after* is deployed when *any version before 2.2.1* is running this causes a **nonzero downtime deployment** with a short 503 service disruption due to a [bug in the ingress controller](https://github.com/kubernetes/ingress-nginx/issues/6962).
+>
+> Please take appropriate measures (e.g. deploy this change in off-hours only).
+>
+> This only happens the first time, the deployments afterwards are not affected.
 
 - Fix `.internalPorts` not working due to missing port names in service
 
@@ -68,7 +76,7 @@
 
 **Breaking Changes**
 
-- Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
+> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
 
 ## 1.1.0
 - add alerting rules for Prometheus
