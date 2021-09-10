@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.1.0
+
+- Support for `env.springDatasourceFromSecretWithRLS` was introduced (exclusive alternative to `env.springDatasourceFromSecret`).
+
 ## 3.0.1
 
 **Breaking Changes**

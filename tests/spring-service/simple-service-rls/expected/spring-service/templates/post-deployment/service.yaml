@@ -1,0 +1,23 @@
+---
+# Source: spring-service/templates/post-deployment/service.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: myservice
+  namespace: "team-supercool"
+spec:
+  ports:
+    - name: service
+      port: 80
+      targetPort: 8080
+    - name: nfshp-tcp
+      port: 8030
+      protocol: TCP
+      targetPort: 1030
+    - name: nfshp-udp
+      port: 8030
+      protocol: UDP
+      targetPort: 1030
+  selector:
+    app.kubernetes.io/name: myservice
+    app.kubernetes.io/version: 1.30.7
