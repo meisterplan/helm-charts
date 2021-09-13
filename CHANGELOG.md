@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.1.1
+
+- Fix `env.springDatasourceFromSecretWithRLS` using wrong env for Flyway's user name
+
 ## 3.1.0
 
 - Support for `env.springDatasourceFromSecretWithRLS` was introduced (exclusive alternative to `env.springDatasourceFromSecret`).

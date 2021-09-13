@@ -121,11 +121,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
                   key: "SPRING_DATASOURCE_PASSWORD"
-            - name: "SPRING_FLYWAY_USERNAME"
+            - name: "SPRING_FLYWAY_USER"
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
-                  key: "SPRING_FLYWAY_USERNAME"
+                  key: "SPRING_FLYWAY_USER"
             - name: "SPRING_FLYWAY_PASSWORD"
               valueFrom:
                 secretKeyRef:
