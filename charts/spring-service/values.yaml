@@ -50,9 +50,11 @@ env:
   # name of env variable that should also receive the external base url
   # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
 
-  # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password"
+  # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password".
+  # Pick "WithRLS" if you have an RLS user or the normal one if you only have one user. Setting both at the same time is not supported.
   # or remove it if it isn't required
   springDatasourceFromSecret: "" # "rds/templatetiger"
+  springDatasourceFromSecretWithRLS: "" # "rds/templatetiger"
   springRabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
 
   fromSecret: {}

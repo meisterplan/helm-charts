@@ -1,0 +1,21 @@
+---
+# Source: spring-service/templates/post-deployment/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: myservice
+  namespace: "team-supercool"
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: 502
+    nginx.ingress.kubernetes.io/auth-type: "basic"
+    nginx.ingress.kubernetes.io/auth-secret: myservice-external-secret
+    nginx.ingress.kubernetes.io/auth-realm: myservice
+spec:
+  rules:
+    - host: myservice.mycompany.tld
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: myservice
+              servicePort: 80

@@ -1,0 +1,149 @@
+---
+# Source: spring-service/templates/deployment.yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "myservice-1.30.7"
+  namespace: "team-supercool"
+spec:
+  replicas: 5
+  progressDeadlineSeconds: 120
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "myservice"
+      app.kubernetes.io/version: "1.30.7"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "myservice"
+        app.kubernetes.io/version: "1.30.7"
+    spec:
+      imagePullSecrets:
+        - name: docker.pkg.github.com
+      terminationGracePeriodSeconds: 60
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                    - myservice
+      containers:
+        - name: myservice
+          image: "docker.pkg.github.com/my-company/myservice:1.30.7"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: service
+            - containerPort: 8081
+              protocol: TCP
+              name: management
+            - name: nfshp-tcp
+              protocol: TCP
+              containerPort: 1030
+            - name: nfshp-udp
+              protocol: UDP
+              containerPort: 1030
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1000Mi
+            limits:
+              cpu: 2
+              memory: 1000Mi
+
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: 6
+            failureThreshold: 7
+          livenessProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            failureThreshold: 8
+          readinessProbe:
+            exec:
+              command: ["check", "run", "-type", "readiness"]
+            failureThreshold: 2
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "45"]
+          env:
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: "prod"
+            - name: "CLUSTER_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: cluster-name
+            - name: 'SENTRY_DSN'
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SENTRY_DSN"
+            - name: "SPRING_DATASOURCE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_DATASOURCE_URL"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_DATASOURCE_USERNAME"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_DATASOURCE_PASSWORD"
+            - name: "SPRING_FLYWAY_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_FLYWAY_USERNAME"
+            - name: "SPRING_FLYWAY_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_FLYWAY_PASSWORD"
+            - name: "SPRING_RABBITMQ_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_RABBITMQ_HOST"
+            - name: "SPRING_RABBITMQ_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_RABBITMQ_USERNAME"
+            - name: "SPRING_RABBITMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_RABBITMQ_PASSWORD"
+            - name: "SERVICE_OAUTH2_PUBLIC_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "myservice-external-secret"
+                  key: SERVICE_OAUTH2_PUBLIC_KEY
+            - name: "SERVICE_MYSERVICE_BASE_URL"
+              value: "https://myservice.mycompany.tld"
+            - name: "SOME_SECRET"
+              valueFrom:
+                secretKeyRef:
+                  name: "myservice-external-secret"
+                  key: "SOME_SECRET"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: REGION
+              value: EU
+            - name: URLS
+              value: https://mycompany.tld/url1 https://mycompany.tld/url2 https://mycompany.tld/url3
+                https://mycompany.tld/url4
