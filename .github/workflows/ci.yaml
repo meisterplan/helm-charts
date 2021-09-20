@@ -7,10 +7,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: meisterplan/k8s-deploy:latest
 
     steps:
+      - uses: azure/setup-helm@v1
+        with:
+          version: v3.7.0
       - uses: actions/checkout@v2
       - run: make test
 
@@ -18,9 +19,13 @@ jobs:
     needs: [test]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
-    container:
-      image: meisterplan/k8s-deploy:latest
 
     steps:
+      - uses: azure/setup-helm@v1
+        with:
+          version: v3.7.0
       - uses: actions/checkout@v2
-      - run: make release
+
+      - uses: helm/chart-releaser-action@v1.2.1
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
