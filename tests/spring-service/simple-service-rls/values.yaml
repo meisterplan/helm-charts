@@ -10,14 +10,6 @@ image:
 
 replicaCount: 5
 
-livenessProbe:
-  failAfterCount: 8
-readinessProbe:
-  failAfterCount: 2
-startupProbe:
-  periodSeconds: 6
-  failAfterCount: 7
-
 resources:
   memory: 1000Mi
   cpu:
@@ -29,38 +21,8 @@ ingress:
   overwriteCustomHttpErrors: "502"
   basicAuthSecretParameterName: myservice/auth
 
-timeouts:
-  progressDeadlineSeconds: 120
-  terminationTimeBeforeKillSeconds: 60
-  terminationTimeBeforeSigTermSeconds: 45
-
 env:
   copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
 
   springDatasourceFromSecretWithRLS: "rds/myservice"
   springRabbitMQSecret: true
-
-  fromSecret:
-    SOME_SECRET:
-      parameterName: other-system/secret
-
-  additional:
-    LOG_LEVEL:
-      value: "DEBUG"
-
-alertingRules:
-  - name: ServiceDown
-    expr: and absent(myservice_up)
-    for: 1m
-    description: Service MyService is down
-    playbook_url: http://xconfluence/x/aBcDeFg
-
-internalPorts:
-  - name: nfshp-tcp
-    port: 8030
-    targetPort: 1030
-    protocol: TCP
-  - name: nfshp-udp
-    port: 8030
-    targetPort: 1030
-    protocol: UDP
