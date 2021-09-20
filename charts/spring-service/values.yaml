@@ -16,10 +16,10 @@ image:
 replicaCount: 2
 
 startupProbe:
-  periodSeconds: 5  # interval how often startup should be checked
-  failAfterCount: 10  # amount of retries until startup must have completed and liveness & readiness probe get armed
+  periodSeconds: 5 # interval how often startup should be checked
+  failAfterCount: 24 # amount of retries until startup must have completed and liveness & readiness probe get armed
 livenessProbe:
-  failAfterCount: 3  # amount of retries before container is considered dead and killed
+  failAfterCount: 3 # amount of retries before container is considered dead and killed
 readinessProbe:
   failAfterCount: 3 # amount of retries before container is considered unready and stops receiving traffic (until next probe works)
 

@@ -7,7 +7,6 @@ metadata:
   namespace: "team-supercool"
 spec:
   replicas: 5
-  progressDeadlineSeconds: 120
   selector:
     matchLabels:
       app.kubernetes.io/name: "myservice"
@@ -20,7 +19,6 @@ spec:
     spec:
       imagePullSecrets:
         - name: docker.pkg.github.com
-      terminationGracePeriodSeconds: 60
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -44,12 +42,6 @@ spec:
             - containerPort: 8081
               protocol: TCP
               name: management
-            - name: nfshp-tcp
-              protocol: TCP
-              containerPort: 1030
-            - name: nfshp-udp
-              protocol: UDP
-              containerPort: 1030
           resources:
             requests:
               cpu: 500m
@@ -61,20 +53,20 @@ spec:
           startupProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]
-            periodSeconds: 6
-            failureThreshold: 7
+            periodSeconds: 5
+            failureThreshold: 24
           livenessProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]
-            failureThreshold: 8
+            failureThreshold: 3
           readinessProbe:
             exec:
               command: ["check", "run", "-type", "readiness"]
-            failureThreshold: 2
+            failureThreshold: 3
           lifecycle:
             preStop:
               exec:
-                command: ["sleep", "45"]
+                command: ["sleep", "15"]
           env:
             - name: "SPRING_PROFILES_ACTIVE"
               value: "prod"
@@ -135,13 +127,6 @@ spec:
                   key: SERVICE_OAUTH2_PUBLIC_KEY
             - name: "SERVICE_MYSERVICE_BASE_URL"
               value: "https://myservice.mycompany.tld"
-            - name: "SOME_SECRET"
-              valueFrom:
-                secretKeyRef:
-                  name: "myservice-external-secret"
-                  key: "SOME_SECRET"
-            - name: LOG_LEVEL
-              value: DEBUG
             - name: REGION
               value: EU
             - name: URLS
