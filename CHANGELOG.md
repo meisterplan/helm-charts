@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.1.3
+
+- Dummy change to test chart-release
+
 ## 3.1.2
 
 - Increase startupProbe time until a failure occurs to 2 minutes.
