@@ -25,6 +25,8 @@ jobs:
         with:
           version: v3.7.0
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - uses: helm/chart-releaser-action@v1.2.1
         env:
