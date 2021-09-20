@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.1.2
+
+- Increase startupProbe time until a failure occurs to 2 minutes.
+
 ## 3.1.1
 
 - Fix `env.springDatasourceFromSecretWithRLS` using wrong env for Flyway's user name
@@ -26,7 +30,7 @@
 
 **Breaking changes**
 
-> :warning: **WARNING**: The first time *2.2.1 or any version after* is deployed when *any version before 2.2.1* is running this causes a **nonzero downtime deployment** with a short 503 service disruption due to a [bug in the ingress controller](https://github.com/kubernetes/ingress-nginx/issues/6962).
+> :warning: **WARNING**: The first time _2.2.1 or any version after_ is deployed when _any version before 2.2.1_ is running this causes a **nonzero downtime deployment** with a short 503 service disruption due to a [bug in the ingress controller](https://github.com/kubernetes/ingress-nginx/issues/6962).
 >
 > Please take appropriate measures (e.g. deploy this change in off-hours only).
 >
@@ -87,6 +91,7 @@
 > Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
 
 ## 1.1.0
+
 - add alerting rules for Prometheus
 
 ## 1.0.2
