@@ -12,6 +12,4 @@ Use `make test` to run all tests against your changes. This will also be done by
 
 ### Releasing a Chart
 
-- Consider bumping the version of the chart before deploying it.
-- Run the tests before releasing the chart!
-- Run `make release-chart CHART=<chart-name>` to release the chart.
+Charts will be automatically released on master build, when bumping the version within the `Chart.yaml`.

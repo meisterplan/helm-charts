@@ -2,7 +2,7 @@
 
 ## 3.1.3
 
-- Dummy change to test chart-release
+- Switch to GitHub actions to release helm charts.
 
 ## 3.1.2
 
