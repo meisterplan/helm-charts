@@ -1,9 +1,10 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.serviceName }}
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
   annotations:
+    kubernetes.io/ingress.class: nginx
     {{- if .Values.ingress.overwriteCustomHttpErrors }}
     nginx.ingress.kubernetes.io/custom-http-errors: {{ .Values.ingress.overwriteCustomHttpErrors }}
     {{- end }}
@@ -24,6 +25,9 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: {{ .Values.serviceName }}
-              servicePort: 80
+              service:
+                name: {{ .Values.serviceName }}
+                port:
+                  number: 80
