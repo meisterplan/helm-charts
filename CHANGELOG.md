@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.2.0
+
+- Use future-proof Ingress API version (networking.k8s.io/v1) and add ingress class
+
 ## 3.1.3
 
 - Switch to GitHub actions to release helm charts.
