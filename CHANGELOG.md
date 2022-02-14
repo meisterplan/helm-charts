@@ -1,5 +1,11 @@
 # spring-service
 
+## 3.3.0
+
+- Use PodDisruptionBudget to allow specifying desired disruption limits during voluntary cluster interactions
+- Improve resiliency against involuntary service disruptions by setting podAntiAffinity to also avoid same availability zone
+- Improve podAntiAffinity to only cover the same version (i.e. no need to try to blue/green onto different nodes each time)
+
 ## 3.2.0
 
 - Use future-proof Ingress API version (networking.k8s.io/v1) and add ingress class
@@ -91,6 +97,10 @@
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 1.2.0
+
+- Use future-proof CronJob API version (batch/v1), which is deprecated since 1.21 and will be removed in 1.25+
 
 ## 1.1.1
 

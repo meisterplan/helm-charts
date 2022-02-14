@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: "{{ .Values.serviceName }}-pdb"
+spec:
+  {{.Values.disruptionBudget.type}}: {{.Values.disruptionBudget.value}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.serviceName | quote }}

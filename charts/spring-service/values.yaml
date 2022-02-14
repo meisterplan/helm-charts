@@ -75,3 +75,7 @@ alertingRules: []
 #   for: 5m # optional
 #   description: serviceName reports 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour # use actual serviceName for alert routing here
 #   playbook_url: http://xconfluence/x/aBcDeFg
+
+disruptionBudget:
+  type: maxUnavailable # either "maxUnavailable" (terminate at most this many pods) or "minAvailable" (have at least this many running pods remaining)
+  value: 1 # value with reference to type
