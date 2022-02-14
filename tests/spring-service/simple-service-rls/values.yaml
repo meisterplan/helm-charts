@@ -26,3 +26,7 @@ env:
 
   springDatasourceFromSecretWithRLS: "rds/myservice"
   springRabbitMQSecret: true
+
+disruptionBudget:
+  type: minAvailable
+  value: "50%"

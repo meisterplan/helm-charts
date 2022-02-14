@@ -1,0 +1,12 @@
+---
+# Source: spring-service/templates/pre-deployment/poddisruptionbudget.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: team-supercool
+  name: "myservice-pdb"
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "myservice"

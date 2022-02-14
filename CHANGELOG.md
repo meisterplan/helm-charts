@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.3.0
+
+- Use PodDisruptionBudget to allow specifying desired disruption limits during voluntary cluster interactions
+
 ## 3.2.0
 
 - Use future-proof Ingress API version (networking.k8s.io/v1) and add ingress class
