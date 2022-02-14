@@ -92,6 +92,10 @@
 
 # cronjob
 
+## 1.2.0
+
+- Use future-proof CronJob API version (batch/v1), which is deprecated since 1.21 and will be removed in 1.25+
+
 ## 1.1.1
 
 **Breaking Changes**

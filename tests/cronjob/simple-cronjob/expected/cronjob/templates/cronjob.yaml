@@ -1,7 +1,7 @@
 ---
 # Source: cronjob/templates/cronjob.yaml
 kind: CronJob
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 metadata:
   name: "simple-job-staging"
   namespace: "team-superpower"
