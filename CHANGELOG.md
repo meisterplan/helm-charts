@@ -3,6 +3,8 @@
 ## 3.3.0
 
 - Use PodDisruptionBudget to allow specifying desired disruption limits during voluntary cluster interactions
+- Improve resiliency against involuntary service disruptions by setting podAntiAffinity to also avoid same availability zone
+- Improve podAntiAffinity to only cover the same version (i.e. no need to try to blue/green onto different nodes each time)
 
 ## 3.2.0
 
