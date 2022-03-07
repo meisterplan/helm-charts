@@ -127,6 +127,11 @@ spec:
                 secretKeyRef:
                   name: myservice-external-secret
                   key: "SPRING_RABBITMQ_HOST"
+            - name: "SPRING_RABBITMQ_SSL_ENABLED"
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SPRING_RABBITMQ_SSL_ENABLED"
             - name: "SPRING_RABBITMQ_USERNAME"
               valueFrom:
                 secretKeyRef:
