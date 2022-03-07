@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.4.0
+
+- RabbitMQ ssl mode will be configured based on parameter in external secret
+
 ## 3.3.0
 
 - Use PodDisruptionBudget to allow specifying desired disruption limits during voluntary cluster interactions
