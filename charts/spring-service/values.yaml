@@ -7,6 +7,11 @@ namespace: ""
 clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
 secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)
 
+# The podRoleArn variable will create a service account that is bound to the pods.
+# This will grant the pod to assume the configured role automatically. This is only
+# possible if the role does have a trust policy for the created service account.
+podRoleArn: null # example:arn:aws:iam::111122223333:role/staging-myservice
+
 # what Docker image to run
 image:
   repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger

@@ -1,2 +1,4 @@
 .gh-pages-branch/
 .test-output/
+.idea/
+*.iml

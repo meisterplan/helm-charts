@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.5.0
+
+- Add support to assign AWS roles to pods (using service accounts).
+
 ## 3.4.0
 
 - RabbitMQ ssl mode will be configured based on parameter in external secret

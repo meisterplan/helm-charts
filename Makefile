@@ -1,6 +1,6 @@
 test:
 	$(MAKE) test-case CHART=spring-service CASE=simple-service
-	$(MAKE) test-case CHART=spring-service CASE=simple-service-rls
+	$(MAKE) test-case CHART=spring-service CASE=complex-service
 	$(MAKE) test-case CHART=cronjob CASE=simple-cronjob
 
 test-case:

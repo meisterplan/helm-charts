@@ -17,6 +17,7 @@ spec:
         app.kubernetes.io/name: "myservice"
         app.kubernetes.io/version: "1.30.7"
     spec:
+      serviceAccountName: myservice
       imagePullSecrets:
         - name: docker.pkg.github.com
       affinity:
