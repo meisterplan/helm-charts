@@ -1,4 +1,4 @@
 apiVersion: v1
 name: spring-service
 description: A generalized deployment for Meisterplan Spring Boot services in Kubernetes.
-version: 3.4.0
+version: 3.5.0

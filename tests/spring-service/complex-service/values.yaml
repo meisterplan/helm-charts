@@ -3,6 +3,7 @@ namespace: team-supercool
 
 clusterName: staging
 secretsRoleArn: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower
+podRoleArn: arn:aws:iam::1234567890:role/k8s-staging-myservice
 
 image:
   repository: docker.pkg.github.com/my-company/myservice
