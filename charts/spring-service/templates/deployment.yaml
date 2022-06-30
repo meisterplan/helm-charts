@@ -23,6 +23,7 @@ spec:
       {{- end }}
       imagePullSecrets:
         - name: docker.pkg.github.com
+        - name: ghcr.io
       {{- if .Values.timeouts.terminationTimeBeforeKillSeconds }}
       terminationGracePeriodSeconds: {{ .Values.timeouts.terminationTimeBeforeKillSeconds }}
       {{- end }}

@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.6.0
+
+- Add support for ghcr.io registry.
+
 ## 3.5.0
 
 - Add support to assign AWS roles to pods (using service accounts).
