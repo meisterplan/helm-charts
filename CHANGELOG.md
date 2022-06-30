@@ -110,6 +110,10 @@
 
 # cronjob
 
+## 1.3.0
+
+- Add support for ghcr.io registry.
+
 ## 1.2.0
 
 - Use future-proof CronJob API version (batch/v1), which is deprecated since 1.21 and will be removed in 1.25+

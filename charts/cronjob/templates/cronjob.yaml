@@ -17,6 +17,7 @@ spec:
           restartPolicy: Never
           imagePullSecrets:
             - name: docker.pkg.github.com
+            - name: ghcr.io
           containers:
             - name: "{{ .Values.cronJobName }}"
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

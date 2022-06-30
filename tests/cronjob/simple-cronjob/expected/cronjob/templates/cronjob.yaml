@@ -19,6 +19,7 @@ spec:
           restartPolicy: Never
           imagePullSecrets:
             - name: docker.pkg.github.com
+            - name: ghcr.io
           containers:
             - name: "simple-job-staging"
               image: "docker.pkg.github.com/my-company/myservice:1.30.7"
