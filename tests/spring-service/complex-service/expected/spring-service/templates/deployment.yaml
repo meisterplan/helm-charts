@@ -20,6 +20,7 @@ spec:
       serviceAccountName: myservice
       imagePullSecrets:
         - name: docker.pkg.github.com
+        - name: ghcr.io
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
