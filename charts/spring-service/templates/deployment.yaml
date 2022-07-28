@@ -100,16 +100,38 @@ spec:
           env:
             - name: "SPRING_PROFILES_ACTIVE"
               value: "prod"
-            - name: "CLUSTER_NAME"
+
+            - name: "CLUSTER_NAME" # Deprecated, should be removed in a later helm chart
               valueFrom:
                 configMapKeyRef:
                   name: region
                   key: cluster-name
+            - name: "ENV_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: env-name
+
+            # Tracing environment configuration
+            - name: "SPRING_SLEUTH_ENABLED"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: enabled
+            - name: "SPRING_ZIPKIN_BASEURL"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: zipkin-base-url
+
+            # Sentry
             - name: 'SENTRY_DSN'
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.serviceName }}-external-secret
                   key: "SENTRY_DSN"
+
+            # More environment variables that can be enabled by configuration
             {{- if .Values.env.springDatasourceFromSecret }}
             - name: "SPRING_DATASOURCE_URL"
               valueFrom:

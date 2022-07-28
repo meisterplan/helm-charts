@@ -1,5 +1,10 @@
 # spring-service
 
+## 3.7.0
+
+- Add tracing environment variables
+- Add ENV_NAME environment variable, deprecation of CLUSTER_NAME environment variable.
+
 ## 3.6.0
 
 - Add support for ghcr.io registry.
