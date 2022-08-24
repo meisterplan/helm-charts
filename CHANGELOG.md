@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.8.0
+
+- Configure SPRING_FLYWAY_URL to ensure RLS secured services work with tracing enabled
+
 ## 3.7.0
 
 - Add tracing environment variables
