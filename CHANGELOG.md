@@ -119,6 +119,10 @@
 
 # cronjob
 
+## 1.4.0
+
+- Add support for service account
+
 ## 1.3.0
 
 - Add support for ghcr.io registry.

@@ -1,0 +1,17 @@
+cronJobName: "simple-job-staging"
+podRoleArn: arn:aws:iam::1234567890:role/role-while-executing-superpower-things-staging-team-superpower
+
+env:
+  fromSecret:
+    THIRD_PARTY_API_KEY:
+      parameterName: third-party/api-key
+  additional:
+    VARIANT:
+      value: staging
+
+alertingRules:
+  MyCronjobStagingAlert:
+    expr: rate(cronjob_executions) < 1000
+    for: 5m
+    description: Simple-Job {{ $labels.job_name }} has too few executions
+    playbook_url: https://my-playbook-collection/xyz
