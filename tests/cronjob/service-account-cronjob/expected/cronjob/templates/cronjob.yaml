@@ -1,0 +1,53 @@
+---
+# Source: cronjob/templates/cronjob.yaml
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: "simple-job-staging"
+  namespace: "team-superpower"
+spec:
+  concurrencyPolicy: "Replace"
+  schedule: "22 */5 * * *"
+  suspend: false
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      parallelism: 1
+      completions: 1
+      template:
+        spec:
+          serviceAccountName: simple-job-staging
+          restartPolicy: Never
+          imagePullSecrets:
+            - name: docker.pkg.github.com
+            - name: ghcr.io
+          containers:
+            - name: "simple-job-staging"
+              image: "docker.pkg.github.com/my-company/myservice:1.30.7"
+              args:
+              - /bin/bash
+              - echo "42"
+              imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 64Mi
+                limits:
+                  cpu: 1
+                  memory: 64Mi
+
+              env:
+                - name: "AWS_ACCESS_KEY_ID"
+                  valueFrom:
+                    secretKeyRef:
+                      name: "simple-job-staging-external-secret"
+                      key: "AWS_ACCESS_KEY_ID"
+                - name: "THIRD_PARTY_API_KEY"
+                  valueFrom:
+                    secretKeyRef:
+                      name: "simple-job-staging-external-secret"
+                      key: "THIRD_PARTY_API_KEY"
+                - name: ENVIRONMENT
+                  value: production
+                - name: VARIANT
+                  value: staging
