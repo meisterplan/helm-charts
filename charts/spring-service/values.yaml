@@ -5,7 +5,6 @@ serviceName: ""
 namespace: ""
 
 clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
-secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)
 
 # The podRoleArn variable will create a service account that is bound to the pods.
 # This will grant the pod to assume the configured role automatically. This is only
@@ -45,7 +44,8 @@ timeouts:
 #  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
 
 # Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
-internalPorts: {}
+internalPorts:
+  {}
   # - name: ftp
   #   port: 21 # exposed port inside the cluster for others
   #   targetPort: 1221 #  port to connect to at the running service

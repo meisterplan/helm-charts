@@ -1,5 +1,13 @@
 # spring-service
 
+## 3.9.0
+
+**Breaking Changes**
+
+> External Secrets Operator must be installed on cluster
+
+- Migrate from KES to external-secrets-operator
+
 ## 3.8.0
 
 - Configure SPRING_FLYWAY_URL to ensure RLS secured services work with tracing enabled
@@ -118,6 +126,14 @@
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 1.5.0
+
+**Breaking Changes**
+
+> External Secrets Operator must be installed on cluster
+
+- Migrate from KES to external-secrets-operator
 
 ## 1.4.0
 

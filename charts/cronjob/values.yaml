@@ -4,8 +4,6 @@ cronJobName: ""
 # namespace to use, typically team-<yourteamname>
 namespace: ""
 
-clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
-secretsRoleArn: "" # required, to be filled in by <env>.values.yaml (example: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower)
 
 # schedule to run in cronjob-format, see https://crontab.guru/ e.g. "25 1 * * */2"
 schedule: ""
