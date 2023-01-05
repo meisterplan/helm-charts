@@ -1,7 +1,6 @@
 namespace: team-superpower
 
 clusterName: staging
-secretsRoleArn: arn:aws:iam::1234567890:role/read-secrets-role-staging-team-superpower
 
 schedule: "22 */5 * * *"
 
