@@ -34,7 +34,9 @@ spec:
                   cpu: {{ required "CPU guarantee must be set!" .Values.resources.cpu.guarantee }}
                   memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
                 limits:
-                  cpu: {{ required "CPU limit must be set!" .Values.resources.cpu.limit }}
+                {{- if .Values.resources.cpu.limit }}
+                  cpu: {{ .Values.resources.cpu.limit }}
+                {{- end }}
                   memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
 
               env:

@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.10.0
+
+- Remove pod CPU limits 
+
 ## 3.9.0
 
 **Breaking Changes**
@@ -126,6 +130,10 @@
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 1.6.0
+
+- Remove pod CPU limits
 
 ## 1.5.0
 

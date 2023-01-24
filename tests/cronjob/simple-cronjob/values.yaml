@@ -16,7 +16,6 @@ resources:
   memory: 64Mi
   cpu:
     guarantee: 100m
-    limit: 1
 
 env:
   fromSecret:

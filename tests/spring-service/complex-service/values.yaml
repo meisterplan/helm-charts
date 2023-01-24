@@ -14,7 +14,6 @@ resources:
   memory: 1000Mi
   cpu:
     guarantee: 500m
-    limit: 2
 
 ingress:
   host: "myservice.mycompany.tld"
