@@ -32,7 +32,6 @@ resources:
   memory: 600Mi
   cpu:
     guarantee: 100m
-    limit: 1000m
 
 ingress:
   host: "" # Hostname under which the service is available, normally configured per deployment target
