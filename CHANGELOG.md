@@ -1,8 +1,12 @@
 # spring-service
 
+## 3.11.0
+
+- Allow multiple hosts for ingress resources, to allow URL migrations.
+
 ## 3.10.0
 
-- Remove pod CPU limits 
+- Remove pod CPU limits
 
 ## 3.9.0
 
