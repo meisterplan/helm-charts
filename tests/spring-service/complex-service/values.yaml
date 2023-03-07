@@ -17,6 +17,8 @@ resources:
 
 ingress:
   host: "myservice.mycompany.tld"
+  additionalHosts:
+   - "myservice.othercompany.tld"
   overwriteCustomHttpErrors: "502"
   basicAuthSecretParameterName: myservice/auth
 

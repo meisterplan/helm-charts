@@ -31,3 +31,15 @@ spec:
                 name: {{ .Values.serviceName }}
                 port:
                   number: 80
+{{- range $host := .Values.ingress.additionalHosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $.Values.serviceName }}
+                port:
+                  number: 80
+{{- end }}

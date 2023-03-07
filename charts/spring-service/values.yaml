@@ -35,6 +35,7 @@ resources:
 
 ingress:
   host: "" # Hostname under which the service is available, normally configured per deployment target
+  additionalHosts: [] # Some more hosts that should be used to make the service available
 
 # Optional: Manual configuration of special timeouts for deployments.
 timeouts:
