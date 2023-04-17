@@ -11,13 +11,13 @@ spec:
   suspend: false
   jobTemplate:
     spec:
-      backoffLimit: 0
+      backoffLimit: 4
       parallelism: 1
       completions: 1
       template:
         spec:
           serviceAccountName: simple-job-staging
-          restartPolicy: Never
+          restartPolicy: OnFailure
           imagePullSecrets:
             - name: docker.pkg.github.com
             - name: ghcr.io
