@@ -9,7 +9,7 @@ spec:
   suspend: false
   jobTemplate:
     spec:
-      backoffLimit: 0
+      backoffLimit: {{ .Values.retriesBeforeFailure }}
       parallelism: 1
       completions: 1
       template:
@@ -17,7 +17,7 @@ spec:
           {{- if .Values.podRoleArn }}
           serviceAccountName: {{ .Values.cronJobName }}
           {{- end }}
-          restartPolicy: Never
+          restartPolicy: {{ if eq (int .Values.retriesBeforeFailure) 0 }}Never{{ else }}OnFailure{{ end }}
           imagePullSecrets:
             - name: docker.pkg.github.com
             - name: ghcr.io

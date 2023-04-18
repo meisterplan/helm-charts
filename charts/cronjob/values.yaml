@@ -8,9 +8,12 @@ namespace: ""
 # schedule to run in cronjob-format, see https://crontab.guru/ e.g. "25 1 * * */2"
 schedule: ""
 
+# how often to re-attempt running the job (at each scheduled point in time) - keep at 0, if the job should be run only once
+retriesBeforeFailure: 0
+
 # what Docker image to run
 image:
-  repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+  repository: "" # example: ghcr.io/itdesign-gmbh/mp-templatetiger/mp-templatetiger
   tag: "" # Tag is normally configured during deployment
 
 # list of startup argument(s) for the job

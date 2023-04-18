@@ -13,7 +13,7 @@ podRoleArn: null # example:arn:aws:iam::111122223333:role/staging-myservice
 
 # what Docker image to run
 image:
-  repository: "" # example: docker.pkg.github.com/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+  repository: "" # example: ghcr.io/itdesign-gmbh/mp-templatetiger/mp-templatetiger
   tag: "" # Tag is normally configured during deployment
 
 # how many replicas to launch

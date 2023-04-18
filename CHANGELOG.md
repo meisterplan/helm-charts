@@ -135,6 +135,10 @@
 
 # cronjob
 
+## 1.7.0
+
+- Added ability to define `retriesBeforeFailure` so that jobs can retry before giving up completely.
+
 ## 1.6.0
 
 - Remove pod CPU limits

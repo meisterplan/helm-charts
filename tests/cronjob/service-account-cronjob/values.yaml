@@ -4,6 +4,7 @@ cronJobName: save-the-world
 clusterName: staging
 
 schedule: "22 */5 * * *"
+retriesBeforeFailure: 4
 
 image:
   repository: docker.pkg.github.com/my-company/myservice
