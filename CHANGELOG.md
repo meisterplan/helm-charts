@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.12.0
+
+- Add support for Spring Boot 3.
+
 ## 3.11.0
 
 - Allow multiple hosts for ingress resources, to allow URL migrations.
