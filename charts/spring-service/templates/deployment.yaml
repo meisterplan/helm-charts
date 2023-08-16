@@ -101,7 +101,7 @@ spec:
                 command: ["sleep", "{{ .Values.timeouts.terminationTimeBeforeSigTermSeconds }}"]
           env:
             - name: "SPRING_PROFILES_ACTIVE"
-              value: "prod"
+              value: "prod,tracing"
 
             - name: "CLUSTER_NAME" # Deprecated, should be removed in a later helm chart
               valueFrom:
@@ -127,11 +127,6 @@ spec:
                   key: zipkin-base-url
 
             # Tracing environment configuration (Spring Boot 3.x)
-            - name: "MANAGEMENT_TRACING_ENABLED"
-              valueFrom:
-                configMapKeyRef:
-                  name: tracing
-                  key: enabled
             - name: "MANAGEMENT_ZIPKIN_ENDPOINT"
               valueFrom:
                 configMapKeyRef:
