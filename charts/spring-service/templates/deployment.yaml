@@ -127,7 +127,7 @@ spec:
                   key: zipkin-base-url
 
             # Tracing environment configuration (Spring Boot 3.x)
-            - name: "MANAGEMENT_ZIPKIN_ENDPOINT"
+            - name: "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT"
               valueFrom:
                 configMapKeyRef:
                   name: tracing
