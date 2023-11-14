@@ -1,5 +1,8 @@
 # spring-service
 
+## 3.13.0
+- Change deprecated ingress class annotation to ingressClassName
+
 ## 3.12.0
 
 - Add support for Spring Boot 3.
