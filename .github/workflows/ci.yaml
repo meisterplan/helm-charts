@@ -19,15 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-tags: true
     - run: |
         echo "SPRING_CHART_VERSION=$(grep -Po '(?<=version: )[0-9.]+' charts/spring-service/Chart.yaml)" >> "$GITHUB_ENV"
         echo "CRONJOB_CHART_VERSION=$(grep -Po '(?<=version: )[0-9.]+' charts/cronjob/Chart.yaml)" >> "$GITHUB_ENV"
+    - run: |
+        git show-ref --tags --verify --quiet "refs/tags/spring-service-$SPRING_CHART_VERSION" && \
+            echo "SPRING_EXISTS=true" || echo "SPRING_EXISTS=false" >> "$GITHUB_ENV"
+        git show-ref --tags --verify --quiet "refs/tags/cronjob-$CRONJOB_CHART_VERSION" && \
+            echo "CRONJOB_EXISTS=true" || echo "CRONJOB_EXISTS=false" >> "$GITHUB_ENV"
     - uses: marocchino/sticky-pull-request-comment@v2
       with:
         message: |
           Merging this PR will attempt to deploy these Charts (existing versions will be skipped):
-          * spring-service **${{ env.SPRING_CHART_VERSION }}**
-          * cronjob **${{ env.CRONJOB_CHART_VERSION }}**
+          ${{ env.SPRING_EXISTS == 'false' && format('* spring-service **{0}**', env.SPRING_CHART_VERSION) }}
+          ${{ env.CRONJOB_EXISTS == 'false' && format('* cronjob **{0}**', env.CRONJOB_CHART_VERSION) }}
 
   deploy:
     needs: [test]
