@@ -56,6 +56,20 @@ spec:
                     operator: In
                     values:
                     - {{ .Values.image.tag | quote }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Values.serviceName | quote }}
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - {{ .Values.image.tag | quote }}
       containers:
         - name: {{ .Values.serviceName }}
           image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"

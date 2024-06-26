@@ -1,5 +1,8 @@
 # spring-service
 
+## 3.14.0
+- Use topologySpreadConstraints to indicate that pods should be scheduled evenly across availability zone 
+
 ## 3.13.0
 - Change deprecated ingress class annotation to ingressClassName
 

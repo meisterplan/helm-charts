@@ -51,6 +51,20 @@ spec:
                     operator: In
                     values:
                     - "1.30.7"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - "myservice"
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - "1.30.7"
       containers:
         - name: myservice
           image: "docker.pkg.github.com/my-company/myservice:1.30.7"
