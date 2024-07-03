@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.14.0
+- Use topologySpreadConstraints to enforce that pods are scheduled on at least 2 zones and hosts and otherwise evenly 
+  distributed among them, even when the cluster topology is rapidly changing (due to node autoscaling).
+
 ## 3.13.0
 - Change deprecated ingress class annotation to ingressClassName
 
