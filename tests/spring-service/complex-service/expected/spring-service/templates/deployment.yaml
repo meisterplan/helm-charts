@@ -73,8 +73,8 @@ spec:
           startupProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]
-            periodSeconds: 5
-            failureThreshold: 24
+            periodSeconds: 10
+            failureThreshold: 30
           livenessProbe:
             exec:
               command: ["check", "run", "-type", "liveness"]

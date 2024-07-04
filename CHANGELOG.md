@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.15.0
+- Use less aggressive startup probe to give containers up to 5min starting time by default since they take a while to 
+  start on newly created autoscaling nodes.
+
 ## 3.14.0
 - Use topologySpreadConstraints to enforce that pods are scheduled on at least 2 zones and hosts and otherwise evenly 
   distributed among them, even when the cluster topology is rapidly changing (due to node autoscaling).
