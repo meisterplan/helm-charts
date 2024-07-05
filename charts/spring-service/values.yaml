@@ -40,7 +40,7 @@ ingress:
 # Optional: Manual configuration of special timeouts for deployments.
 timeouts:
   terminationTimeBeforeSigTermSeconds: 15 # how many seconds to wait in "PreStop hook", i.e. after terminating pod but before SIGTERM to the container (e.g. for completing pending requests). If changed, the option below can also become relevant.
-#  terminationTimeBeforeKillSeconds: ? # see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
+  terminationTimeBeforeKillSeconds: 300 # allow Spring Server graceful shutdown - see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
 #  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
 
 # Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
