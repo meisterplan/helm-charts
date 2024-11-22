@@ -1,5 +1,10 @@
 # spring-service
 
+## 3.17.0
+
+- Remove outdated `CLUSTER_NAME` env which is replaced by `CLUSTER_ID`, `ENV_NAME`, and `DISASTER_RECOVERY_TEST`.
+  This is mainly relevant for updated Sentry configuration.
+
 ## 3.16.0
 
 - Set default SIGKILL timeout to 5min to allow graceful shutdown of Spring server

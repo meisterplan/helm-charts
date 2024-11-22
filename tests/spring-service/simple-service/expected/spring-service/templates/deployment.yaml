@@ -98,16 +98,21 @@ spec:
             - name: "SPRING_PROFILES_ACTIVE"
               value: "prod,tracing"
 
-            - name: "CLUSTER_NAME" # Deprecated, should be removed in a later helm chart
+            - name: "CLUSTER_ID"
               valueFrom:
                 configMapKeyRef:
                   name: region
-                  key: cluster-name
+                  key: cluster-id
             - name: "ENV_NAME"
               valueFrom:
                 configMapKeyRef:
                   name: region
                   key: env-name
+            - name: "DISASTER_RECOVERY_TEST"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: disaster-recovery-test
 
             # Tracing environment configuration (Spring Boot 2.x)
             - name: "SPRING_SLEUTH_ENABLED"
