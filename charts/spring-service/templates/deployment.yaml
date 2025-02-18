@@ -138,12 +138,19 @@ spec:
                   name: tracing
                   key: zipkin-base-url
 
-            # Tracing environment configuration (Spring Boot 3.x)
+            # Tracing environment configuration (Spring Boot <3.4)
             - name: "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT"
               valueFrom:
                 configMapKeyRef:
                   name: tracing
                   key: zipkin-endpoint
+
+            # Tracing environment configuration (Spring Boot 3.4+)
+            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: otlp-endpoint                  
 
             # Sentry
             - name: 'SENTRY_DSN'
