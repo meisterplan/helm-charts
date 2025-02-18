@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.18.0
+
+- Enable OpenTelemetry via GRPC
+
 ## 3.17.0
 
 - Remove outdated `CLUSTER_NAME` env which is replaced by `CLUSTER_ID`, `ENV_NAME`, and `DISASTER_RECOVERY_TEST`.
