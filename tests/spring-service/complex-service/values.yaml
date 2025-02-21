@@ -31,3 +31,12 @@ env:
 disruptionBudget:
   type: minAvailable
   value: "50%"
+
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      labels:
+        name: myservice-extra
+    data:
+      extra-data: "value"

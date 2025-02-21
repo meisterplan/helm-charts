@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.19.0
+
+- Support `extraManifests` to add additional manifests.
+
 ## 3.18.0
 
 - Enable OpenTelemetry via GRPC
