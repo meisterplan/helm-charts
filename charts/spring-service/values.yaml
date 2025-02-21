@@ -84,3 +84,13 @@ alertingRules: []
 disruptionBudget:
   type: maxUnavailable # either "maxUnavailable" (terminate at most this many pods) or "minAvailable" (have at least this many running pods remaining)
   value: 1 # value with reference to type
+
+# Allow additional manifest to be deployed with the chart
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #   labels:
+  #     name: prometheus-extra
+  #   data:
+  #     extra-data: "value"

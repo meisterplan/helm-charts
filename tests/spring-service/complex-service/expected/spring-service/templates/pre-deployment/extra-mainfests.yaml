@@ -1,0 +1,9 @@
+---
+# Source: spring-service/templates/pre-deployment/extra-mainfests.yaml
+apiVersion: v1
+data:
+  extra-data: value
+kind: ConfigMap
+metadata:
+  labels:
+    name: myservice-extra
