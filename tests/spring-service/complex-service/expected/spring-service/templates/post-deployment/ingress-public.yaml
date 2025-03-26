@@ -1,0 +1,35 @@
+---
+# Source: spring-service/templates/post-deployment/ingress-public.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myservice-public
+  namespace: "team-supercool"
+  annotations:
+    nginx.ingress.kubernetes.io/custom-http-errors: 502
+    nginx.ingress.kubernetes.io/auth-type: "basic"
+    nginx.ingress.kubernetes.io/auth-secret: myservice-external-secret
+    nginx.ingress.kubernetes.io/auth-realm: myservice
+spec:
+  ingressClassName: nginx-public
+  rules:
+    - host: myservice.mycompany.tld
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
+    - host: myservice.othercompany.tld
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80

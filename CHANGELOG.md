@@ -1,5 +1,9 @@
 # spring-service
 
+## 3.20.0
+
+- Add additional `ingress-public` to enable smooth migration to upcoming v4.0.0
+
 ## 3.19.0
 
 - Support `extraManifests` to add additional manifests.
