@@ -1,3 +1,4 @@
+{{- if (include "is-ingress-public-defined" .) }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -13,33 +14,17 @@ metadata:
     {{- if .Values.ingress.overwriteCustomBodySize }}
     nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.overwriteCustomBodySize }}
     {{- end }}
-    {{- if .Values.ingress.basicAuthSecretParameterName }}
-    nginx.ingress.kubernetes.io/auth-type: "basic"
-    nginx.ingress.kubernetes.io/auth-secret: {{ .Values.serviceName }}-external-secret
-    nginx.ingress.kubernetes.io/auth-realm: {{ .Values.serviceName }}
-    {{- end }}
 spec:
   ingressClassName: nginx-public
   rules:
-    - host: {{ required "Ingress Host must be set!" .Values.ingress.host }}
+    - host: {{ include "get-ingress-public-host" . }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.serviceName }}
-                port:
-                  number: 80
-{{- range $host := .Values.ingress.additionalHosts }}
+          {{- include "list-ingress-public-pathPrefixes" . | indent 8 }}
+  {{- range $host := .Values.ingress.public.additionalHosts }}
     - host: {{ $host }}
       http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $.Values.serviceName }}
-                port:
-                  number: 80
+          {{- include "list-ingress-public-pathPrefixes" $ | indent 8 }}
+  {{- end }}
 {{- end }}

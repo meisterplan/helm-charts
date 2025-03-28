@@ -1,5 +1,14 @@
 # spring-service
 
+## 4.0.0
+
+- **Breaking change:** Improve `ingress` by supporting public and private traffic routing,
+  for customer-facing and internal endpoints respectively.
+  - `host` is replaced by `clusterDomain` and `public.subDomain` to simplify the deployment flow
+  - Path prefixes that should be publicly available must be explicitly listed under `public.pathPrefixes`
+  - Private subdomain `<service-name>.internal` is created automatically and only available from private ingress (VPN)
+  - Drop support for unused and superseded `basicAuthSecretParameterName`
+
 ## 3.20.0
 
 - Add additional `ingress-public` to enable smooth migration to upcoming v4.0.0

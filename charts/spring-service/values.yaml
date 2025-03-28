@@ -34,8 +34,11 @@ resources:
     guarantee: 100m
 
 ingress:
-  host: "" # Hostname under which the service is available, normally configured per deployment target
-  additionalHosts: [] # Some more hosts that should be used to make the service available
+  clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
+  public:
+    subDomain: "" # subdomain under which endpoints will be publicly available
+    pathPrefixes: [] # list of prefixes with which the path must start to be made publicly available
+    additionalHosts: [] # list of (full) host names under which the publicPathPrefixes will be available as well
 
 # Optional: Manual configuration of special timeouts for deployments.
 timeouts:

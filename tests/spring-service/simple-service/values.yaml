@@ -23,7 +23,13 @@ resources:
     guarantee: 500m
 
 ingress:
-  host: "myservice.mycompany.tld"
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: "myservice"
+    pathPrefixes:
+      - /api/v1/public
+      - /welcome
+
   overwriteCustomHttpErrors: "502"
   basicAuthSecretParameterName: myservice/auth
 

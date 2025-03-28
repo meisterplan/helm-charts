@@ -16,11 +16,15 @@ resources:
     guarantee: 500m
 
 ingress:
-  host: "myservice.mycompany.tld"
-  additionalHosts:
-   - "myservice.othercompany.tld"
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: .
+    pathPrefixes:
+      - /api/v1/public
+      - /welcome
+    additionalHosts:
+     - "myservice.othercompany.tld"
   overwriteCustomHttpErrors: "502"
-  basicAuthSecretParameterName: myservice/auth
 
 env:
   copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
