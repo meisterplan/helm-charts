@@ -1,0 +1,20 @@
+---
+# Source: spring-service/templates/post-deployment/ingress-private.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myservice-private
+  namespace: "team-supercool"
+spec:
+  ingressClassName: nginx-private
+  rules:
+    - host: myservice.internal.mycompany.tld
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
