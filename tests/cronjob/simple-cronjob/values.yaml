@@ -1,6 +1,6 @@
 namespace: team-superpower
 
-clusterName: staging
+envName: staging
 
 schedule: "22 */5 * * *"
 

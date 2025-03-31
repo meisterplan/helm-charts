@@ -8,7 +8,7 @@ test:
 
 test-case:
 	rm -rf .test-output && 	mkdir -p .test-output
-	helm template --debug --output-dir .test-output ./charts/$(CHART) -f tests/$(CHART)/$(CASE)/values.yaml -f tests/$(CHART)/$(CASE)/values.staging.yaml
+	helm template --output-dir .test-output ./charts/$(CHART) -f tests/$(CHART)/$(CASE)/values.yaml -f tests/$(CHART)/$(CASE)/values.staging.yaml
 	diff -r tests/$(CHART)/$(CASE)/expected/ .test-output/
 	@echo "Test passed for $(CHART) - $(CASE)"
 

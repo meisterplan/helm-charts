@@ -8,6 +8,8 @@
   - Path prefixes that should be publicly available must be explicitly listed under `public.pathPrefixes`
   - Private subdomain `<service-name>.internal` is created automatically and only available from private ingress (VPN)
   - Drop support for unused and superseded `basicAuthSecretParameterName`
+- **Breaking change:** Rename `clusterName` to more appropriate `envName`
+- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled` and `awsAccountId` 
 
 ## 3.20.0
 
@@ -182,6 +184,11 @@
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 2.0.0
+
+- **Breaking change:** Rename `clusterName` to more appropriate `envName`
+- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled`, `serviceAccount.roleName` and `awsAccountId`
 
 ## 1.7.0
 

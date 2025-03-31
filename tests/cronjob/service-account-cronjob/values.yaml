@@ -1,7 +1,7 @@
 namespace: team-superpower
 cronJobName: save-the-world
 
-clusterName: staging
+envName: staging
 
 schedule: "22 */5 * * *"
 retriesBeforeFailure: 4

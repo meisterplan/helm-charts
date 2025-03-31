@@ -1,7 +1,7 @@
 serviceName: myservice
 namespace: team-supercool
 
-clusterName: staging
+envName: staging
 
 image:
   repository: docker.pkg.github.com/my-company/myservice
