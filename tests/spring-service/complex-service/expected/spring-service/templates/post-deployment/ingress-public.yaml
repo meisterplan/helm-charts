@@ -7,16 +7,20 @@ metadata:
   namespace: "team-supercool"
   annotations:
     nginx.ingress.kubernetes.io/custom-http-errors: 502
-    nginx.ingress.kubernetes.io/auth-type: "basic"
-    nginx.ingress.kubernetes.io/auth-secret: myservice-external-secret
-    nginx.ingress.kubernetes.io/auth-realm: myservice
 spec:
   ingressClassName: nginx-public
   rules:
-    - host: myservice.mycompany.tld
+    - host: mycompany.tld
       http:
         paths:
-          - path: /
+          - path: /api/v1/public
+            pathType: Prefix
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
+          - path: /welcome
             pathType: Prefix
             backend:
               service:
@@ -26,7 +30,14 @@ spec:
     - host: myservice.othercompany.tld
       http:
         paths:
-          - path: /
+          - path: /api/v1/public
+            pathType: Prefix
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
+          - path: /welcome
             pathType: Prefix
             backend:
               service:
