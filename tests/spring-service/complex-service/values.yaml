@@ -1,8 +1,10 @@
 serviceName: myservice
 namespace: team-supercool
 
-clusterName: staging
-podRoleArn: arn:aws:iam::1234567890:role/k8s-staging-myservice
+envName: staging
+serviceAccount:
+  enabled: true
+awsAccountId: "1234567890"
 
 image:
   repository: docker.pkg.github.com/my-company/myservice
@@ -19,9 +21,11 @@ ingress:
   clusterDomain: "mycompany.tld"
   public:
     subDomain: .
-    pathPrefixes:
-      - /api/v1/public
-      - /welcome
+    paths:
+      prefixes:
+        - /api/v1/public
+      exact:
+        - /welcome
     additionalHosts:
      - "myservice.othercompany.tld"
   overwriteCustomHttpErrors: "502"

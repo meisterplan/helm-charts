@@ -21,7 +21,7 @@ spec:
                 port:
                   number: 80
           - path: /welcome
-            pathType: Prefix
+            pathType: Exact
             backend:
               service:
                 name: myservice
@@ -38,7 +38,7 @@ spec:
                 port:
                   number: 80
           - path: /welcome
-            pathType: Prefix
+            pathType: Exact
             backend:
               service:
                 name: myservice

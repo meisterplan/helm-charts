@@ -14,7 +14,7 @@ spec:
       completions: 1
       template:
         spec:
-          {{- if .Values.podRoleArn }}
+          {{- if .Values.serviceAccount.enabled }}
           serviceAccountName: {{ .Values.cronJobName }}
           {{- end }}
           restartPolicy: {{ if eq (int .Values.retriesBeforeFailure) 0 }}Never{{ else }}OnFailure{{ end }}

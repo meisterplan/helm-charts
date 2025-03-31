@@ -4,6 +4,17 @@ cronJobName: ""
 # namespace to use, typically team-<yourteamname>
 namespace: ""
 
+envName: "" # required to be filled in by helm template argument [like image.tag] (example: staging)
+
+# The serviceAccount.enabled variable will create a service account
+# bound to the pods so that they can assume the configured role automatically.
+# The role must be named `k8s-<envName>-<roleName>` and needs a Trust Policy for the created service account.
+# (i.e. `TrustPolicy.forK8sServiceAccount()` in mp-aws-iam-terraform)
+# Note: Enabling it requires awsAccountId to be set as well (escape it as string, or it will be treated as float).
+serviceAccount:
+  enabled: false
+  roleName: ""
+awsAccountId: ""
 
 # schedule to run in cronjob-format, see https://crontab.guru/ e.g. "25 1 * * */2"
 schedule: ""

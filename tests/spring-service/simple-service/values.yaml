@@ -1,7 +1,7 @@
 serviceName: myservice
 namespace: team-supercool
 
-clusterName: staging
+envName: staging
 
 image:
   repository: docker.pkg.github.com/my-company/myservice
@@ -26,9 +26,8 @@ ingress:
   clusterDomain: "mycompany.tld"
   public:
     subDomain: "myservice"
-    pathPrefixes:
-      - /api/v1/public
-      - /welcome
+    paths:
+      allowAll: true
 
   overwriteCustomHttpErrors: "502"
   basicAuthSecretParameterName: myservice/auth

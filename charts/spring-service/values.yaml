@@ -4,12 +4,16 @@ serviceName: ""
 # namespace to use, typically team-<yourteamname>
 namespace: ""
 
-clusterName: "" # required, to be filled in by helm template argument [like image.tag] (example: staging)
+envName: "" # required to be filled in by helm template argument [like image.tag] (example: staging)
 
-# The podRoleArn variable will create a service account that is bound to the pods.
-# This will grant the pod to assume the configured role automatically. This is only
-# possible if the role does have a trust policy for the created service account.
-podRoleArn: null # example:arn:aws:iam::111122223333:role/staging-myservice
+# The serviceAccount.enabled variable will create a service account
+# bound to the pods so that they can assume the configured role automatically.
+# The role must be named `k8s-<envName>-<serviceName>` and needs a Trust Policy for the created service account.
+# (i.e. `TrustPolicy.forK8sServiceAccount()` in mp-aws-iam-terraform)
+# Note: Enabling it requires awsAccountId to be set as well (escape it as string, or it will be treated as float).
+serviceAccount:
+  enabled: false
+awsAccountId: ""
 
 # what Docker image to run
 image:
@@ -21,11 +25,11 @@ replicaCount: 2
 
 startupProbe:
   periodSeconds: 10 # interval how often startup should be checked
-  failAfterCount: 30 # amount of retries until startup must have completed and liveness & readiness probe get armed
+  failAfterCount: 30 # number of retries until startup must have completed and liveness & readiness probe get armed
 livenessProbe:
-  failAfterCount: 3 # amount of retries before container is considered dead and killed
+  failAfterCount: 3 # number of retries before the container is considered dead and killed
 readinessProbe:
-  failAfterCount: 3 # amount of retries before container is considered unready and stops receiving traffic (until next probe works)
+  failAfterCount: 3 # number of retries before the container is considered unready and stops receiving traffic (until next probe works)
 
 # k8s resource definitions for required minimum and maximum growth
 resources:
@@ -37,8 +41,11 @@ ingress:
   clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
   public:
     subDomain: "" # subdomain under which endpoints will be publicly available
-    pathPrefixes: [] # list of prefixes with which the path must start to be made publicly available
-    additionalHosts: [] # list of (full) host names under which the publicPathPrefixes will be available as well
+    paths:
+      allowAll: false # set to true to blanket allow all paths to be publicly accessible
+      exact: [] # a list of exact path matches to be made publicly available
+      prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
+    additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
 
 # Optional: Manual configuration of special timeouts for deployments.
 timeouts:

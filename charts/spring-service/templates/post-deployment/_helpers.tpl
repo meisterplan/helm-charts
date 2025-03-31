@@ -1,5 +1,9 @@
 {{- define "is-ingress-public-defined" -}}
-{{ and $.Values.ingress.public.subDomain (len $.Values.ingress.public.pathPrefixes) }}
+{{ and $.Values.ingress.public.subDomain
+    (or $.Values.ingress.public.paths.allowAll
+        (or (len $.Values.ingress.public.paths.prefixes) (len $.Values.ingress.public.paths.exact))
+    )
+}}
 {{- end }}
 
 {{- define "get-ingress-primary-public-host" -}}
