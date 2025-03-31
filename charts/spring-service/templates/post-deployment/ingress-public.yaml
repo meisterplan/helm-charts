@@ -17,14 +17,18 @@ metadata:
 spec:
   ingressClassName: nginx-public
   rules:
-    - host: {{ include "get-ingress-public-host" . }}
-      http:
-        paths:
-          {{- include "list-ingress-public-pathPrefixes" . | indent 8 }}
-  {{- range $host := .Values.ingress.public.additionalHosts }}
+  {{- range $host := (concat (list (include "get-ingress-primary-public-host" .)) .Values.ingress.public.additionalHosts) }}
     - host: {{ $host }}
       http:
         paths:
-          {{- include "list-ingress-public-pathPrefixes" $ | indent 8 }}
-  {{- end }}
+        {{- range $prefix := $.Values.ingress.public.pathPrefixes }}
+          - path: {{ $prefix }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $.Values.serviceName }}
+                port:
+                  number: 80
+        {{- end }}
+  {{- end}}
 {{- end }}

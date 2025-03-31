@@ -12,7 +12,7 @@ spec:
   rules:
     - host: myservice.mycompany.tld
       http:
-        paths:        
+        paths:
           - path: /api/v1/public
             pathType: Prefix
             backend:
