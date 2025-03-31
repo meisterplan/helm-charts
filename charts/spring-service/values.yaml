@@ -41,8 +41,11 @@ ingress:
   clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
   public:
     subDomain: "" # subdomain under which endpoints will be publicly available
-    pathPrefixes: [] # list of prefixes with which the path must start to be made publicly available
-    additionalHosts: [] # list of (full) host names under which the publicPathPrefixes will be available as well
+    paths:
+      allowAll: false # set to true to blanket allow all paths to be publicly accessible
+      exact: [] # a list of exact path matches to be made publicly available
+      prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
+    additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
 
 # Optional: Manual configuration of special timeouts for deployments.
 timeouts:

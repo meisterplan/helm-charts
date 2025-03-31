@@ -21,9 +21,11 @@ ingress:
   clusterDomain: "mycompany.tld"
   public:
     subDomain: .
-    pathPrefixes:
-      - /api/v1/public
-      - /welcome
+    paths:
+      prefixes:
+        - /api/v1/public
+      exact:
+        - /welcome
     additionalHosts:
      - "myservice.othercompany.tld"
   overwriteCustomHttpErrors: "502"

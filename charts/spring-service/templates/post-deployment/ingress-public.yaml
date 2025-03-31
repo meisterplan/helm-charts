@@ -21,7 +21,19 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-        {{- range $prefix := $.Values.ingress.public.pathPrefixes }}
+        {{- if $.Values.ingress.public.paths.allowAll }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $.Values.serviceName }}
+                port:
+                  number: 80
+        {{- else }}
+          {{- range $prefix := $.Values.ingress.public.paths.prefixes }}
+          {{- if eq $prefix "/" -}}
+            {{- fail "Prefixes may not contain /, please set allowAll: true explicitly!" -}}
+          {{- end }}
           - path: {{ $prefix }}
             pathType: Prefix
             backend:
@@ -29,6 +41,16 @@ spec:
                 name: {{ $.Values.serviceName }}
                 port:
                   number: 80
+          {{- end }}
+          {{- range $exact := $.Values.ingress.public.paths.exact }}
+          - path: {{ $exact }}
+            pathType: Exact
+            backend:
+              service:
+                name: {{ $.Values.serviceName }}
+                port:
+                  number: 80
+          {{- end }}
         {{- end }}
   {{- end}}
 {{- end }}

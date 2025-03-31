@@ -5,7 +5,10 @@
 - **Breaking change:** Improve `ingress` by supporting public and private traffic routing,
   for customer-facing and internal endpoints respectively.
   - `host` is replaced by `clusterDomain` and `public.subDomain` to simplify the deployment flow
-  - Path prefixes that should be publicly available must be explicitly listed under `public.pathPrefixes`
+  - Paths that should be publicly available must be explicitly configured under `public.paths` by:
+    - allowing exact matches (`public.paths.exact`)
+    - allowing prefix matches (`public.paths.prefixes`)
+    - allowing all paths to be publicly accessible (`public.paths.allowAll: true`)
   - Private subdomain `<service-name>.internal` is created automatically and only available from private ingress (VPN)
   - Drop support for unused and superseded `basicAuthSecretParameterName`
 - **Breaking change:** Rename `clusterName` to more appropriate `envName`
