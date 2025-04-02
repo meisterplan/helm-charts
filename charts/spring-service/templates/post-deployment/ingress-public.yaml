@@ -14,6 +14,10 @@ metadata:
     {{- if .Values.ingress.overwriteCustomBodySize }}
     nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.overwriteCustomBodySize }}
     {{- end }}
+    {{- if .Values.ingress.public.oauth2ProxyProtected }}
+    nginx.ingress.kubernetes.io/auth-signin: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/start?rd=https%3A%2F%2F$http_host$escaped_request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/auth
+    {{- end }}
 spec:
   ingressClassName: nginx-public
   rules:

@@ -28,6 +28,7 @@ ingress:
         - /welcome
     additionalHosts:
      - "myservice.othercompany.tld"
+    oauth2ProxyProtected: true
   overwriteCustomHttpErrors: "502"
 
 env:
