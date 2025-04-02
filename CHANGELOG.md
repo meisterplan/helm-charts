@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.1.0
+
+- Add support for `ingress.public.oauth2ProxyProtected: true` (for Platform infra services)
+
 ## 4.0.0
 
 - **Breaking change:** Improve `ingress` by supporting public and private traffic routing,
