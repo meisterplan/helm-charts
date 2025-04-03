@@ -1,7 +1,7 @@
 {{- define "is-ingress-public-defined" -}}
 {{ and $.Values.ingress.public.subDomain
     (or $.Values.ingress.public.paths.allowAll
-        (or (len $.Values.ingress.public.paths.prefixes) (len $.Values.ingress.public.paths.exact))
+        (not (and (empty $.Values.ingress.public.paths.prefixes) (empty $.Values.ingress.public.paths.exact)))
     )
 }}
 {{- end }}
