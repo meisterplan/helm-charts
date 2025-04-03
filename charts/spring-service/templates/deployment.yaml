@@ -250,7 +250,7 @@ spec:
                 secretKeyRef:
                   name: "{{ .Values.serviceName }}-external-secret"
                   key: SERVICE_OAUTH2_PUBLIC_KEY
-            {{- if and .Values.env.copyOwnExternalBaseURLIn (include "is-ingress-public-defined" .) }}
+            {{- if and .Values.env.copyOwnExternalBaseURLIn (ne (include "is-ingress-public-defined" .) "false") }}
             - name: "{{ .Values.env.copyOwnExternalBaseURLIn }}"
               value: "https://{{ include "get-ingress-primary-public-host" . }}"
             {{- end }}

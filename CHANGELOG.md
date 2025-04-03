@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.1.1
+
+- Fix unexpected errors when `ingress.public.paths` was not defined.
+
 ## 4.1.0
 
 - Add support for `ingress.public.oauth2ProxyProtected: true` (for Platform infra services)

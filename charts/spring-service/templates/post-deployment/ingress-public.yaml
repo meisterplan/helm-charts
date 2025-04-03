@@ -1,4 +1,4 @@
-{{- if (include "is-ingress-public-defined" .) }}
+{{- if (ne (include "is-ingress-public-defined" .) "false") }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
