@@ -7,6 +7,7 @@ metadata:
   namespace: "team-supercool"
   annotations:
     nginx.ingress.kubernetes.io/custom-http-errors: 502
+    nginx.ingress.kubernetes.io/use-regex: "false"
 spec:
   ingressClassName: nginx-public
   rules:

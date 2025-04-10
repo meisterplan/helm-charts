@@ -18,6 +18,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-signin: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/start?rd=https%3A%2F%2F$http_host$escaped_request_uri
     nginx.ingress.kubernetes.io/auth-url: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/auth
     {{- end }}
+    nginx.ingress.kubernetes.io/use-regex: "false"
 spec:
   ingressClassName: nginx-public
   rules:
@@ -47,6 +48,7 @@ spec:
                   number: 80
           {{- end }}
           {{- range $exact := $.Values.ingress.public.paths.exact }}
+          {{- if not (contains "." $exact) }}
           - path: {{ $exact }}
             pathType: Exact
             backend:
@@ -54,6 +56,19 @@ spec:
                 name: {{ $.Values.serviceName }}
                 port:
                   number: 80
+          {{- else if (regexMatch "^(/([a-zA-Z0-9\\-_.~!$&'()*+,;=:@]|%[0-9a-zA-Z]{2})+)+$" $exact) }}
+          {{/* https://stackoverflow.com/questions/4669692/valid-characters-for-directory-part-of-a-url-for-short-links
+               https://datatracker.ietf.org/doc/html/rfc3986#section-3.3 */}}
+          - path: {{ $exact }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $.Values.serviceName }}
+                port:
+                  number: 80
+          {{- else }}
+            {{- fail (printf "Unsupported path due to special characters: %s" $exact) }}
+          {{- end }}
           {{- end }}
         {{- end }}
   {{- end}}

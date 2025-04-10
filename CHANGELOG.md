@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.2.0
+
+- Support exact paths with special characters primarily for dot (`.`).
+
 ## 4.1.1
 
 - Fix unexpected errors when `ingress.public.paths` was not defined.
