@@ -9,6 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/custom-http-errors: 502
     nginx.ingress.kubernetes.io/auth-signin: https://oauth2.mycompany.tld/oauth2/start?rd=https%3A%2F%2F$http_host$escaped_request_uri
     nginx.ingress.kubernetes.io/auth-url: https://oauth2.mycompany.tld/oauth2/auth
+    nginx.ingress.kubernetes.io/use-regex: "false"
 spec:
   ingressClassName: nginx-public
   rules:
@@ -29,6 +30,14 @@ spec:
                 name: myservice
                 port:
                   number: 80
+          
+          - path: /index.html
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
     - host: myservice.othercompany.tld
       http:
         paths:
@@ -41,6 +50,14 @@ spec:
                   number: 80
           - path: /welcome
             pathType: Exact
+            backend:
+              service:
+                name: myservice
+                port:
+                  number: 80
+          
+          - path: /index.html
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: myservice
