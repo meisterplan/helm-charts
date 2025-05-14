@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.2.1
+
+- Add the deletion of alertingRules in the case none are set via the attribute.
+
 ## 4.2.0
 
 - Support exact paths with special characters primarily for dot (`.`).
@@ -16,15 +20,15 @@
 
 - **Breaking change:** Improve `ingress` by supporting public and private traffic routing,
   for customer-facing and internal endpoints respectively.
-  - `host` is replaced by `clusterDomain` and `public.subDomain` to simplify the deployment flow
-  - Paths that should be publicly available must be explicitly configured under `public.paths` by:
-    - allowing exact matches (`public.paths.exact`)
-    - allowing prefix matches (`public.paths.prefixes`)
-    - allowing all paths to be publicly accessible (`public.paths.allowAll: true`)
-  - Private subdomain `<service-name>.internal` is created automatically and only available from private ingress (VPN)
-  - Drop support for unused and superseded `basicAuthSecretParameterName`
+    - `host` is replaced by `clusterDomain` and `public.subDomain` to simplify the deployment flow
+    - Paths that should be publicly available must be explicitly configured under `public.paths` by:
+        - allowing exact matches (`public.paths.exact`)
+        - allowing prefix matches (`public.paths.prefixes`)
+        - allowing all paths to be publicly accessible (`public.paths.allowAll: true`)
+    - Private subdomain `<service-name>.internal` is created automatically and only available from private ingress (VPN)
+    - Drop support for unused and superseded `basicAuthSecretParameterName`
 - **Breaking change:** Rename `clusterName` to more appropriate `envName`
-- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled` and `awsAccountId` 
+- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled` and `awsAccountId`
 
 ## 3.20.0
 
@@ -132,7 +136,8 @@
 
 **Breaking Changes**
 
-> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
+> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined
+> summaries will no longer be propagated.
 
 ## 3.0.0
 
@@ -146,7 +151,8 @@
 
 **Breaking changes**
 
-> :warning: **WARNING**: The first time _2.2.1 or any version after_ is deployed when _any version before 2.2.1_ is running this causes a **nonzero downtime deployment** with a short 503 service disruption due to a [bug in the ingress controller](https://github.com/kubernetes/ingress-nginx/issues/6962).
+> :warning: **WARNING**: The first time _2.2.1 or any version after_ is deployed when _any version before 2.2.1_ is running this causes a **nonzero downtime
+deployment** with a short 503 service disruption due to a [bug in the ingress controller](https://github.com/kubernetes/ingress-nginx/issues/6962).
 >
 > Please take appropriate measures (e.g. deploy this change in off-hours only).
 >
@@ -237,7 +243,8 @@
 
 **Breaking Changes**
 
-> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined summaries will no longer be propagated.
+> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined
+> summaries will no longer be propagated.
 
 ## 1.1.0
 
