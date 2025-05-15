@@ -30,3 +30,4 @@ spec:
           annotations:
             description: "Simple-Job {{ $labels.job_name }} has too few executions"
             playbook_url: "https://my-playbook-collection/xyz"
+            pint: "pint rule/set promql/series ignore/label-value job_name"
