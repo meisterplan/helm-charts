@@ -21,3 +21,4 @@ spec:
           annotations:
             description: "Service MyService is down"
             playbook_url: "http://xconfluence/x/aBcDeFg"
+            pint: "pint disable promql/series(pint_problem)"

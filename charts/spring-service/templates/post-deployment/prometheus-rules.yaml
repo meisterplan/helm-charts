@@ -23,5 +23,8 @@ spec:
           annotations:
             description: {{ required "Description must be set!" .description | quote }}
             playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
+            {{- range $key, $value := .extraAnnotations }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
         {{- end }}
 {{- end }}
