@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.3.0
+
+- Support `extraAnnotations` under alertingRules primarily for pint. 
+
 ## 4.2.1
 
 - Add the deletion of alertingRules in the case none are set via the attribute.

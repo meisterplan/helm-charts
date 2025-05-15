@@ -57,6 +57,8 @@ alertingRules:
     for: 1m
     description: Service MyService is down
     playbook_url: http://xconfluence/x/aBcDeFg
+    extraAnnotations:
+      pint: pint disable promql/series(pint_problem)
 
 internalPorts:
   - name: nfshp-tcp
