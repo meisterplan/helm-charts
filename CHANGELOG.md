@@ -210,6 +210,11 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 
 # cronjob
 
+## 2.1.0
+
+- Support `extraAnnotations` under alertingRules primarily for pint.
+- Add the deletion of alertingRules in the case none are set via the attribute.
+
 ## 2.0.0
 
 - **Breaking change:** Rename `clusterName` to more appropriate `envName`
