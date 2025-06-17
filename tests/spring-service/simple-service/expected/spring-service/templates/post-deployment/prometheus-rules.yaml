@@ -22,3 +22,14 @@ spec:
             description: "Service MyService is down"
             playbook_url: "http://xconfluence/x/aBcDeFg"
             pint: "pint disable promql/series(pint_problem)"
+        - alert: "myservice_LowUrgencyAlertWithExtraLabel"
+          expr: "and absent(myservice_up)"
+          for: "1m"
+          labels:
+            service: "myservice"
+            namespace: "team-supercool"
+            urgency: "low"
+            some_label: "Some Value"
+          annotations:
+            description: "Service MyService is down"
+            playbook_url: "http://xconfluence/x/aBcDeFg"

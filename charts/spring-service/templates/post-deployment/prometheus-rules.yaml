@@ -20,6 +20,12 @@ spec:
           labels:
             service: {{ $.Values.serviceName | quote }}
             namespace: {{ $.Values.namespace | quote }}
+            {{- if .urgency }}
+            urgency: {{ .urgency | quote }}
+            {{- end }}
+            {{- range $key, $value := .extraLabels }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
           annotations:
             description: {{ required "Description must be set!" .description | quote }}
             playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
