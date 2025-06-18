@@ -12,6 +12,17 @@ spec:
   groups:
     - name: "simple-job-staging"
       rules:
+        - alert: "simple-job-staging_LowUrgencyAlertWithExtraLabel"
+          expr: "absent(cronjob_up)"
+          for: "5m"
+          labels:
+            service: "simple-job-staging"
+            namespace: "team-superpower"
+            urgency: "low"
+            some_label: "Some Value"
+          annotations:
+            description: "The job {{ $labels.job_name }} has exited with failure exit code."
+            playbook_url: "https://my-playbook-collection/abc"
         - alert: "simple-job-staging_MyCronjobFailed"
           expr: "absent(cronjob_up)"
           for: "5m"

@@ -32,3 +32,12 @@ alertingRules:
     summary: The job {{ $labels.job_name }} has failed
     description: The job {{ $labels.job_name }} has exited with failure exit code.
     playbook_url: https://my-playbook-collection/abc
+  LowUrgencyAlertWithExtraLabel:
+    expr: absent(cronjob_up)
+    for: 5m
+    summary: The job {{ $labels.job_name }} has failed
+    description: The job {{ $labels.job_name }} has exited with failure exit code.
+    playbook_url: https://my-playbook-collection/abc
+    urgency: low
+    extraLabels:
+      some_label: Some Value

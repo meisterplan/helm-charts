@@ -1,5 +1,9 @@
 # spring-service
 
+## 4.4.0
+- Add `urgency` under alertingRules
+- Support `extraLabels` under alertingRules
+
 ## 4.3.0
 
 - Support `extraAnnotations` under alertingRules primarily for pint. 
@@ -209,6 +213,9 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+## 2.2.0
+- Add `urgency` under alertingRules
+- Support `extraLabels` under alertingRules
 
 ## 2.1.0
 

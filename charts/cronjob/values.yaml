@@ -46,3 +46,9 @@ env:
   #  SOME_VARIABLE:
   #    value: 'some-value'
 
+alertingRules: {}
+# Errors:
+#   expr: service_errors > 1
+#   description: serviceName reports errors # use actual serviceName for alert routing here
+#   playbook_url: https://my-playbook.com/serviceName-Errors
+#   urgency: low # optional (either "high" or "low")
