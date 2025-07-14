@@ -1,5 +1,8 @@
 # spring-service
 
+## 5.0.0
+- **Breaking change:** Rename `urgency` label to `severity`
+
 ## 4.4.0
 - Add `urgency` under alertingRules
 - Support `extraLabels` under alertingRules
@@ -213,6 +216,9 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+## 3.0.0
+- **Breaking change:** Rename `urgency` label to `severity`
+
 ## 2.2.0
 - Add `urgency` under alertingRules
 - Support `extraLabels` under alertingRules

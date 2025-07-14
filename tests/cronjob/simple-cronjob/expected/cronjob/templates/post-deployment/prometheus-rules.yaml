@@ -12,13 +12,13 @@ spec:
   groups:
     - name: "simple-job-staging"
       rules:
-        - alert: "simple-job-staging_LowUrgencyAlertWithExtraLabel"
+        - alert: "simple-job-staging_LowSeverityAlertWithExtraLabel"
           expr: "absent(cronjob_up)"
           for: "5m"
           labels:
             service: "simple-job-staging"
             namespace: "team-superpower"
-            urgency: "low"
+            severity: "warning"
             some_label: "Some Value"
           annotations:
             description: "The job {{ $labels.job_name }} has exited with failure exit code."
