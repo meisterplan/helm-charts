@@ -51,4 +51,4 @@ alertingRules: {}
 #   expr: service_errors > 1
 #   description: serviceName reports errors # use actual serviceName for alert routing here
 #   playbook_url: https://my-playbook.com/serviceName-Errors
-#   urgency: low # optional (either "high" or "low")
+#   severity: warning # optional (one of "critical", "error", "warning" and "info")

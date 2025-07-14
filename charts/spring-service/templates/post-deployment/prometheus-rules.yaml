@@ -20,8 +20,8 @@ spec:
           labels:
             service: {{ $.Values.serviceName | quote }}
             namespace: {{ $.Values.namespace | quote }}
-            {{- if .urgency }}
-            urgency: {{ .urgency | quote }}
+            {{- if .severity }}
+            severity: {{ .severity | quote }}
             {{- end }}
             {{- range $key, $value := .extraLabels }}
             {{ $key }}: {{ $value | quote }}
