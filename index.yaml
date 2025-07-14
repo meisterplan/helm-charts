@@ -115,6 +115,15 @@ entries:
     version: 1.0.0
   spring-service:
   - apiVersion: v1
+    created: "2025-07-14T13:41:29.198766472Z"
+    description: A generalized deployment for Meisterplan Spring Boot services in
+      Kubernetes.
+    digest: 5b92ce979d225d9329254b41dd7547e6b122ac37950c140118cd565650a4ed22
+    name: spring-service
+    urls:
+    - https://github.com/meisterplan/helm-charts/releases/download/spring-service-5.0.0/spring-service-5.0.0.tgz
+    version: 5.0.0
+  - apiVersion: v1
     created: "2025-06-18T07:03:19.066641551Z"
     description: A generalized deployment for Meisterplan Spring Boot services in
       Kubernetes.
@@ -501,4 +510,4 @@ entries:
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2025-06-18T07:03:19.066998821Z"
+generated: "2025-07-14T13:41:29.199163971Z"
