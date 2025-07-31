@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   cronjob:
   - apiVersion: v1
+    created: "2025-07-31T09:11:20.030142741Z"
+    description: A generalized cronjob that can access secrets.
+    digest: d112171febaa87e2b002dc63cb648c92919ac2a3f9fc349b437c1861ea4acec3
+    name: cronjob
+    urls:
+    - https://github.com/meisterplan/helm-charts/releases/download/cronjob-3.1.0/cronjob-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v1
     created: "2025-07-14T14:07:38.193158067Z"
     description: A generalized cronjob that can access secrets.
     digest: aeda45f751b84c1d5fb9962faf29c3b8d031b6a3d524a76be50c2f38c09070ff
@@ -122,6 +130,15 @@ entries:
     - cronjob-1.0.0.tgz
     version: 1.0.0
   spring-service:
+  - apiVersion: v1
+    created: "2025-07-31T09:11:20.253005019Z"
+    description: A generalized deployment for Meisterplan Spring Boot services in
+      Kubernetes.
+    digest: 048631d41ecb759fd358141e303abacea908f4aa4af89f3a41acd84864251cbe
+    name: spring-service
+    urls:
+    - https://github.com/meisterplan/helm-charts/releases/download/spring-service-5.1.0/spring-service-5.1.0.tgz
+    version: 5.1.0
   - apiVersion: v1
     created: "2025-07-14T13:41:29.198766472Z"
     description: A generalized deployment for Meisterplan Spring Boot services in
@@ -518,4 +535,4 @@ entries:
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2025-07-14T14:07:38.193598457Z"
+generated: "2025-07-31T09:11:20.253583862Z"
