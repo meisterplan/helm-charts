@@ -4,9 +4,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   namespace: "team-superpower"
-  labels:
-    app: kube-prometheus-stack
-    release: prometheus
   name: "simple-job-staging"
 spec:
   groups:

@@ -5,9 +5,6 @@ kind: PodMonitor
 metadata:
   name: "myservice"
   namespace: "team-supercool"
-  labels:
-    app: kube-prometheus-stack
-    release: prometheus
 spec:
   selector:
     matchLabels:

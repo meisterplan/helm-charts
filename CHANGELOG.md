@@ -1,5 +1,9 @@
 # spring-service
 
+## 5.1.1
+
+- Remove now unnecessary, confusing Helm chart labels on prom resources 
+
 ## 5.1.0
 
 - Update externalsecrets.io CRDs to v1.
@@ -222,6 +226,10 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 3.1.1
+
+- Remove now unnecessary, confusing Helm chart labels on prom resources
 
 ## 3.1.0
 

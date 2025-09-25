@@ -4,9 +4,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   namespace: "team-supercool"
-  labels:
-    app: kube-prometheus-stack
-    release: prometheus
   name: "myservice"
 spec:
   groups:
