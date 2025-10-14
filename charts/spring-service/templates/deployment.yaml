@@ -63,6 +63,7 @@ spec:
                 operator: In
                 values:
                   - {{ .Values.image.tag | quote }}
+      enableServiceLinks: {{ .Values.enableServiceLinks }}
       containers:
         - name: {{ .Values.serviceName }}
           image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"

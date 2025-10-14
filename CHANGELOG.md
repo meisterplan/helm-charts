@@ -1,5 +1,9 @@
 # spring-service
 
+## 5.2.0
+
+- Allow to disable environment variable service links using `enableServiceLinks: false`
+
 ## 5.1.1
 
 - Remove now unnecessary, confusing Helm chart labels on prom resources 
