@@ -28,7 +28,7 @@ ingress:
         - /welcome
         - /index.html
     additionalHosts:
-     - "myservice.othercompany.tld"
+      - "myservice.othercompany.tld"
     oauth2ProxyProtected: true
   overwriteCustomHttpErrors: "502"
 
@@ -41,6 +41,8 @@ env:
 disruptionBudget:
   type: minAvailable
   value: "50%"
+
+enableServiceLinks: false
 
 extraManifests:
   - apiVersion: v1

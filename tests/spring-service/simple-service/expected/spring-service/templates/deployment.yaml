@@ -53,6 +53,7 @@ spec:
                 operator: In
                 values:
                   - "1.30.7"
+      enableServiceLinks: true
       containers:
         - name: myservice
           image: "docker.pkg.github.com/my-company/myservice:1.30.7"
