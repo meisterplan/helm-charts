@@ -99,6 +99,8 @@ disruptionBudget:
 # Set to false to disable service link environment variables
 enableServiceLinks: true
 
+securityContext: { }
+
 # Allow additional manifest to be deployed with the chart
 extraManifests: []
   # - apiVersion: v1
