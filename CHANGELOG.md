@@ -1,5 +1,9 @@
 # spring-service
 
+## 5.3.0
+
+- Allow to configure a `securityContext`
+
 ## 5.2.0
 
 - Allow to disable environment variable service links using `enableServiceLinks: false`

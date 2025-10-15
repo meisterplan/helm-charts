@@ -44,6 +44,11 @@ disruptionBudget:
 
 enableServiceLinks: false
 
+securityContext:
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
 extraManifests:
   - apiVersion: v1
     kind: ConfigMap
