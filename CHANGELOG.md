@@ -1,5 +1,9 @@
 # spring-service
 
+## 5.4.0
+
+- Allow to configure `overwriteRequestRetries`
+
 ## 5.3.0
 
 - Allow to configure a `securityContext`
