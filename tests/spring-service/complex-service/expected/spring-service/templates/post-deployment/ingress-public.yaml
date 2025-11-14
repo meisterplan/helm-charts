@@ -6,6 +6,7 @@ metadata:
   name: myservice-public
   namespace: "team-supercool"
   annotations:
+    nginx.ingress.kubernetes.io/proxy-stream-next-upstream-tries: 420
     nginx.ingress.kubernetes.io/custom-http-errors: 502
     nginx.ingress.kubernetes.io/auth-signin: https://oauth2.mycompany.tld/oauth2/start?rd=https%3A%2F%2F$http_host$escaped_request_uri
     nginx.ingress.kubernetes.io/auth-url: https://oauth2.mycompany.tld/oauth2/auth

@@ -5,6 +5,9 @@ metadata:
   name: {{ .Values.serviceName }}-public
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
   annotations:
+    {{- if .Values.ingress.overwriteRequestRetries }}
+    nginx.ingress.kubernetes.io/proxy-stream-next-upstream-tries: {{ .Values.ingress.overwriteRequestRetries }}
+    {{- end }}
     {{- if .Values.ingress.overwriteCustomHttpErrors }}
     nginx.ingress.kubernetes.io/custom-http-errors: {{ .Values.ingress.overwriteCustomHttpErrors }}
     {{- end }}
