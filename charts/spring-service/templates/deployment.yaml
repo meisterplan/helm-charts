@@ -3,6 +3,11 @@ apiVersion: apps/v1
 metadata:
   name: "{{ .Values.serviceName }}-{{ required "Image Tag must be set!" .Values.image.tag }}"
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+  {{- $annotations := include "k8s.annotations" . -}}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   {{- if .Values.timeouts.progressDeadlineSeconds }}

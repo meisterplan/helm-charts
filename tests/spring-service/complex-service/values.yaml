@@ -17,6 +17,9 @@ resources:
   cpu:
     guarantee: 500m
 
+logging:
+  retention: verbose
+
 ingress:
   clusterDomain: "mycompany.tld"
   public:
