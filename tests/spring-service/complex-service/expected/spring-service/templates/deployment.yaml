@@ -5,6 +5,8 @@ apiVersion: apps/v1
 metadata:
   name: "myservice-1.30.7"
   namespace: "team-supercool"
+  annotations:
+    com.meisterplan.logs/retention: verbose
 spec:
   replicas: 5
   selector:

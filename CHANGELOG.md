@@ -1,5 +1,9 @@
 # spring-service
 
+## 5.5.0
+
+- Add support for logging annotations
+
 ## 5.4.0
 
 - Allow to configure `overwriteRequestRetries`
@@ -238,6 +242,10 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
 
 # cronjob
+
+## 3.2.0
+
+- Add support for logging annotations
 
 ## 3.1.1
 

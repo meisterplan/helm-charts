@@ -36,6 +36,10 @@ resources:
   cpu:
     guarantee: 100m
 
+logging:
+  collect: true # can be toggled to turn off log collection
+  retention: default # can be set to 'verbose' to shorten retention
+
 env:
   fromSecret: {}
   #  SOME_SECRET:

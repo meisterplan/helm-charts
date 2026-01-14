@@ -3,6 +3,11 @@ apiVersion: batch/v1
 metadata:
   name: "{{ required "cronJobName must be set!" .Values.cronJobName }}"
   namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+  {{- $annotations := include "k8s.annotations" . -}}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
 spec:
   concurrencyPolicy: "Replace"
   schedule: {{ required "Schedule must be set!" .Values.schedule | quote }}

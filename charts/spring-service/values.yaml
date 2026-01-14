@@ -37,6 +37,10 @@ resources:
   cpu:
     guarantee: 100m
 
+logging:
+  collect: true # can be toggled to turn off log collection
+  retention: default # can be set to 'verbose' to shorten retention
+
 ingress:
   clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
   public:

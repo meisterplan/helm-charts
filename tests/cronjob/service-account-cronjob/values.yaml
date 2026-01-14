@@ -19,6 +19,9 @@ resources:
   cpu:
     guarantee: 100m
 
+logging:
+  collect: false
+
 env:
   fromSecret:
     AWS_ACCESS_KEY_ID:

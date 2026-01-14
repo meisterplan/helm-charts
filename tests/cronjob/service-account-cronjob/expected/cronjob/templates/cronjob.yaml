@@ -5,6 +5,8 @@ apiVersion: batch/v1
 metadata:
   name: "simple-job-staging"
   namespace: "team-superpower"
+  annotations:
+    com.meisterplan.logs/collect: "false"
 spec:
   concurrencyPolicy: "Replace"
   schedule: "22 */5 * * *"
