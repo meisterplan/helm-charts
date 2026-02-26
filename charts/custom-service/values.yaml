@@ -1,45 +1,30 @@
-# how to call deployment, service and ingress
-serviceName: ""
+### These variables are usually pre-computed and set from the Makefile:
+image: # what Docker image to run
+  repository: "" # example: 123456789012.dkr.ecr.$(IMAGE_AWS_REGION).amazonaws.com/mp-templatetiger
+  tag: "" # usually git-<7 chars sha1 commit hash>
 
-# namespace to use, typically team-<yourteamname>
-namespace: ""
+envName: "" # the environment to deploy to, computed from the kubernetes cluster name (example: staging)
 
-envName: "" # required to be filled in by helm template argument [like image.tag] (example: staging)
+### Variables that should be set in the values.yaml:
 
-# The serviceAccount.enabled variable will create a service account
-# bound to the pods so that they can assume the configured role automatically.
-# The role must be named `k8s-<envName>-<serviceName>` and needs a Trust Policy for the created service account.
-# (i.e. `TrustPolicy.forK8sServiceAccount()` in mp-aws-iam-terraform)
-# Note: Enabling it requires awsAccountId to be set as well (escape it as string, or it will be treated as float).
-serviceAccount:
-  enabled: false
-awsAccountId: ""
+# Pick the language/framework your service is using and enable it. Each comes with different convenience features.
+platform:
+  spring:
+    # This platform assumes you're using mp-jdk-base as a base image and properly configure everything in there as well.
+    enabled: false
+    env:
+      # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password".
+      # Pick "WithRLS" if you have an RLS user or the normal one if you only have one user. Setting both at the same time is not supported.
+      # or remove it if it isn't required
+      datasourceFromSecret: "" # "rds/templatetiger"
+      datasourceFromSecretWithRLS: "" # "rds/templatetiger"
+      rabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
+      oAuth2PublicKey: true # set to false if this is a service that doesn't handle Authenticorn Tokens/requires no Authenticorn cert
+  nodejs:
+    enabled: false
 
-# what Docker image to run
-image:
-  repository: "" # example: ghcr.io/itdesign-gmbh/mp-templatetiger/mp-templatetiger
-  tag: "" # Tag is normally configured during deployment
-
-# how many replicas to launch
-replicaCount: 2
-
-startupProbe:
-  periodSeconds: 10 # interval how often startup should be checked
-  failAfterCount: 30 # number of retries until startup must have completed and liveness & readiness probe get armed
-livenessProbe:
-  failAfterCount: 3 # number of retries before the container is considered dead and killed
-readinessProbe:
-  failAfterCount: 3 # number of retries before the container is considered unready and stops receiving traffic (until next probe works)
-
-# k8s resource definitions for required minimum and maximum growth
-resources:
-  memory: 600Mi
-  cpu:
-    guarantee: 100m
-
-logging:
-  collect: true # can be toggled to turn off log collection
-  retention: default # can be set to 'verbose' to shorten retention
+sentry:
+  enabled: true # set to false if you don't have a Sentry DSN
 
 ingress:
   clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
@@ -51,59 +36,88 @@ ingress:
       prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
     additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
 
-# Optional: Manual configuration of special timeouts for deployments.
-timeouts:
-  terminationTimeBeforeSigTermSeconds: 15 # how many seconds to wait in "PreStop hook", i.e. after terminating pod but before SIGTERM to the container (e.g. for completing pending requests). If changed, the option below can also become relevant.
-  terminationTimeBeforeKillSeconds: 300 # allow Spring Server graceful shutdown - see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
-#  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
+deployment:
+  # how many pods (= running instances of the service) to launch in parallel
+  replicaCount: 2
+  # progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
 
-# Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
-internalPorts:
-  {}
+# configuration of each pod that contains the concrete service container
+podConfiguration:
+  env:
+    # name of env variable that should also receive the external base url
+    # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
+
+    fromSecret: {}
+    #  SOME_SECRET:
+    #    parameterName: other-system/secret
+
+    # custom k8s env definition
+    additional: {}
+    #  SOME_VARIABLE:
+    #    value: 'some-value'
+
+  # k8s resource definitions for required minimum and maximum growth
+  resources:
+    memory: 600Mi
+    cpu:
+      guarantee: 100m
+
+  # The probes are configured using the
+  startupProbe:
+    periodSeconds: 10 # interval how often startup should be checked
+    failAfterCount: 30 # number of retries until startup must have completed and liveness & readiness probe get armed
+  livenessProbe:
+    failAfterCount: 3 # number of retries before the container is considered dead and killed
+  readinessProbe:
+    failAfterCount: 3 # number of retries before the container is considered unready and stops receiving traffic (until next probe works)
+
+  # Optional: Manual configuration of special timeouts for deployments.
+  timeouts:
+    terminationTimeBeforeSigTermSeconds: 15 # how many seconds to wait in "PreStop hook", i.e. after terminating pod but before SIGTERM to the container (e.g. for completing pending requests). If changed, the option below can also become relevant.
+    terminationTimeBeforeKillSeconds: 300 # allow Spring Server graceful shutdown - see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
+
+  # Optional: Hardened security settings (usually no changes required)
+  enableServiceLinks: true # Allows disabling service link environment variables (e.g., SERVICE_PAYMENTS_PORT_80_TCP=tcp://10.111.106.141:80)
+  securityContext: {} # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+
+# Setting serviceAccount.enabled to true will create a service account bound to the pods so that they can assume an IAM inside AWS automatically.
+# This allows the pod to easily gain access to AWS resources without distributing any access keys or secrets.
+# The role must be named `k8s-<envName>-<serviceName>` and needs a Trust Policy for the created service account.
+# (i.e. `TrustPolicy.forK8sServiceAccount()` in mp-aws-iam-terraform)
+serviceAccount:
+  enabled: false
+awsAccountId: "" # enter the id as string, or it will be treated as a float
+
+logging:
+  collect: true # can be toggled to turn off log collection
+  retention: default # can be set to 'verbose' to shorten retention
+
+prometheus:
+  scraping:
+    enabled: true # If set to "false" prometheus scraping is not enabled
+    # If enabled, an HTTP server must serve metrics under this port and path:
+    port: management
+    path: /actuator/prometheus
+  alertingRules: []
+  # - name: HighLatency
+  #   expr: avg(service_latency[5m]) > 2
+  #   for: 5m # optional
+  #   description: serviceName reports 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour # use actual serviceName for alert routing here
+  #   playbook_url: http://xconfluence/x/aBcDeFg
+  #   severity: low # optional (one of "critical", "error", "warning" and "info")
+
+service:
+  # Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
+  internalPorts: {}
+  # Example:
   # - name: ftp
   #   port: 21 # exposed port inside the cluster for others
   #   targetPort: 1221 #  port to connect to at the running service
   #   protocol: TCP # which protocol to use
 
-env:
-  # name of env variable that should also receive the external base url
-  # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
-
-  # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password".
-  # Pick "WithRLS" if you have an RLS user or the normal one if you only have one user. Setting both at the same time is not supported.
-  # or remove it if it isn't required
-  springDatasourceFromSecret: "" # "rds/templatetiger"
-  springDatasourceFromSecretWithRLS: "" # "rds/templatetiger"
-  springRabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
-
-  fromSecret: {}
-  #  SOME_SECRET:
-  #    parameterName: other-system/secret
-
-  # custom k8s env definition
-  additional: {}
-  #  SOME_VARIABLE:
-  #    value: 'some-value'
-
-# If set to "false" prometheus scraping is not enabled
-prometheusScraping: true
-
-alertingRules: []
-# - name: HighLatency
-#   expr: avg(service_latency[5m]) > 2
-#   for: 5m # optional
-#   description: serviceName reports 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour # use actual serviceName for alert routing here
-#   playbook_url: http://xconfluence/x/aBcDeFg
-#   severity: low # optional (one of "critical", "error", "warning" and "info")
-
 disruptionBudget:
   type: maxUnavailable # either "maxUnavailable" (terminate at most this many pods) or "minAvailable" (have at least this many running pods remaining)
   value: 1 # value with reference to type
-
-# Set to false to disable service link environment variables
-enableServiceLinks: true
-
-securityContext: { }
 
 # Allow additional manifest to be deployed with the chart
 extraManifests: []

@@ -1,22 +1,22 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  namespace: "{{ .Values.namespace }}"
-  name: "{{ .Values.serviceName }}"
+  namespace: "{{ .Release.Namespace }}"
+  name: "{{ .Release.Name }}"
 spec:
   groups:
-{{- if .Values.alertingRules }}
-    - name: "{{ .Values.serviceName }}"
+{{- if .Values.prometheus.alertingRules }}
+    - name: "{{ .Release.Name }}"
       rules:
-        {{- range .Values.alertingRules }}
-        - alert: "{{ $.Values.serviceName }}_{{ .name }}"
+        {{- range .Values.prometheus.alertingRules }}
+        - alert: "{{ $.Release.Name }}_{{ .name }}"
           expr: {{ .expr | quote }}
           {{- if .for }}
           for: {{ .for | quote }}
           {{- end }}
           labels:
-            service: {{ $.Values.serviceName | quote }}
-            namespace: {{ $.Values.namespace | quote }}
+            service: {{ $.Release.Name | quote }}
+            namespace: {{ $.Release.Namespace | quote }}
             {{- if .severity }}
             severity: {{ .severity | quote }}
             {{- end }}
