@@ -1,3 +1,9 @@
+# custom-service
+
+## 1.0.0
+
+- Fork spring-service chart and introduce framework/language-agnostic features
+
 # spring-service
 
 ## 5.5.0

@@ -1,0 +1,33 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "{{ .Values.namespace }}"
+  name: "{{ .Values.serviceName }}"
+spec:
+  groups:
+{{- if .Values.alertingRules }}
+    - name: "{{ .Values.serviceName }}"
+      rules:
+        {{- range .Values.alertingRules }}
+        - alert: "{{ $.Values.serviceName }}_{{ .name }}"
+          expr: {{ .expr | quote }}
+          {{- if .for }}
+          for: {{ .for | quote }}
+          {{- end }}
+          labels:
+            service: {{ $.Values.serviceName | quote }}
+            namespace: {{ $.Values.namespace | quote }}
+            {{- if .severity }}
+            severity: {{ .severity | quote }}
+            {{- end }}
+            {{- range $key, $value := .extraLabels }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
+          annotations:
+            description: {{ required "Description must be set!" .description | quote }}
+            playbook_url: {{ required "Playbook URL must be set!" .playbook_url | quote }}
+            {{- range $key, $value := .extraAnnotations }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
+        {{- end }}
+{{- end }}

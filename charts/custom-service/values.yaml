@@ -1,0 +1,116 @@
+# how to call deployment, service and ingress
+serviceName: ""
+
+# namespace to use, typically team-<yourteamname>
+namespace: ""
+
+envName: "" # required to be filled in by helm template argument [like image.tag] (example: staging)
+
+# The serviceAccount.enabled variable will create a service account
+# bound to the pods so that they can assume the configured role automatically.
+# The role must be named `k8s-<envName>-<serviceName>` and needs a Trust Policy for the created service account.
+# (i.e. `TrustPolicy.forK8sServiceAccount()` in mp-aws-iam-terraform)
+# Note: Enabling it requires awsAccountId to be set as well (escape it as string, or it will be treated as float).
+serviceAccount:
+  enabled: false
+awsAccountId: ""
+
+# what Docker image to run
+image:
+  repository: "" # example: ghcr.io/itdesign-gmbh/mp-templatetiger/mp-templatetiger
+  tag: "" # Tag is normally configured during deployment
+
+# how many replicas to launch
+replicaCount: 2
+
+startupProbe:
+  periodSeconds: 10 # interval how often startup should be checked
+  failAfterCount: 30 # number of retries until startup must have completed and liveness & readiness probe get armed
+livenessProbe:
+  failAfterCount: 3 # number of retries before the container is considered dead and killed
+readinessProbe:
+  failAfterCount: 3 # number of retries before the container is considered unready and stops receiving traffic (until next probe works)
+
+# k8s resource definitions for required minimum and maximum growth
+resources:
+  memory: 600Mi
+  cpu:
+    guarantee: 100m
+
+logging:
+  collect: true # can be toggled to turn off log collection
+  retention: default # can be set to 'verbose' to shorten retention
+
+ingress:
+  clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
+  public:
+    subDomain: "" # subdomain under which endpoints will be publicly available
+    paths:
+      allowAll: false # set to true to blanket allow all paths to be publicly accessible
+      exact: [] # a list of exact path matches to be made publicly available
+      prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
+    additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
+
+# Optional: Manual configuration of special timeouts for deployments.
+timeouts:
+  terminationTimeBeforeSigTermSeconds: 15 # how many seconds to wait in "PreStop hook", i.e. after terminating pod but before SIGTERM to the container (e.g. for completing pending requests). If changed, the option below can also become relevant.
+  terminationTimeBeforeKillSeconds: 300 # allow Spring Server graceful shutdown - see https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#hook-handler-execution
+#  progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
+
+# Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer
+internalPorts:
+  {}
+  # - name: ftp
+  #   port: 21 # exposed port inside the cluster for others
+  #   targetPort: 1221 #  port to connect to at the running service
+  #   protocol: TCP # which protocol to use
+
+env:
+  # name of env variable that should also receive the external base url
+  # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
+
+  # Use this to provision a JDBC data source from a secret containing "jdbc-url", "username" & "password".
+  # Pick "WithRLS" if you have an RLS user or the normal one if you only have one user. Setting both at the same time is not supported.
+  # or remove it if it isn't required
+  springDatasourceFromSecret: "" # "rds/templatetiger"
+  springDatasourceFromSecretWithRLS: "" # "rds/templatetiger"
+  springRabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
+
+  fromSecret: {}
+  #  SOME_SECRET:
+  #    parameterName: other-system/secret
+
+  # custom k8s env definition
+  additional: {}
+  #  SOME_VARIABLE:
+  #    value: 'some-value'
+
+# If set to "false" prometheus scraping is not enabled
+prometheusScraping: true
+
+alertingRules: []
+# - name: HighLatency
+#   expr: avg(service_latency[5m]) > 2
+#   for: 5m # optional
+#   description: serviceName reports 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour # use actual serviceName for alert routing here
+#   playbook_url: http://xconfluence/x/aBcDeFg
+#   severity: low # optional (one of "critical", "error", "warning" and "info")
+
+disruptionBudget:
+  type: maxUnavailable # either "maxUnavailable" (terminate at most this many pods) or "minAvailable" (have at least this many running pods remaining)
+  value: 1 # value with reference to type
+
+# Set to false to disable service link environment variables
+enableServiceLinks: true
+
+securityContext: { }
+
+# Allow additional manifest to be deployed with the chart
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #   labels:
+  #     name: prometheus-extra
+  #   data:
+  #     extra-data: "value"

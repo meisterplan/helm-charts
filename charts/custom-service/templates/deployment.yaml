@@ -1,0 +1,277 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .Values.serviceName }}-{{ required "Image Tag must be set!" .Values.image.tag }}"
+  namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+  {{- $annotations := include "k8s.annotations" . -}}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- if .Values.timeouts.progressDeadlineSeconds }}
+  progressDeadlineSeconds: {{ .Values.timeouts.progressDeadlineSeconds }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.serviceName | quote }}
+      app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.serviceName | quote }}
+        app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+    spec:
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ .Values.serviceName }}
+      {{- end }}
+      imagePullSecrets:
+        - name: docker.pkg.github.com
+        - name: ghcr.io
+      {{- if .Values.timeouts.terminationTimeBeforeKillSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.timeouts.terminationTimeBeforeKillSeconds }}
+      {{- end }}
+      topologySpreadConstraints:
+      {{- /* this causes pods to distribute evenly by applying these rules:
+      - schedule at most <maxSkew> pod more or less than the optimum per <topologyKey>
+      - schedule on at least <minDomains> topologies
+      - nodeTaintsPolicy is Ignore by default which would include unplacable nodes for calculation
+      */}}
+        - topologyKey: kubernetes.io/hostname
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Values.serviceName | quote }}
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - {{ .Values.image.tag | quote }}
+        - topologyKey: topology.kubernetes.io/zone
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Values.serviceName | quote }}
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - {{ .Values.image.tag | quote }}
+      enableServiceLinks: {{ .Values.enableServiceLinks }}
+      containers:
+        - name: {{ .Values.serviceName }}
+          image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: service
+            - containerPort: 8081
+              protocol: TCP
+              name: management
+            {{- range $port := .Values.internalPorts }}
+            - name: {{ $port.name }}
+              protocol: {{ $port.protocol }}
+              containerPort: {{ $port.targetPort }}
+            {{- end }}
+          resources:
+            requests:
+              cpu: {{ required "CPU guarantee must be set!" .Values.resources.cpu.guarantee }}
+              memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
+            limits:
+              {{- if .Values.resources.cpu.limit }}
+              cpu: {{ .Values.resources.cpu.limit }}
+              {{- end }}
+              memory: {{ required "Memory requirement must be set!" .Values.resources.memory }}
+
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: {{ .Values.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.startupProbe.failAfterCount }}
+          livenessProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            failureThreshold: {{ .Values.livenessProbe.failAfterCount }}
+          readinessProbe:
+            exec:
+              command: ["check", "run", "-type", "readiness"]
+            failureThreshold: {{ .Values.readinessProbe.failAfterCount }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "{{ .Values.timeouts.terminationTimeBeforeSigTermSeconds }}"]
+          env:
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: "prod,tracing"
+
+            - name: "CLUSTER_ID"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: cluster-id
+            - name: "ENV_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: env-name
+            - name: "DISASTER_RECOVERY_TEST"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: disaster-recovery-test
+
+            # Tracing environment configuration (Spring Boot 2.x)
+            - name: "SPRING_SLEUTH_ENABLED"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: enabled
+            - name: "SPRING_ZIPKIN_BASEURL"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: zipkin-base-url
+
+            # Tracing environment configuration (Spring Boot <3.4)
+            - name: "MANAGEMENT_ZIPKIN_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: zipkin-endpoint
+
+            # Tracing environment configuration (Spring Boot 3.4+)
+            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: otlp-endpoint                  
+
+            # Sentry
+            - name: 'SENTRY_DSN'
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SENTRY_DSN"
+
+            # More environment variables that can be enabled by configuration
+            {{- if .Values.env.springDatasourceFromSecret }}
+            - name: "SPRING_DATASOURCE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_URL"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_USERNAME"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_PASSWORD"
+            - name: "SPRING_FLYWAY_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_URL"
+            - name: "SPRING_FLYWAY_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_USERNAME"
+            - name: "SPRING_FLYWAY_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_PASSWORD"
+            {{- else if .Values.env.springDatasourceFromSecretWithRLS }}
+            - name: "SPRING_DATASOURCE_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_URL"
+            - name: "SPRING_DATASOURCE_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_USERNAME"
+            - name: "SPRING_DATASOURCE_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_PASSWORD"
+            - name: "SPRING_FLYWAY_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_DATASOURCE_URL"
+            - name: "SPRING_FLYWAY_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_FLYWAY_USER"
+            - name: "SPRING_FLYWAY_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_FLYWAY_PASSWORD"
+            {{- end }}
+            {{- if .Values.env.springRabbitMQSecret }}
+            - name: "SPRING_RABBITMQ_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_RABBITMQ_HOST"
+            - name: "SPRING_RABBITMQ_SSL_ENABLED"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_RABBITMQ_SSL_ENABLED"
+            - name: "SPRING_RABBITMQ_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_RABBITMQ_USERNAME"
+            - name: "SPRING_RABBITMQ_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.serviceName }}-external-secret
+                  key: "SPRING_RABBITMQ_PASSWORD"
+            {{- end }}
+            - name: "SERVICE_OAUTH2_PUBLIC_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.serviceName }}-external-secret"
+                  key: SERVICE_OAUTH2_PUBLIC_KEY
+            {{- if and .Values.env.copyOwnExternalBaseURLIn (ne (include "is-ingress-public-defined" .) "false") }}
+            - name: "{{ .Values.env.copyOwnExternalBaseURLIn }}"
+              value: "https://{{ include "get-ingress-primary-public-host" . }}"
+            {{- end }}
+            {{- range $key, $value := .Values.env.fromSecret }}
+            - name: "{{ $key }}"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ $.Values.serviceName }}-external-secret"
+                  key: "{{ $key }}"
+            {{- end }}
+            {{- range $key, $value := .Values.env.additional }}
+            - name: {{ $key }}
+{{ toYaml $value | indent 14 }}
+            {{- end }}
+          {{- if .Values.securityContext }}
+          securityContext:
+{{ toYaml .Values.securityContext | indent 12 }}
+      {{- end}}
