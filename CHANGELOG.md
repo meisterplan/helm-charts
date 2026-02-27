@@ -13,6 +13,8 @@
     - Restructure all things specific to the [pod specification](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec) 
       in a `podConfiguration` key (`env`, `resources`, `startupProbe`, `livenessProbe`, `readinessProbe`, `timeouts`, `enableServiceLinks`, `securityContext`).
     - Restructure deployment and service-specific options under `deployment` and `service` keys.
+    - Cleanup zombie `basicAuthSecretParameterName` setting
+    - Document all values for ingress (no in-detail fixes because will be replaced by Gateway API soon)
 
 # spring-service
 

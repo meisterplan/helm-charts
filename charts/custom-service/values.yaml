@@ -35,11 +35,16 @@ ingress:
       exact: [] # a list of exact path matches to be made publicly available
       prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
     additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
+  # Optional parameters for EOL nginx ingress controller annotations:
+  # overwriteRequestRetries: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-stream-next-upstream-tries
+  # overwriteCustomHttpErrors: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#custom-http-errors
+  # overwriteProxyReadTimeout: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-read-timeout
+  # overwriteCustomBodySize: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
 
 deployment:
   # how many pods (= running instances of the service) to launch in parallel
   replicaCount: 2
-  # progressDeadlineSeconds: ? # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
+  # progressDeadlineSeconds: 600 # see https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#progress-deadline-seconds
 
 # configuration of each pod that contains the concrete service container
 podConfiguration:
@@ -61,6 +66,8 @@ podConfiguration:
     memory: 600Mi
     cpu:
       guarantee: 100m
+      # limit: 1 # Optional: Hard limit for CPU usage.
+      # Note it is best practice to NOT set `limit` and rely on the fair scheduling based on `guarantee` alone. Throttling actually hurts overall performance.
 
   # The probes are configured using the
   startupProbe:

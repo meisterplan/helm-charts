@@ -17,7 +17,6 @@ ingress:
     paths:
       allowAll: true
   overwriteCustomHttpErrors: "502"
-  basicAuthSecretParameterName: myservice/auth
 
 deployment:
   replicaCount: 5
