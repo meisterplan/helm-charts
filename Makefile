@@ -3,12 +3,19 @@ test:
 	$(MAKE) test-case CHART=spring-service CASE=complex-service
 	$(MAKE) test-case CHART=cronjob CASE=simple-cronjob
 	$(MAKE) test-case CHART=cronjob CASE=service-account-cronjob
+	$(MAKE) test-case-v2 CHART=custom-service CASE=simple-spring-service
 	$(MAKE) test-version-in-changelog CHART=spring-service
 	$(MAKE) test-version-in-changelog CHART=cronjob
 
 test-case:
 	rm -rf .test-output && 	mkdir -p .test-output
 	helm template --output-dir .test-output ./charts/$(CHART) -f tests/$(CHART)/$(CASE)/values.yaml -f tests/$(CHART)/$(CASE)/values.staging.yaml
+	diff -r tests/$(CHART)/$(CASE)/expected/ .test-output/
+	@echo "Test passed for $(CHART) - $(CASE)"
+
+test-case-v2:
+	rm -rf .test-output && 	mkdir -p .test-output
+	helm template --namespace team-supercool --output-dir .test-output  myservice ./charts/$(CHART) -f tests/$(CHART)/$(CASE)/values.yaml -f tests/$(CHART)/$(CASE)/values.staging.yaml
 	diff -r tests/$(CHART)/$(CASE)/expected/ .test-output/
 	@echo "Test passed for $(CHART) - $(CASE)"
 

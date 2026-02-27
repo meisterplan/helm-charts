@@ -1,0 +1,80 @@
+image:
+  repository: docker.pkg.github.com/my-company/myservice
+  tag: "1.30.7"
+envName: staging
+
+platform:
+  spring:
+    enabled: true
+    env:
+      datasourceFromSecret: "rds/myservice"
+      rabbitMQSecret: true
+
+ingress:
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: "myservice"
+    paths:
+      allowAll: true
+  overwriteCustomHttpErrors: "502"
+  basicAuthSecretParameterName: myservice/auth
+
+deployment:
+  replicaCount: 5
+  progressDeadlineSeconds: 120
+
+podConfiguration:
+  env:
+    copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
+    fromSecret:
+      SOME_SECRET:
+        parameterName: other-system/secret
+    additional:
+      LOG_LEVEL:
+        value: "DEBUG"
+
+  livenessProbe:
+    failAfterCount: 8
+  readinessProbe:
+    failAfterCount: 2
+  startupProbe:
+    periodSeconds: 6
+    failAfterCount: 7
+
+  resources:
+    memory: 1000Mi
+    cpu:
+      guarantee: 500m
+
+  timeouts:
+    terminationTimeBeforeKillSeconds: 60
+    terminationTimeBeforeSigTermSeconds: 45
+
+prometheus:
+  alertingRules:
+    - name: ServiceDown
+      expr: and absent(myservice_up)
+      for: 1m
+      description: Service MyService is down
+      playbook_url: http://xconfluence/x/aBcDeFg
+      extraAnnotations:
+        pint: pint disable promql/series(pint_problem)
+    - name: LowSeverityAlertWithExtraLabel
+      expr: and absent(myservice_up)
+      for: 1m
+      description: Service MyService is down
+      playbook_url: http://xconfluence/x/aBcDeFg
+      extraLabels:
+        some_label: Some Value
+      severity: warning
+
+service:
+  internalPorts:
+    - name: nfshp-tcp
+      port: 8030
+      targetPort: 1030
+      protocol: TCP
+    - name: nfshp-udp
+      port: 8030
+      targetPort: 1030
+      protocol: UDP
