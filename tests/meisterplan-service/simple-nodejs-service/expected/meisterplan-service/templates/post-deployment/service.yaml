@@ -1,0 +1,15 @@
+---
+# Source: meisterplan-service/templates/post-deployment/service.yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: myservice
+  namespace: "team-supercool"
+spec:
+  ports:
+    - name: service
+      port: 80
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/name: myservice
+    app.kubernetes.io/version: git-abcdefg

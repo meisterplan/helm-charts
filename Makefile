@@ -5,6 +5,7 @@ test:
 	$(MAKE) test-case CHART=cronjob CASE=service-account-cronjob
 	$(MAKE) test-case-v2 CHART=meisterplan-service CASE=simple-spring-service
 	$(MAKE) test-case-v2 CHART=meisterplan-service CASE=complex-spring-service
+	$(MAKE) test-case-v2 CHART=meisterplan-service CASE=simple-nodejs-service
 	$(MAKE) test-version-in-changelog CHART=spring-service
 	$(MAKE) test-version-in-changelog CHART=cronjob
 	$(MAKE) test-version-in-changelog CHART=meisterplan-service
