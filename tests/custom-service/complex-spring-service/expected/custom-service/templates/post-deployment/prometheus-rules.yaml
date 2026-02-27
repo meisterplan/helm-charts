@@ -1,9 +1,0 @@
----
-# Source: custom-service/templates/post-deployment/prometheus-rules.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  namespace: "team-supercool"
-  name: "myservice"
-spec:
-  groups:

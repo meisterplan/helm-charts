@@ -1,4 +1,0 @@
-apiVersion: v1
-name: custom-service
-description: A generalized deployment for custom services in Kubernetes.
-version: 1.0.0
