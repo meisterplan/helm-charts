@@ -15,6 +15,11 @@
     - Restructure deployment and service-specific options under `deployment` and `service` keys.
     - Cleanup zombie `basicAuthSecretParameterName` setting
     - Document all values for ingress (no in-detail fixes because will be replaced by Gateway API soon)
+    - Introduce simple start for platform support for `nodejs`
+      - Service port 3000 
+      - Sets `NODE_ENV` to `production`
+      - Expects an image with `check` utility and Liveness/Readiness probes via `check` utility and env vars `LIVENESS_CHECK`/`READINESS_CHECK` set
+      - Simple tracing toggle `TRACING_ENABLED`
 
 # spring-service
 

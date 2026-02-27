@@ -7,7 +7,7 @@ spec:
   ports:
     - name: service
       port: 80
-      targetPort: 8080
+      targetPort: {{ include "get-platform-service-port" . }}
     {{- range $port := .Values.service.internalPorts }}
     - name: {{ $port.name }}
       port: {{ $port.port }}

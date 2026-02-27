@@ -1,4 +1,3 @@
-{{- if eq (include "get-platform" .) "spring" }}
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -72,12 +71,10 @@ spec:
           image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: {{ include "get-platform-service-port" . }}
               protocol: TCP
               name: service
-            - containerPort: 8081
-              protocol: TCP
-              name: management
+            {{ include "get-platform-additional-container-ports" . | indent 12 }}
             {{- range $port := .Values.service.internalPorts }}
             - name: {{ $port.name }}
               protocol: {{ $port.protocol }}
@@ -111,9 +108,6 @@ spec:
               exec:
                 command: ["sleep", "{{ .Values.podConfiguration.timeouts.terminationTimeBeforeSigTermSeconds }}"]
           env:
-            - name: "SPRING_PROFILES_ACTIVE"
-              value: "prod,tracing"
-
             - name: "CLUSTER_ID"
               valueFrom:
                 configMapKeyRef:
@@ -146,99 +140,7 @@ spec:
                   key: "SENTRY_DSN"
             {{- end }}
 
-            # More environment variables that can be enabled by configuration
-            {{- if .Values.platform.spring.env.datasourceFromSecret }}
-            - name: "SPRING_DATASOURCE_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_URL"
-            - name: "SPRING_DATASOURCE_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_USERNAME"
-            - name: "SPRING_DATASOURCE_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_PASSWORD"
-            - name: "SPRING_FLYWAY_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_URL"
-            - name: "SPRING_FLYWAY_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_USERNAME"
-            - name: "SPRING_FLYWAY_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_PASSWORD"
-            {{- else if .Values.platform.spring.env.datasourceFromSecretWithRLS }}
-            - name: "SPRING_DATASOURCE_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_URL"
-            - name: "SPRING_DATASOURCE_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_USERNAME"
-            - name: "SPRING_DATASOURCE_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_PASSWORD"
-            - name: "SPRING_FLYWAY_URL"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_DATASOURCE_URL"
-            - name: "SPRING_FLYWAY_USER"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_FLYWAY_USER"
-            - name: "SPRING_FLYWAY_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_FLYWAY_PASSWORD"
-            {{- end }}
-            {{- if .Values.platform.spring.env.rabbitMQSecret }}
-            - name: "SPRING_RABBITMQ_HOST"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_RABBITMQ_HOST"
-            - name: "SPRING_RABBITMQ_SSL_ENABLED"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_RABBITMQ_SSL_ENABLED"
-            - name: "SPRING_RABBITMQ_USERNAME"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_RABBITMQ_USERNAME"
-            - name: "SPRING_RABBITMQ_PASSWORD"
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Release.Name }}-external-secret
-                  key: "SPRING_RABBITMQ_PASSWORD"
-            {{- end }}
-            {{- if .Values.platform.spring.env.oAuth2PublicKey }}
-            - name: "SERVICE_OAUTH2_PUBLIC_KEY"
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ .Release.Name }}-external-secret"
-                  key: SERVICE_OAUTH2_PUBLIC_KEY
-            {{- end }}
+            {{ include "get-platform-envs" . | indent 12 }}
             {{- if and .Values.podConfiguration.env.copyOwnExternalBaseURLIn (ne (include "is-ingress-public-defined" .) "false") }}
             - name: "{{ .Values.podConfiguration.env.copyOwnExternalBaseURLIn }}"
               value: "https://{{ include "get-ingress-primary-public-host" . }}"
@@ -258,4 +160,3 @@ spec:
           securityContext:
 {{ toYaml .Values.podConfiguration.securityContext | indent 12 }}
       {{- end}}
-{{- end }}

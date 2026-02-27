@@ -1,5 +1,5 @@
 ---
-# Source: meisterplan-service/templates/deployment-spring.yaml
+# Source: meisterplan-service/templates/deployment.yaml
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -59,6 +59,7 @@ spec:
             - containerPort: 8080
               protocol: TCP
               name: service
+                        
             - containerPort: 8081
               protocol: TCP
               name: management
@@ -93,9 +94,6 @@ spec:
               exec:
                 command: ["sleep", "45"]
           env:
-            - name: "SPRING_PROFILES_ACTIVE"
-              value: "prod,tracing"
-
             - name: "CLUSTER_ID"
               valueFrom:
                 configMapKeyRef:
@@ -125,7 +123,9 @@ spec:
                   name: myservice-external-secret
                   key: "SENTRY_DSN"
 
-            # More environment variables that can be enabled by configuration
+                        
+            - name: "SPRING_PROFILES_ACTIVE"
+              value: "prod,tracing"
             - name: "SPRING_DATASOURCE_URL"
               valueFrom:
                 secretKeyRef:
