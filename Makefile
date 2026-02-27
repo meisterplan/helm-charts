@@ -7,6 +7,7 @@ test:
 	$(MAKE) test-case-v2 CHART=meisterplan-service CASE=complex-spring-service
 	$(MAKE) test-version-in-changelog CHART=spring-service
 	$(MAKE) test-version-in-changelog CHART=cronjob
+	$(MAKE) test-version-in-changelog CHART=meisterplan-service
 
 test-case:
 	rm -rf .test-output && 	mkdir -p .test-output
