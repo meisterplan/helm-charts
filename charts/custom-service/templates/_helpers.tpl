@@ -7,7 +7,7 @@
 {{- end }}
 
 {{- define "get-ingress-primary-public-host" }}
-{{- if eq $.Values.ingress.public.subDomain "." }}
+{{- if eq $.Values.ingress.public.subDomain "." -}}
 {{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
 {{ else -}}
 {{ $.Values.ingress.public.subDomain }}.{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}

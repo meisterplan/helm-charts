@@ -4,6 +4,7 @@ test:
 	$(MAKE) test-case CHART=cronjob CASE=simple-cronjob
 	$(MAKE) test-case CHART=cronjob CASE=service-account-cronjob
 	$(MAKE) test-case-v2 CHART=custom-service CASE=simple-spring-service
+	$(MAKE) test-case-v2 CHART=custom-service CASE=complex-spring-service
 	$(MAKE) test-version-in-changelog CHART=spring-service
 	$(MAKE) test-version-in-changelog CHART=cronjob
 
