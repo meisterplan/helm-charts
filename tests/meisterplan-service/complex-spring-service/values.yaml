@@ -1,0 +1,68 @@
+image:
+  repository: docker.pkg.github.com/my-company/myservice
+  tag: "1.30.7"
+envName: staging
+
+platform:
+  spring:
+    enabled: true
+    env:
+      datasourceFromSecretWithRLS: "rds/myservice"
+      rabbitMQSecret: true
+
+sentry:
+  enabled: false
+
+ingress:
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: .
+    paths:
+      prefixes:
+        - /api/v1/public
+      exact:
+        - /welcome
+        - /index.html
+    additionalHosts:
+      - "myservice.othercompany.tld"
+    oauth2ProxyProtected: true
+  overwriteCustomHttpErrors: "502"
+  overwriteRequestRetries: 420
+
+deployment:
+  replicaCount: 5
+
+podConfiguration:
+  env:
+    copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
+
+  resources:
+    memory: 1000Mi
+    cpu:
+      guarantee: 500m
+
+  enableServiceLinks: false
+  securityContext:
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
+
+serviceAccount:
+  enabled: true
+awsAccountId: "1234567890"
+
+logging:
+  retention: verbose
+
+disruptionBudget:
+  type: minAvailable
+  value: "50%"
+
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      labels:
+        name: myservice-extra
+    data:
+      extra-data: "value"

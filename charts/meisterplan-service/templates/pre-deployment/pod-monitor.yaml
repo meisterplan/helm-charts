@@ -1,0 +1,14 @@
+{{- if .Values.prometheus.scraping.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "{{ .Release.Name }}"
+  podMetricsEndpoints:
+    - port: {{ .Values.prometheus.scraping.port }}
+      path: {{ .Values.prometheus.scraping.path }}
+{{- end }}

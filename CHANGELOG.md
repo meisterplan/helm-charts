@@ -1,3 +1,26 @@
+# meisterplan-service
+
+## 1.0.0
+
+- Fork spring-service chart and introduce framework/language-agnostic features
+    - `serviceName` is now Helm-native `.Release.Name`
+    - `namespace` is now Helm-native `.Release.Namespace`
+    - Framework/language specifics are controlled by `platform` map, e.g. `platform.spring.enabled: true`
+    - Removed unnecessary image secrets outdated remnants
+    - Drop support for tracing before Spring Boot 3.4
+    - Restructure `values.yaml` to list common things first and then increase into more and more mad options
+    - Restructure `prometheusScraping`, `alertingRules` under `prometheus` and make path/port configurable
+    - Restructure all things specific to the [pod specification](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec) 
+      in a `podConfiguration` key (`env`, `resources`, `startupProbe`, `livenessProbe`, `readinessProbe`, `timeouts`, `enableServiceLinks`, `securityContext`).
+    - Restructure deployment and service-specific options under `deployment` and `service` keys.
+    - Cleanup zombie `basicAuthSecretParameterName` setting
+    - Document all values for ingress (no in-detail fixes because will be replaced by Gateway API soon)
+    - Introduce simple start for platform support for `nodejs`
+      - Service port 3000 
+      - Sets `NODE_ENV` to `production`
+      - Expects an image with `check` utility and Liveness/Readiness probes via `check` utility and env vars `LIVENESS_CHECK`/`READINESS_CHECK` set
+      - Simple tracing toggle `TRACING_ENABLED`
+
 # spring-service
 
 ## 5.5.0

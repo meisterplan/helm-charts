@@ -1,0 +1,162 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "{{ .Release.Name }}-{{ required "Image Tag must be set!" .Values.image.tag }}"
+  namespace: "{{ .Release.Namespace }}"
+  {{- $annotations := include "k8s.annotations" . -}}
+  {{- if $annotations }}
+  annotations:
+    {{- $annotations | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  {{- if .Values.deployment.progressDeadlineSeconds }}
+  progressDeadlineSeconds: {{ .Values.deployment.progressDeadlineSeconds }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name | quote }}
+      app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name | quote }}
+        app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+    spec:
+      {{- if .Values.serviceAccount.enabled }}
+      serviceAccountName: {{ .Release.Name }}
+      {{- end }}
+      {{- if .Values.podConfiguration.timeouts.terminationTimeBeforeKillSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.podConfiguration.timeouts.terminationTimeBeforeKillSeconds }}
+      {{- end }}
+      topologySpreadConstraints:
+      {{- /* this causes pods to distribute evenly by applying these rules:
+      - schedule at most <maxSkew> pod more or less than the optimum per <topologyKey>
+      - schedule on at least <minDomains> topologies
+      - nodeTaintsPolicy is Ignore by default which would include unplacable nodes for calculation
+      */}}
+        - topologyKey: kubernetes.io/hostname
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Release.Name | quote }}
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - {{ .Values.image.tag | quote }}
+        - topologyKey: topology.kubernetes.io/zone
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - {{ .Release.Name | quote }}
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - {{ .Values.image.tag | quote }}
+      enableServiceLinks: {{ .Values.podConfiguration.enableServiceLinks }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ required "repository must be set!" .Values.image.repository }}:{{ required "tag must be set!" .Values.image.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ include "get-platform-service-port" . }}
+              protocol: TCP
+              name: service
+            {{ include "get-platform-additional-container-ports" . | indent 12 }}
+            {{- range $port := .Values.service.internalPorts }}
+            - name: {{ $port.name }}
+              protocol: {{ $port.protocol }}
+              containerPort: {{ $port.targetPort }}
+            {{- end }}
+          resources:
+            requests:
+              cpu: {{ required "CPU guarantee must be set!" .Values.podConfiguration.resources.cpu.guarantee }}
+              memory: {{ required "Memory requirement must be set!" .Values.podConfiguration.resources.memory }}
+            limits:
+              {{- if .Values.podConfiguration.resources.cpu.limit }}
+              cpu: {{ .Values.podConfiguration.resources.cpu.limit }}
+              {{- end }}
+              memory: {{ required "Memory requirement must be set!" .Values.podConfiguration.resources.memory }}
+
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: {{ .Values.podConfiguration.startupProbe.periodSeconds }}
+            failureThreshold: {{ .Values.podConfiguration.startupProbe.failAfterCount }}
+          livenessProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            failureThreshold: {{ .Values.podConfiguration.livenessProbe.failAfterCount }}
+          readinessProbe:
+            exec:
+              command: ["check", "run", "-type", "readiness"]
+            failureThreshold: {{ .Values.podConfiguration.readinessProbe.failAfterCount }}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "{{ .Values.podConfiguration.timeouts.terminationTimeBeforeSigTermSeconds }}"]
+          env:
+            - name: "CLUSTER_ID"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: cluster-id
+            - name: "ENV_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: env-name
+            - name: "DISASTER_RECOVERY_TEST"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: disaster-recovery-test
+
+            # Tracing environment configuration (Spring Boot 3.4+)
+            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: otlp-endpoint                  
+
+            {{- if .Values.sentry.enabled }}
+            # Sentry
+            - name: 'SENTRY_DSN'
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-external-secret
+                  key: "SENTRY_DSN"
+            {{- end }}
+
+            {{ include "get-platform-envs" . | indent 12 }}
+            {{- if and .Values.podConfiguration.env.copyOwnExternalBaseURLIn (ne (include "is-ingress-public-defined" .) "false") }}
+            - name: "{{ .Values.podConfiguration.env.copyOwnExternalBaseURLIn }}"
+              value: "https://{{ include "get-ingress-primary-public-host" . }}"
+            {{- end }}
+            {{- range $key, $value := .Values.podConfiguration.env.fromSecret }}
+            - name: "{{ $key }}"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ $.Release.Name }}-external-secret"
+                  key: "{{ $key }}"
+            {{- end }}
+            {{- range $key, $value := .Values.podConfiguration.env.additional }}
+            - name: {{ $key }}
+{{ toYaml $value | indent 14 }}
+            {{- end }}
+          {{- if .Values.podConfiguration.securityContext }}
+          securityContext:
+{{ toYaml .Values.podConfiguration.securityContext | indent 12 }}
+      {{- end}}

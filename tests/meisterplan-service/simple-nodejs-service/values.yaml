@@ -1,0 +1,30 @@
+image:
+  repository: "123456789012.dkr.ecr.eu-central-1.amazonaws.com/my-node-service"
+  tag: "git-abcdefg"
+
+envName: "staging"
+
+platform:
+  nodejs:
+    enabled: true
+
+ingress:
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: "my-node-service"
+    paths:
+      prefixes:
+        - /assets
+      exact:
+        - /index.html
+
+podConfiguration:
+  resources:
+    memory: 256Mi
+    cpu:
+      guarantee: 50m
+
+prometheus:
+  scraping:
+    port: service
+    path: /metrics

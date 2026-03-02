@@ -1,0 +1,105 @@
+{{- define "get-platform-envs" }}
+{{- $platform := include "get-platform" . }}
+{{- if eq $platform "spring" }}
+- name: "SPRING_PROFILES_ACTIVE"
+  value: "prod,tracing"
+  {{- if .Values.platform.spring.env.datasourceFromSecret }}
+- name: "SPRING_DATASOURCE_URL"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_URL"
+- name: "SPRING_DATASOURCE_USERNAME"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_USERNAME"
+- name: "SPRING_DATASOURCE_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_PASSWORD"
+- name: "SPRING_FLYWAY_URL"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_URL"
+- name: "SPRING_FLYWAY_USER"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_USERNAME"
+- name: "SPRING_FLYWAY_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_PASSWORD"
+  {{- else if .Values.platform.spring.env.datasourceFromSecretWithRLS }}
+- name: "SPRING_DATASOURCE_URL"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_URL"
+- name: "SPRING_DATASOURCE_USERNAME"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_USERNAME"
+- name: "SPRING_DATASOURCE_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_PASSWORD"
+- name: "SPRING_FLYWAY_URL"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_DATASOURCE_URL"
+- name: "SPRING_FLYWAY_USER"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_FLYWAY_USER"
+- name: "SPRING_FLYWAY_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_FLYWAY_PASSWORD"
+  {{- end }}
+  {{- if .Values.platform.spring.env.rabbitMQSecret }}
+- name: "SPRING_RABBITMQ_HOST"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_RABBITMQ_HOST"
+- name: "SPRING_RABBITMQ_SSL_ENABLED"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_RABBITMQ_SSL_ENABLED"
+- name: "SPRING_RABBITMQ_USERNAME"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_RABBITMQ_USERNAME"
+- name: "SPRING_RABBITMQ_PASSWORD"
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Release.Name }}-external-secret
+      key: "SPRING_RABBITMQ_PASSWORD"
+  {{- end }}
+  {{- if .Values.platform.spring.env.oAuth2PublicKey }}
+- name: "SERVICE_OAUTH2_PUBLIC_KEY"
+  valueFrom:
+    secretKeyRef:
+      name: "{{ .Release.Name }}-external-secret"
+      key: SERVICE_OAUTH2_PUBLIC_KEY
+  {{- end }}
+{{- else if eq $platform "nodejs" }}
+- name: "NODE_ENV"
+  value: "production"
+- name: "TRACING_ENABLED"
+  value: "true"
+{{- else }}{{ fail (printf "Platform %s: Envs not defined" $platform) }}
+{{- end }}
+{{- end }}

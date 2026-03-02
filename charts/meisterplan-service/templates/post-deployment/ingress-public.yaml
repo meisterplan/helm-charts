@@ -1,0 +1,78 @@
+{{- if (ne (include "is-ingress-public-defined" .) "false") }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-public
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    {{- if .Values.ingress.overwriteRequestRetries }}
+    nginx.ingress.kubernetes.io/proxy-stream-next-upstream-tries: {{ .Values.ingress.overwriteRequestRetries }}
+    {{- end }}
+    {{- if .Values.ingress.overwriteCustomHttpErrors }}
+    nginx.ingress.kubernetes.io/custom-http-errors: {{ .Values.ingress.overwriteCustomHttpErrors }}
+    {{- end }}
+    {{- if .Values.ingress.overwriteProxyReadTimeout }}
+    nginx.ingress.kubernetes.io/proxy-read-timeout: {{ .Values.ingress.overwriteProxyReadTimeout }}
+    {{- end }}
+    {{- if .Values.ingress.overwriteCustomBodySize }}
+    nginx.ingress.kubernetes.io/proxy-body-size: {{ .Values.ingress.overwriteCustomBodySize }}
+    {{- end }}
+    {{- if .Values.ingress.public.oauth2ProxyProtected }}
+    nginx.ingress.kubernetes.io/auth-signin: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/start?rd=https%3A%2F%2F$http_host$escaped_request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://oauth2.{{ .Values.ingress.clusterDomain }}/oauth2/auth
+    {{- end }}
+    nginx.ingress.kubernetes.io/use-regex: "false"
+spec:
+  ingressClassName: nginx-public
+  rules:
+  {{- range $host := (concat (list (include "get-ingress-primary-public-host" .)) .Values.ingress.public.additionalHosts) }}
+    - host: {{ $host }}
+      http:
+        paths:
+        {{- if $.Values.ingress.public.paths.allowAll }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $.Release.Name }}
+                port:
+                  number: 80
+        {{- else }}
+          {{- range $prefix := $.Values.ingress.public.paths.prefixes }}
+          {{- if eq $prefix "/" -}}
+            {{- fail "Prefixes may not contain /, please set allowAll: true explicitly!" -}}
+          {{- end }}
+          - path: {{ $prefix }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $.Release.Name }}
+                port:
+                  number: 80
+          {{- end }}
+          {{- range $exact := $.Values.ingress.public.paths.exact }}
+          {{- if not (contains "." $exact) }}
+          - path: {{ $exact }}
+            pathType: Exact
+            backend:
+              service:
+                name: {{ $.Release.Name }}
+                port:
+                  number: 80
+          {{- else if (regexMatch "^(/([a-zA-Z0-9\\-_.~!$&'()*+,;=:@]|%[0-9a-zA-Z]{2})+)+$" $exact) }}
+          {{/* https://stackoverflow.com/questions/4669692/valid-characters-for-directory-part-of-a-url-for-short-links
+               https://datatracker.ietf.org/doc/html/rfc3986#section-3.3 */}}
+          - path: {{ $exact }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ $.Release.Name }}
+                port:
+                  number: 80
+          {{- else }}
+            {{- fail (printf "Unsupported path due to special characters: %s" $exact) }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+  {{- end}}
+{{- end }}

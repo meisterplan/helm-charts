@@ -1,0 +1,120 @@
+---
+# Source: meisterplan-service/templates/deployment.yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: "myservice-git-abcdefg"
+  namespace: "team-supercool"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: "myservice"
+      app.kubernetes.io/version: "git-abcdefg"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: "myservice"
+        app.kubernetes.io/version: "git-abcdefg"
+    spec:
+      terminationGracePeriodSeconds: 300
+      topologySpreadConstraints:
+        - topologyKey: kubernetes.io/hostname
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - "myservice"
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - "git-abcdefg"
+        - topologyKey: topology.kubernetes.io/zone
+          maxSkew: 1
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - "myservice"
+              - key: app.kubernetes.io/version
+                operator: In
+                values:
+                  - "git-abcdefg"
+      enableServiceLinks: true
+      containers:
+        - name: myservice
+          image: "123456789012.dkr.ecr.eu-central-1.amazonaws.com/my-node-service:git-abcdefg"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+              name: service
+                        
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 256Mi
+
+          startupProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            exec:
+              command: ["check", "run", "-type", "liveness"]
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["check", "run", "-type", "readiness"]
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "15"]
+          env:
+            - name: "CLUSTER_ID"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: cluster-id
+            - name: "ENV_NAME"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: env-name
+            - name: "DISASTER_RECOVERY_TEST"
+              valueFrom:
+                configMapKeyRef:
+                  name: region
+                  key: disaster-recovery-test
+
+            # Tracing environment configuration (Spring Boot 3.4+)
+            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: otlp-endpoint
+            # Sentry
+            - name: 'SENTRY_DSN'
+              valueFrom:
+                secretKeyRef:
+                  name: myservice-external-secret
+                  key: "SENTRY_DSN"
+
+                        
+            - name: "NODE_ENV"
+              value: "production"
+            - name: "TRACING_ENABLED"
+              value: "true"

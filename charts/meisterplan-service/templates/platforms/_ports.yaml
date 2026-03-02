@@ -1,0 +1,18 @@
+{{- define "get-platform-service-port" }}
+{{- $platform := include "get-platform" . }}
+{{- if eq $platform "spring" }}8080
+{{- else if eq $platform "nodejs" }}3000
+{{- else }}{{ fail (printf "Platform %s: Service Port not defined" $platform) }}
+{{- end }}
+{{- end }}
+
+{{- define "get-platform-additional-container-ports" }}
+{{- $platform := include "get-platform" . }}
+{{- if eq $platform "spring" }}
+- containerPort: 8081
+  protocol: TCP
+  name: management
+{{- else if eq $platform "nodejs" }}
+{{- else }}{{ fail (printf "Platform %s: Additional Container Ports not defined" $platform) }}
+{{- end }}
+{{- end }}
