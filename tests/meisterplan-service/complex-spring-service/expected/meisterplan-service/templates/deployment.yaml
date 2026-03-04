@@ -173,8 +173,7 @@ spec:
                   name: "myservice-external-secret"
                   key: SERVICE_OAUTH2_PUBLIC_KEY
             - name: "SERVICE_MYSERVICE_BASE_URL"
-              value: "https://mycompany.tld
-"
+              value: "https://mycompany.tld"
             - name: REGION
               value: EU
             - name: URLS
