@@ -6,12 +6,12 @@
 }}
 {{- end }}
 
-{{- define "get-ingress-primary-public-host" }}
+{{- define "get-ingress-primary-public-host" -}}
 {{- if eq $.Values.ingress.public.subDomain "." -}}
 {{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{ else -}}
+{{- else -}}
 {{ $.Values.ingress.public.subDomain }}.{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{- end }}
+{{- end -}}
 {{- end }}
 
 {{- define "k8s.annotations" }}
