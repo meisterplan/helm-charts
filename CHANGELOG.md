@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.0.1
+
+- Fix wrong trimming of clusterDomain (could contain linebreaks previously)
+
 ## 1.0.0
 
 - Fork spring-service chart and introduce framework/language-agnostic features
@@ -10,16 +14,17 @@
     - Drop support for tracing before Spring Boot 3.4
     - Restructure `values.yaml` to list common things first and then increase into more and more mad options
     - Restructure `prometheusScraping`, `alertingRules` under `prometheus` and make path/port configurable
-    - Restructure all things specific to the [pod specification](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec) 
+    - Restructure all things specific to
+      the [pod specification](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-template-v1/#PodTemplateSpec)
       in a `podConfiguration` key (`env`, `resources`, `startupProbe`, `livenessProbe`, `readinessProbe`, `timeouts`, `enableServiceLinks`, `securityContext`).
     - Restructure deployment and service-specific options under `deployment` and `service` keys.
     - Cleanup zombie `basicAuthSecretParameterName` setting
     - Document all values for ingress (no in-detail fixes because will be replaced by Gateway API soon)
     - Introduce simple start for platform support for `nodejs`
-      - Service port 3000 
-      - Sets `NODE_ENV` to `production`
-      - Expects an image with `check` utility and Liveness/Readiness probes via `check` utility and env vars `LIVENESS_CHECK`/`READINESS_CHECK` set
-      - Simple tracing toggle `TRACING_ENABLED`
+        - Service port 3000
+        - Sets `NODE_ENV` to `production`
+        - Expects an image with `check` utility and Liveness/Readiness probes via `check` utility and env vars `LIVENESS_CHECK`/`READINESS_CHECK` set
+        - Simple tracing toggle `TRACING_ENABLED`
 
 # spring-service
 
@@ -41,7 +46,7 @@
 
 ## 5.1.1
 
-- Remove now unnecessary, confusing Helm chart labels on prom resources 
+- Remove now unnecessary, confusing Helm chart labels on prom resources
 
 ## 5.1.0
 
@@ -58,7 +63,7 @@
 
 ## 4.3.0
 
-- Support `extraAnnotations` under alertingRules primarily for pint. 
+- Support `extraAnnotations` under alertingRules primarily for pint.
 
 ## 4.2.1
 
