@@ -14,6 +14,35 @@
 {{- end -}}
 {{- end }}
 
+{{- define "get-httproute-primary-public-host" -}}
+{{- if eq $.Values.ingress.public.subDomain "." -}}
+{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
+{{- else -}}
+{{ $.Values.ingress.public.subDomain }}.{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
+{{- end -}}
+{{- end }}
+
+{{- define "is-public-httproute-defined" -}}
+{{ and $.Values.ingress.public.subDomain
+    (or $.Values.ingress.public.paths.allowAll
+        (not (and (empty $.Values.ingress.public.paths.prefixes) (empty $.Values.ingress.public.paths.exact)))
+    )
+}}
+{{- end }}
+
+{{- define "get-validated-hostname" -}}
+{{- $hostname := . | default "" -}}
+{{- if not (regexMatch `^(\*\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` $hostname) -}}
+{{- fail (printf "Invalid hostname: %s" $hostname) -}}
+{{- end -}}
+{{- $hostname -}}
+{{- end -}}
+
+{{- define "get-private-hostname" -}}
+{{- $hostname := printf "%s.internal.%s" .Release.Name (required "ingress.clusterDomain must be set!" .Values.ingress.clusterDomain) -}}
+{{- include "get-validated-hostname" $hostname -}}
+{{- end -}}
+
 {{- define "k8s.annotations" }}
 {{- $annotations := dict }}
 {{- if ne .Values.logging.collect true }}

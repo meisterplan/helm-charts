@@ -1,4 +1,5 @@
-{{- if (ne (include "is-ingress-public-defined" .) "false") }}
+{{- if (ne (include "is-public-httproute-defined" .) "false") }}
+{{- $primaryPublicHost := include "get-httproute-primary-public-host" . }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -10,30 +11,31 @@ spec:
       namespace: istio-system
       sectionName: https-public
   hostnames:
-  {{- range $host := (concat (list (include "get-ingress-primary-public-host" .)) .Values.ingress.public.additionalHosts) }}
-    - {{ $host | quote }}
-  {{- end }}
+    - {{ include "get-validated-hostname" $primaryPublicHost }}
+    {{- range $host := .Values.ingress.public.additionalHosts }}
+    - {{ include "get-validated-hostname" $host }}
+    {{- end }}
   rules:
   - matches:
-{{- if .Values.ingress.public.paths.allowAll }}
+    {{- if .Values.ingress.public.paths.allowAll }}
     - path:
         type: PathPrefix
         value: /
-{{- else }}
-{{- range $prefix := .Values.ingress.public.paths.prefixes }}
-{{- if eq $prefix "/" }}
-{{- fail "Prefixes may not contain /, please set allowAll: true explicitly!" }}
-{{- end }}
+    {{- else }}
+    {{- range $prefix := .Values.ingress.public.paths.prefixes }}
+    {{- if eq $prefix "/" }}
+    {{- fail "Prefixes may not contain /, please set allowAll: true explicitly!" }}
+    {{- end }}
     - path:
         type: PathPrefix
         value: {{ $prefix }}
-{{- end }}
-{{- range $exact := .Values.ingress.public.paths.exact }}
+    {{- end }}
+    {{- range $exact := .Values.ingress.public.paths.exact }}
     - path:
         type: Exact
         value: {{ $exact }}
-{{- end }}
-{{- end }}
+    {{- end }}
+    {{- end }}
     backendRefs:
       - name: {{ .Release.Name }}
         port: 80

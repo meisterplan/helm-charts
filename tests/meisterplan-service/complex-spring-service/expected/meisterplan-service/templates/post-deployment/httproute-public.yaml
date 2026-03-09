@@ -11,8 +11,8 @@ spec:
       namespace: istio-system
       sectionName: https-public
   hostnames:
-    - "mycompany.tld"
-    - "myservice.othercompany.tld"
+    - mycompany.tld
+    - myservice.othercompany.tld
   rules:
   - matches:
     - path:
