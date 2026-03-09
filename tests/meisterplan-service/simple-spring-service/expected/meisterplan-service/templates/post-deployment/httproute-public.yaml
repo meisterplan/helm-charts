@@ -1,0 +1,22 @@
+---
+# Source: meisterplan-service/templates/post-deployment/httproute-public.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: myservice-public
+  namespace: "team-supercool"
+spec:
+  parentRefs:
+    - name: mp-public
+      namespace: istio-system
+      sectionName: https-public
+  hostnames:
+    - "myservice.mycompany.tld"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+      - name: myservice
+        port: 80

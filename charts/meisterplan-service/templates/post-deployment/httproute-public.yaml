@@ -1,0 +1,40 @@
+{{- if (ne (include "is-ingress-public-defined" .) "false") }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}-public
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  parentRefs:
+    - name: mp-public
+      namespace: istio-system
+      sectionName: https-public
+  hostnames:
+  {{- range $host := (concat (list (include "get-ingress-primary-public-host" .)) .Values.ingress.public.additionalHosts) }}
+    - {{ $host | quote }}
+  {{- end }}
+  rules:
+  - matches:
+{{- if .Values.ingress.public.paths.allowAll }}
+    - path:
+        type: PathPrefix
+        value: /
+{{- else }}
+{{- range $prefix := .Values.ingress.public.paths.prefixes }}
+{{- if eq $prefix "/" }}
+{{- fail "Prefixes may not contain /, please set allowAll: true explicitly!" }}
+{{- end }}
+    - path:
+        type: PathPrefix
+        value: {{ $prefix }}
+{{- end }}
+{{- range $exact := .Values.ingress.public.paths.exact }}
+    - path:
+        type: Exact
+        value: {{ $exact }}
+{{- end }}
+{{- end }}
+    backendRefs:
+      - name: {{ .Release.Name }}
+        port: 80
+{{- end }}
