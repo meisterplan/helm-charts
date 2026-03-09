@@ -1,5 +1,11 @@
 # meisterplan-service
 
+## 1.1.0
+
+- Prepare for migration from Ingress to Gateway API
+    - Provide `HTTPRoute` alongside Ingress resource (basic functionalities only), use same definition for now in values.yaml
+        - not yet supported: OAuth2 protection and all `overwrite*` options
+
 ## 1.0.1
 
 - Fix wrong trimming of clusterDomain (could contain linebreaks previously)
