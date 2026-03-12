@@ -106,7 +106,7 @@
     secretKeyRef:
       name: {{ .Release.Name }}-external-secret
       key: "DATASOURCE_URL"
-- name: "DATASOURCE_RLS_USERNAME"
+- name: "DATASOURCE_USERNAME"
   valueFrom:
     secretKeyRef:
       name: {{ .Release.Name }}-external-secret
@@ -159,6 +159,7 @@
 {{- else if eq $platform "python" }}
 - name: "TRACING_ENABLED"
   value: "true"
+{{- else if eq $platform "nginx" }}
 {{- else }}{{ fail (printf "Platform %s: Envs not defined" $platform) }}
 {{- end }}
 {{- end }}

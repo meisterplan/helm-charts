@@ -1,0 +1,24 @@
+image:
+  repository: "123456789012.dkr.ecr.eu-central-1.amazonaws.com/my-python-service"
+  tag: "git-zyx"
+
+envName: "staging"
+
+platform:
+  python:
+    enabled: true
+
+ingress:
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: "my-python-service"
+
+podConfiguration:
+  resources:
+    memory: 256Mi
+    cpu:
+      guarantee: 100m
+
+prometheus:
+  scraping:
+    enabled: false
