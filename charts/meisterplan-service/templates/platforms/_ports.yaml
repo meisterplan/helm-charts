@@ -2,6 +2,8 @@
 {{- $platform := include "get-platform" . }}
 {{- if eq $platform "spring" }}8080
 {{- else if eq $platform "nodejs" }}3000
+{{- else if eq $platform "python" }}8080
+{{- else if eq $platform "nginx" }}8080
 {{- else }}{{ fail (printf "Platform %s: Service Port not defined" $platform) }}
 {{- end }}
 {{- end }}
@@ -13,6 +15,17 @@
   protocol: TCP
   name: management
 {{- else if eq $platform "nodejs" }}
+- containerPort: 3001
+  protocol: TCP
+  name: management
+{{- else if eq $platform "python" }}
+- containerPort: 8081
+  protocol: TCP
+  name: management
+{{- else if eq $platform "nginx" }}
+- containerPort: 8081
+  protocol: TCP
+  name: management
 {{- else }}{{ fail (printf "Platform %s: Additional Container Ports not defined" $platform) }}
 {{- end }}
 {{- end }}
