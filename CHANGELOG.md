@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.2.1
+
+- Add default header sanitation rules for responses
+
 ## 1.2.0
 
 - Offer extra platform variants for node, python, nginx. Configurabilities are currently limited to the most basic things.
