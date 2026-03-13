@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.2.2
+
+- Fix header sanitation rules
+
 ## 1.2.1
 
 - Add default header sanitation rules for responses
