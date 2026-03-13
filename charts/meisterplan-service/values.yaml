@@ -22,6 +22,14 @@ platform:
       oAuth2PublicKey: true # set to false if this is a service that doesn't handle Authenticorn Tokens/requires no Authenticorn cert
   nodejs:
     enabled: false
+    env:
+      datasourceFromSecretWithRLS: "" # "rds/templatetiger"
+      rabbitMQSecret: false # set to true if the service needs RabbitMQ
+      oAuth2PublicKey: false # opt in if you want to validate Authenticorn Tokens
+  python:
+    enabled: false
+  nginx:
+    enabled: false
 
 sentry:
   enabled: true # set to false if you don't have a Sentry DSN

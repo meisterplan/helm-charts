@@ -121,52 +121,52 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_DATASOURCE_URL"
+                  key: "DATASOURCE_URL"
             - name: "SPRING_DATASOURCE_USERNAME"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_DATASOURCE_USERNAME"
+                  key: "DATASOURCE_USERNAME"
             - name: "SPRING_DATASOURCE_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_DATASOURCE_PASSWORD"
+                  key: "DATASOURCE_PASSWORD"
             - name: "SPRING_FLYWAY_URL"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_DATASOURCE_URL"
+                  key: "DATASOURCE_URL"
             - name: "SPRING_FLYWAY_USER"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_FLYWAY_USER"
+                  key: "DATASOURCE_PRIVILEGED_CONNECTION_USER"
             - name: "SPRING_FLYWAY_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_FLYWAY_PASSWORD"
+                  key: "DATASOURCE_PRIVILEGED_CONNECTION_PASSWORD"
             - name: "SPRING_RABBITMQ_HOST"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_RABBITMQ_HOST"
+                  key: "RABBITMQ_HOST"
             - name: "SPRING_RABBITMQ_SSL_ENABLED"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_RABBITMQ_SSL_ENABLED"
+                  key: "RABBITMQ_SSL_ENABLED"
             - name: "SPRING_RABBITMQ_USERNAME"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_RABBITMQ_USERNAME"
+                  key: "RABBITMQ_USERNAME"
             - name: "SPRING_RABBITMQ_PASSWORD"
               valueFrom:
                 secretKeyRef:
                   name: myservice-external-secret
-                  key: "SPRING_RABBITMQ_PASSWORD"
+                  key: "RABBITMQ_PASSWORD"
             - name: "SERVICE_OAUTH2_PUBLIC_KEY"
               valueFrom:
                 secretKeyRef:

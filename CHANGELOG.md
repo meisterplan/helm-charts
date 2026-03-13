@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.2.0
+
+- Offer extra platform variants for node, python, nginx. Configurabilities are currently limited to the most basic things.
+
 ## 1.1.0
 
 - Prepare for migration from Ingress to Gateway API

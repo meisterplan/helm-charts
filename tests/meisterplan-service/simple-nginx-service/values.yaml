@@ -1,0 +1,22 @@
+image:
+  repository: "123456789012.dkr.ecr.eu-central-1.amazonaws.com/my-nginx-service"
+  tag: "git-3141592653589793238462384626433832795"
+
+envName: "staging"
+
+platform:
+  nginx:
+    enabled: true
+
+ingress:
+  clusterDomain: "mycompany.tld"
+  public:
+    subDomain: "my-nginx-service"
+
+prometheus:
+  scraping:
+    enabled: false
+
+podConfiguration:
+  env:
+    copyOwnExternalBaseURLIn: "SERVICE_MYSERVICE_BASE_URL"
