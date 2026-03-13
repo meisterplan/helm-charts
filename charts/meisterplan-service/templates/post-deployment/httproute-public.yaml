@@ -39,4 +39,33 @@ spec:
     backendRefs:
       - name: {{ .Release.Name }}
         port: 80
+    filters:
+      responseHeaderModifier:
+        remove:
+          - "Server"
+          - "X-Application-Context"
+          - "X-Powered-By"
+          - "Strict-Transport-Security"
+          - "Content-Security-Policy"
+          - "X-Content-Type-Options"
+          - "Referrer-Policy"
+          - "X-Robots-Tag"
+        add:
+          # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+          # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
+          - name: "Content-Security-Policy"
+            value: "frame-ancestors 'self' {{ .Values.ingress.clusterDomain }}"
+          # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+          - name: "X-Content-Type-Options"
+            value: "nosniff"
+          # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+          - name: "Referrer-Policy"
+            value: "strict-origin-when-cross-origin"
+          # See https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=de#directives
+          - name: "X-Robots-Tag"
+            value: "noindex, nofollow"
+          # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+          - name: "Strict-Transport-Security"
+            value: "max-age=31536000; includeSubDomains; preload"
+
 {{- end }}
