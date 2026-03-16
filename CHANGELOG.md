@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.3.0
+
+- Add Gateway API support for oauth2-proxy
+
 ## 1.2.2
 
 - Fix header sanitation rules
