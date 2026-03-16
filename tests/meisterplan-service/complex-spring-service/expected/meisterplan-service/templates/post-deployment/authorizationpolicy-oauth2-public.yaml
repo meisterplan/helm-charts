@@ -1,0 +1,22 @@
+---
+# Source: meisterplan-service/templates/post-deployment/authorizationpolicy-oauth2-public.yaml
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: myservice-oauth2-public
+  namespace: "istio-system"
+  # must use the gateway namespace unless L7 proxies are available (afaiu waypoints or sidecar mode)
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: mp-public
+  action: CUSTOM
+  provider:
+    name: oauth2-proxy
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - mycompany.tld
+              - myservice.othercompany.tld

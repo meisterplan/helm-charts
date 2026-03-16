@@ -43,6 +43,7 @@ ingress:
       exact: [] # a list of exact path matches to be made publicly available
       prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
     additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
+    oauth2ProxyProtected: false # set to true if the public host should only be accessible with Entra Dev Platform access
   # Optional parameters for EOL nginx ingress controller annotations:
   # overwriteRequestRetries: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-stream-next-upstream-tries
   # overwriteCustomHttpErrors: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#custom-http-errors
