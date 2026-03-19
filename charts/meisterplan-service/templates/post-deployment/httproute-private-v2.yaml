@@ -1,0 +1,23 @@
+{{- if false }}
+{{/* Enable me with v2.0.0 */}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Release.Name }}-private
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  parentRefs:
+    - name: mp-private
+      namespace: istio-system
+      sectionName: https-private
+  hostnames:
+    - {{ include "get-private-hostname" . }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ .Release.Name }}
+          port: 80
+{{- end }}
