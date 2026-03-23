@@ -51,10 +51,7 @@ spec:
             - name: "Content-Security-Policy"
               value: "frame-ancestors 'self' {{ $.Values.routing.clusterDomain }}"
       {{- if $route.customErrorCodes }}
-      # add header to control our error-pages filter
-      - type: ResponseHeaderModifier
-        responseHeaderModifier:
-          set:
+            # add header to control our error-pages filter
             - name: "x-custom-error-handling"
               value: {{ join "," $route.customErrorHandling }}
       {{- end }}
