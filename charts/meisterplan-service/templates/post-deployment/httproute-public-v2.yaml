@@ -5,8 +5,8 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ .Release.Name }}-{{ $routeName }}
-  namespace: "{{ .Release.Namespace }}"
+  name: {{ $.Release.Name }}-{{ $routeName }}
+  namespace: "{{ $.Release.Namespace }}"
 spec:
   parentRefs:
     - name: mp-public
@@ -14,7 +14,7 @@ spec:
       sectionName: https-public
   hostnames:
     {{- range $host := $route.hostnames }}
-    - {{ include "validate-hostname" (replace "$clusterDomain" .Values.route.clusterDomain $host) }}
+    - {{ include "validate-hostname" (replace "$clusterDomain" $.Values.routing.clusterDomain $host) }}
     {{- end }}
   rules:
   - matches:
@@ -38,7 +38,7 @@ spec:
     {{- end }}
     {{- end }}
     backendRefs:
-      - name: {{ .Release.Name }}
+      - name: {{ $.Release.Name }}
         port: 80
     filters:
       # We enforce the CSP header here explicitly so that backends can't overwrite it unintentionally. This is necessary because we have a "soft overwrite" in
@@ -49,7 +49,7 @@ spec:
             # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
-              value: "frame-ancestors 'self' {{ .Values.route.clusterDomain }}"
+              value: "frame-ancestors 'self' {{ $.Values.routing.clusterDomain }}"
       {{- if $route.customErrorCodes }}
       # add header to control our error-pages filter
       - type: ResponseHeaderModifier
@@ -59,7 +59,7 @@ spec:
               value: {{ join "," $route.customErrorHandling }}
       {{- end }}
     {{- if $route.timeouts }}
-    {{ toYaml $route.timeouts }}
+    timeouts:{{ toYaml $route.timeouts | nindent 6 }}
     {{- end }}
 {{- end }}
 {{- end }}

@@ -51,8 +51,9 @@ ingress:
   # overwriteCustomBodySize: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
 
 # Proposed structure for future Gateway API support
-route:
+routing:
   clusterDomain: "" # domain of the cluster, e.g., meisterplan.io
+route:
   public:
     enabled: false
     hostnames:
