@@ -71,10 +71,7 @@ route:
               - source:
                   notRemoteIpBlocks:
                     - 1.2.3.4
-            to:
-              - operation:
-                  hosts:
-                    - my-service.$clusterDomain
+          # Note that each block will be automatically scoped to the given hostnames as `to.operation.hosts`
     timeouts: # https://gateway-api.sigs.k8s.io/reference/spec/#httproutetimeouts
       request: 30s
       backendRequest: 30s

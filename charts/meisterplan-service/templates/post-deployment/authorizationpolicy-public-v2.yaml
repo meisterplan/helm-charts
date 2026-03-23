@@ -23,12 +23,18 @@ spec:
               {{- range $host := .Values.route.public.hostnames }}
               - {{ include "validate-hostname" (replace "$clusterDomain" .Values.route.clusterDomain $host) }}
               {{- end }}
-  {{- else if eq $authorization.type "ALLOW" }}
-  action: ALLOW
-  rules: {{ toYaml $authorization.rules }}
-  {{- else if eq $authorization.type "DENY" }}
-  action: DENY
-  rules: {{ toYaml $authorization.rules }}
+  {{- else if has $authorization.type (list "ALLOW" "DENY") }}
+  action: {{ $authorization.type }}
+  rules:
+  {{- range $rule := $authorization.rules }}
+    - {{ toYaml $rule }}
+      to:
+        - operation:
+            hosts:
+              {{- range $host := .Values.route.public.hostnames }}
+              - {{ include "validate-hostname" (replace "$clusterDomain" .Values.route.clusterDomain $host) }}
+              {{- end }}
+  {{- end }}
   {{- else }}
     {{ fail (printf "Unknown authorization type: %s" $authorization.type) }}
   {{- end }}
