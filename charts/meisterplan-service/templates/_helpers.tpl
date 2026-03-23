@@ -30,18 +30,17 @@
 }}
 {{- end }}
 
-{{- define "get-validated-hostname" -}}
-{{- $hostname := . | default "" -}}
-{{- if not (regexMatch `^(\*\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` $hostname) -}}
-{{- fail (printf "Invalid hostname: %s" $hostname) -}}
-{{- end -}}
-{{- $hostname -}}
-{{- end -}}
+{{- define "validate-hostname" }}
+{{- $hostname := . | default "" }}
+{{- if not (regexMatch `^(\*\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` $hostname) }}
+    {{ fail (printf "Invalid hostname: %s" $hostname) }}
+{{- end }}
+    {{- $hostname }}
+{{- end }}
 
-{{- define "get-private-hostname" -}}
-{{- $hostname := printf "%s.internal.%s" .Release.Name (required "ingress.clusterDomain must be set!" .Values.ingress.clusterDomain) -}}
-{{- include "get-validated-hostname" $hostname -}}
-{{- end -}}
+{{- define "get-private-hostname" }}
+{{- include "validate-hostname" (printf "%s.internal.%s" .Release.Name (required "ingress.clusterDomain must be set!" .Values.ingress.clusterDomain)) }}
+{{- end }}
 
 {{- define "k8s.annotations" }}
 {{- $annotations := dict }}

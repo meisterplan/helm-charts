@@ -1,43 +1,44 @@
-{{- if (ne (include "is-public-httproute-defined" .) "false") }}
-{{- $primaryPublicHost := include "get-httproute-primary-public-host" . }}
+{{- if false }}
+{{/* Enable me with v2.0.0 */}}
+{{- range $routeName, $route := .Values.route }}
+{{- if $route.enabled }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: {{ .Release.Name }}-public
-  namespace: "{{ .Release.Namespace }}"
+  name: {{ $.Release.Name }}-{{ $routeName }}
+  namespace: "{{ $.Release.Namespace }}"
 spec:
   parentRefs:
     - name: mp-public
       namespace: istio-system
       sectionName: https-public
   hostnames:
-    - {{ include "validate-hostname" $primaryPublicHost }}
-    {{- range $host := .Values.ingress.public.additionalHosts }}
-    - {{ include "validate-hostname" $host }}
+    {{- range $host := $route.hostnames }}
+    - {{ include "validate-hostname" (replace "$clusterDomain" $.Values.routing.clusterDomain $host) }}
     {{- end }}
   rules:
   - matches:
-    {{- if .Values.ingress.public.paths.allowAll }}
+    {{- if $route.paths.allowAll }}
     - path:
         type: PathPrefix
         value: /
     {{- else }}
-    {{- range $prefix := .Values.ingress.public.paths.prefixes }}
-    {{- if eq $prefix "/" }}
-    {{ fail "Prefixes may not contain /, please set allowAll: true explicitly!" }}
-    {{- end }}
+    {{- range $prefix := $route.paths.prefixes }}
+      {{- if eq $prefix "/" }}
+      {{ fail "Prefixes may not contain /, please set allowAll: true explicitly!" }}
+      {{- end }}
     - path:
         type: PathPrefix
         value: {{ $prefix }}
     {{- end }}
-    {{- range $exact := .Values.ingress.public.paths.exact }}
+    {{- range $exact := $route.paths.exact }}
     - path:
         type: Exact
         value: {{ $exact }}
     {{- end }}
     {{- end }}
     backendRefs:
-      - name: {{ .Release.Name }}
+      - name: {{ $.Release.Name }}
         port: 80
     filters:
       # We enforce the CSP header here explicitly so that backends can't overwrite it unintentionally. This is necessary because we have a "soft overwrite" in
@@ -48,17 +49,18 @@ spec:
             # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
-              value: "frame-ancestors 'self' {{ .Values.ingress.clusterDomain }}"
-      {{- if .Values.ingress.overwriteCustomHttpErrors }}
+              value: "frame-ancestors 'self' {{ $.Values.routing.clusterDomain }}"
+      {{- if $route.customErrorCodes }}
       # add header to control our error-pages filter
       - type: ResponseHeaderModifier
         responseHeaderModifier:
           set:
             - name: "x-custom-error-handling"
-              value: {{ .Values.ingress.overwriteCustomHttpErrors }}
+              value: {{ join "," $route.customErrorHandling }}
       {{- end }}
-    {{- if .Values.ingress.overwriteProxyReadTimeout }}
-    timeouts:
-      backendRequest: {{ .Values.ingress.overwriteProxyReadTimeout }}
+    {{- if $route.timeouts }}
+    timeouts:{{ toYaml $route.timeouts | nindent 6 }}
     {{- end }}
+{{- end }}
+{{- end }}
 {{- end }}

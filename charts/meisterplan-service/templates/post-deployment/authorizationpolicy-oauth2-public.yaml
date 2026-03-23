@@ -18,8 +18,8 @@ spec:
     - to:
         - operation:
             hosts:
-              - {{ include "get-validated-hostname" $primaryPublicHost }}
+              - {{ include "validate-hostname" $primaryPublicHost }}
               {{- range $host := .Values.ingress.public.additionalHosts }}
-              - {{ include "get-validated-hostname" $host }}
+              - {{ include "validate-hostname" $host }}
               {{- end }}
 {{- end }}

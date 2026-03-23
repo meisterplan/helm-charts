@@ -1,0 +1,48 @@
+{{- if false }}
+{{/* Enable me with v2.0.0 */}}
+{{- range $routeName, $route := .Values.route }}
+{{- if $route.enabled }}
+{{- range $authorization := $route.authorization }}
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: {{ $.Release.Name }}-{{ $routeName }}-{{ if eq $authorization.type "oauth2" }}oauth2{{ else }}{{ required "Special authorization needs a name" $authorization.name | lower }}{{ end }}
+  namespace: "istio-system"
+  # must use the gateway namespace unless L7 proxies are available (afaiu waypoints or sidecar mode)
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: mp-public
+  {{- if eq (lower $authorization.type) "oauth2" }}
+  action: CUSTOM
+  provider:
+    name: oauth2-proxy
+  rules:
+    - to:
+        - operation:
+            hosts:
+              {{- range $host := $route.hostnames }}
+              - {{ include "validate-hostname" (replace "$clusterDomain" $.Values.routing.clusterDomain $host) }}
+              {{- end }}
+  {{- else if has $authorization.type (list "ALLOW" "DENY") }}
+  action: {{ $authorization.type }}
+  rules:
+  {{- range $rule := $authorization.rules }}
+    - {{ toYaml $rule | nindent 6 }}
+      to:
+        - operation:
+            hosts:
+              {{- range $host := $route.hostnames }}
+              - {{ include "validate-hostname" (replace "$clusterDomain" $.Values.routing.clusterDomain $host) }}
+              {{- end }}
+
+  {{- end }}
+  {{- else }}
+    {{ fail (printf "Unknown authorization type: %s" $authorization.type) }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

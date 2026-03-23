@@ -1,5 +1,10 @@
 # meisterplan-service
 
+## 1.4.0
+
+- Draft native configuration for Gateway API (prepare 2.0.0)
+- Implement migration for old ingress features during migration
+
 ## 1.3.1
 
 - Simplify unnecessary header sanitation rules again

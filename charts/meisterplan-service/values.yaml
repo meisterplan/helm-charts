@@ -50,6 +50,33 @@ ingress:
   # overwriteProxyReadTimeout: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-read-timeout
   # overwriteCustomBodySize: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
 
+# Proposed structure for future Gateway API support
+routing:
+  clusterDomain: "" # domain of the cluster, e.g., meisterplan.io
+route:
+  public:
+    enabled: false
+    hostnames:
+      - my-service.$clusterDomain
+    paths:
+      allowAll: false # set to true to blanket allow all paths to be publicly accessible
+      exact: [] # a list of exact path matches to be made publicly available
+      prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
+    authorization:
+      - type: oauth2 # type can be "oauth2" for a full oauth2-proxy configuration for all hostnames
+      # special configuration when you know exactly what you're doing
+      - type: DENY # DENY to deny when any rule matches, ALLOW to allow *only* when any rule matches
+        name: "deny-evil-ip"
+        rules: # https://istio.io/latest/docs/reference/config/security/authorization-policy/#Rule
+          - from:
+              - source:
+                  notRemoteIpBlocks:
+                    - 1.2.3.4
+          # Note that each block will be automatically scoped to the given hostnames as `to.operation.hosts`
+    timeouts: # https://gateway-api.sigs.k8s.io/reference/spec/#httproutetimeouts
+      request: 30s
+      backendRequest: 30s
+
 deployment:
   # how many pods (= running instances of the service) to launch in parallel
   replicaCount: 2
