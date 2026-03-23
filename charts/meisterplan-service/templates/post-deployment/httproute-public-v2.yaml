@@ -50,6 +50,14 @@ spec:
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
               value: "frame-ancestors 'self' {{ .Values.route.clusterDomain }}"
+      {{- if $route.customErrorCodes }}
+      # add header to control our error-pages filter
+      - type: ResponseHeaderModifier
+        responseHeaderModifier:
+          set:
+            - name: "x-custom-error-handling"
+              value: {{ join "," $route.customErrorHandling }}
+      {{- end }}
     {{- if $route.timeouts }}
     {{ toYaml $route.timeouts }}
     {{- end }}

@@ -49,6 +49,14 @@ spec:
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
               value: "frame-ancestors 'self' {{ .Values.ingress.clusterDomain }}"
+      {{- if .Values.ingress.overwriteCustomHttpErrors }}
+      # add header to control our error-pages filter
+      - type: ResponseHeaderModifier
+        responseHeaderModifier:
+          set:
+            - name: "x-custom-error-handling"
+              value: {{ .Values.ingress.overwriteCustomHttpErrors }}
+      {{- end }}
     {{- if .Values.ingress.overwriteProxyReadTimeout }}
     timeouts:
       backendRequest: {{ .Values.ingress.overwriteProxyReadTimeout }}
