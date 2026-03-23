@@ -76,6 +76,7 @@ route:
     timeouts: # https://gateway-api.sigs.k8s.io/reference/spec/#httproutetimeouts
       request: 30s
       backendRequest: 30s
+      # customErrorHandling: [] # default: [404, 500, 502, 503, 504] can be set to explicitly define which HTTP status codes should be returned with fancy error pages
 
 deployment:
   # how many pods (= running instances of the service) to launch in parallel

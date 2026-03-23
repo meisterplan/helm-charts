@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.4.1
+
+- Fix issue when `overwriteCustomHttpErrors` is set 
+
 ## 1.4.0
 
 - Draft native configuration for Gateway API (prepare 2.0.0)
