@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 1.4.2
+
+- Fix issue when secrets would be created without content
+
 ## 1.4.1
 
 - Fix issue when `overwriteCustomHttpErrors` is set 

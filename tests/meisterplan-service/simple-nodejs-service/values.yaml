@@ -28,3 +28,6 @@ prometheus:
   scraping:
     port: service
     path: /metrics
+
+sentry:
+  enabled: false
