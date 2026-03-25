@@ -109,12 +109,6 @@ spec:
                 configMapKeyRef:
                   name: tracing
                   key: otlp-endpoint
-            # Sentry
-            - name: 'SENTRY_DSN'
-              valueFrom:
-                secretKeyRef:
-                  name: myservice-external-secret
-                  key: "SENTRY_DSN"
 
                         
             - name: "NODE_ENV"
