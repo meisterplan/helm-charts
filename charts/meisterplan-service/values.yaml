@@ -34,49 +34,36 @@ platform:
 sentry:
   enabled: true # set to false if you don't have a Sentry DSN
 
-ingress:
-  clusterDomain: "" # domain of the cluster, e.g. meisterplan.io
-  public:
-    subDomain: "" # subdomain under which endpoints will be publicly available
-    paths:
-      allowAll: false # set to true to blanket allow all paths to be publicly accessible
-      exact: [] # a list of exact path matches to be made publicly available
-      prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
-    additionalHosts: [] # the list of (full) host names under which the publicPathPrefixes will be available as well
-    oauth2ProxyProtected: false # set to true if the public host should only be accessible with Entra Dev Platform access
-  # Optional parameters for EOL nginx ingress controller annotations:
-  # overwriteRequestRetries: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-stream-next-upstream-tries
-  # overwriteCustomHttpErrors: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#custom-http-errors
-  # overwriteProxyReadTimeout: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-read-timeout
-  # overwriteCustomBodySize: "" # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#proxy-body-size
-
-# Proposed structure for future Gateway API support
+# Kubernetes Gateway API support: https://kubernetes.io/docs/concepts/services-networking/gateway/
 routing:
   clusterDomain: "" # domain of the cluster, e.g., meisterplan.io
 route:
   public:
     enabled: false
     hostnames:
-      - my-service.$clusterDomain
+      - my-service.$clusterDomain # $clusterDomain is required and automatically replaced with the value of `routing.clusterDomain`
     paths:
       allowAll: false # set to true to blanket allow all paths to be publicly accessible
       exact: [] # a list of exact path matches to be made publicly available
       prefixes: [] # list of prefixes with which the path must start to be made publicly available (must not contain "/")
-    authorization:
-      - type: oauth2 # type can be "oauth2" for a full oauth2-proxy configuration for all hostnames
+    authorization: []
+      # Examples:
+      # - type: oauth2 # type can be "oauth2" for a full oauth2-proxy configuration for all hostnames
       # special configuration when you know exactly what you're doing
-      - type: DENY # DENY to deny when any rule matches, ALLOW to allow *only* when any rule matches
-        name: "deny-evil-ip"
-        rules: # https://istio.io/latest/docs/reference/config/security/authorization-policy/#Rule
-          - from:
-              - source:
-                  notRemoteIpBlocks:
-                    - 1.2.3.4
-          # Note that each block will be automatically scoped to the given hostnames as `to.operation.hosts`
-    timeouts: # https://gateway-api.sigs.k8s.io/reference/spec/#httproutetimeouts
-      request: 30s
-      backendRequest: 30s
-      # customErrorHandling: [] # default: [404, 500, 502, 503, 504] can be set to explicitly define which HTTP status codes should be returned with fancy error pages
+      # - type: DENY # DENY to deny when any rule matches, ALLOW to allow *only* when any rule matches
+      #   name: "deny-evil-ip"
+      #   rules: # https://istio.io/latest/docs/reference/config/security/authorization-policy/#Rule
+      #     - from:
+      #         - source:
+      #             notRemoteIpBlocks:
+      #               - 1.2.3.4
+      #   (Note that each block will be automatically scoped to the given hostnames as `to.operation.hosts`)
+    timeouts: {} # https://gateway-api.sigs.k8s.io/reference/spec/#httproutetimeouts
+      # Examples:
+      # request: 30s
+      # backendRequest: 30s
+    # replaceErrorPageOnStatus: [] # default: [404, 500, 502, 503, 504]
+      # This defines on which HTTP response status codes the response is replaced with fancy default error page
 
 deployment:
   # how many pods (= running instances of the service) to launch in parallel
@@ -86,7 +73,7 @@ deployment:
 # configuration of each pod that contains the concrete service container
 podConfiguration:
   env:
-    # name of env variable that should also receive the external base url
+    # name of env variable that should also receive the external base url (i.e., first hostname of public route)
     # copyOwnExternalBaseURLIn: "SERVICE_BASE_URL_EXTERNAL"
 
     fromSecret: {}

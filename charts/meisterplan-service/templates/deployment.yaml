@@ -141,9 +141,11 @@ spec:
             {{- end }}
 
             {{ include "get-platform-envs" . | indent 12 }}
-            {{- if and .Values.podConfiguration.env.copyOwnExternalBaseURLIn (ne (include "is-ingress-public-defined" .) "false") }}
+            {{- if and .Values.podConfiguration.env.copyOwnExternalBaseURLIn .Values.route.public.enabled }}
             - name: "{{ .Values.podConfiguration.env.copyOwnExternalBaseURLIn }}"
-              value: "https://{{ include "get-ingress-primary-public-host" . }}"
+              {{- with (first .Values.route.public.hostnames) }}
+              value: "https://{{ replace "$clusterDomain" $.Values.routing.clusterDomain . }}"
+              {{- end }}
             {{- end }}
             {{- range $key, $value := .Values.podConfiguration.env.fromSecret }}
             - name: "{{ $key }}"

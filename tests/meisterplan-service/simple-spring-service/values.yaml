@@ -11,13 +11,17 @@ platform:
       rabbitMQSecret: true
       oAuth2PublicKey: false
 
-ingress:
+routing:
   clusterDomain: "mycompany.tld"
+route:
   public:
-    subDomain: "myservice"
+    enabled: true
+    hostnames:
+      - myservice.$clusterDomain
     paths:
       allowAll: true
-  overwriteCustomHttpErrors: "502"
+    replaceErrorPageOnStatus:
+    - 502
 
 deployment:
   replicaCount: 5

@@ -1,9 +1,9 @@
 ---
-# Source: meisterplan-service/templates/post-deployment/authorizationpolicy-oauth2-public.yaml
+# Source: meisterplan-service/templates/post-deployment/authorizationpolicy-public.yaml
 apiVersion: security.istio.io/v1
 kind: AuthorizationPolicy
 metadata:
-  name: myservice-oauth2-public
+  name: myservice-public-oauth2
   namespace: "istio-system"
   # must use the gateway namespace unless L7 proxies are available (afaiu waypoints or sidecar mode)
 spec:

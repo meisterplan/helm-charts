@@ -13,21 +13,23 @@ platform:
 sentry:
   enabled: false
 
-ingress:
+routing:
   clusterDomain: "mycompany.tld"
+route:
   public:
-    subDomain: .
+    enabled: true
+    hostnames:
+      - "$clusterDomain"
+      - "myservice.othercompany.tld"
     paths:
       prefixes:
         - /api/v1/public
       exact:
         - /welcome
         - /index.html
-    additionalHosts:
-      - "myservice.othercompany.tld"
-    oauth2ProxyProtected: true
-  overwriteCustomHttpErrors: "502"
-  overwriteRequestRetries: 420
+    authorization:
+      - type: oauth2
+    replaceErrorPageOnStatus: ["404", "502"]
 
 deployment:
   replicaCount: 5
