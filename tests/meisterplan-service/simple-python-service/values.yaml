@@ -8,10 +8,12 @@ platform:
   python:
     enabled: true
 
-ingress:
+routing:
   clusterDomain: "mycompany.tld"
+route:
   public:
-    subDomain: "my-python-service"
+    hostnames:
+      - "my-python-service.$clusterDomain"
 
 podConfiguration:
   resources:

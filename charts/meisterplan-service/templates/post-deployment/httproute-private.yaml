@@ -11,10 +11,10 @@ spec:
   hostnames:
     - {{ include "get-private-hostname" . }}
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-      - name: {{ .Release.Name }}
-        port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ .Release.Name }}
+          port: 80

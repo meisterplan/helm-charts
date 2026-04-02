@@ -1,5 +1,3 @@
-{{- if false }}
-{{/* Enable me with v2.0.0 */}}
 {{- range $routeName, $route := .Values.route }}
 {{- if $route.enabled }}
 {{- range $authorization := $route.authorization }}
@@ -42,7 +40,6 @@ spec:
   {{- else }}
     {{ fail (printf "Unknown authorization type: %s" $authorization.type) }}
   {{- end }}
-{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -8,10 +8,13 @@ platform:
   nodejs:
     enabled: true
 
-ingress:
+routing:
   clusterDomain: "mycompany.tld"
+route:
   public:
-    subDomain: "my-node-service"
+    enabled: true
+    hostnames:
+      - my-node-service.$clusterDomain
     paths:
       prefixes:
         - /assets

@@ -13,10 +13,10 @@ spec:
   hostnames:
     - myservice.internal.mycompany.tld
   rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-    backendRefs:
-      - name: myservice
-        port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: myservice
+          port: 80

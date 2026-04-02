@@ -8,10 +8,12 @@ platform:
   nginx:
     enabled: true
 
-ingress:
+routing:
   clusterDomain: "mycompany.tld"
+route:
   public:
-    subDomain: "my-nginx-service"
+    hostnames:
+      - my-nginx-service.$clusterDomain
 
 prometheus:
   scraping:

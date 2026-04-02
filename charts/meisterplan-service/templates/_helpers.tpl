@@ -1,35 +1,3 @@
-{{- define "is-ingress-public-defined" -}}
-{{ and $.Values.ingress.public.subDomain
-    (or $.Values.ingress.public.paths.allowAll
-        (not (and (empty $.Values.ingress.public.paths.prefixes) (empty $.Values.ingress.public.paths.exact)))
-    )
-}}
-{{- end }}
-
-{{- define "get-ingress-primary-public-host" -}}
-{{- if eq $.Values.ingress.public.subDomain "." -}}
-{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{- else -}}
-{{ $.Values.ingress.public.subDomain }}.{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{- end -}}
-{{- end }}
-
-{{- define "get-httproute-primary-public-host" -}}
-{{- if eq $.Values.ingress.public.subDomain "." -}}
-{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{- else -}}
-{{ $.Values.ingress.public.subDomain }}.{{ required "ingress.clusterDomain must be set!" $.Values.ingress.clusterDomain }}
-{{- end -}}
-{{- end }}
-
-{{- define "is-public-httproute-defined" -}}
-{{ and $.Values.ingress.public.subDomain
-    (or $.Values.ingress.public.paths.allowAll
-        (not (and (empty $.Values.ingress.public.paths.prefixes) (empty $.Values.ingress.public.paths.exact)))
-    )
-}}
-{{- end }}
-
 {{- define "validate-hostname" }}
 {{- $hostname := . | default "" }}
 {{- if not (regexMatch `^(\*\.)?[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$` $hostname) }}
@@ -39,7 +7,7 @@
 {{- end }}
 
 {{- define "get-private-hostname" }}
-{{- include "validate-hostname" (printf "%s.internal.%s" .Release.Name (required "ingress.clusterDomain must be set!" .Values.ingress.clusterDomain)) }}
+{{- include "validate-hostname" (printf "%s.internal.%s" .Release.Name (required "routing.clusterDomain must be set!" .Values.routing.clusterDomain)) }}
 {{- end }}
 
 {{- define "k8s.annotations" }}

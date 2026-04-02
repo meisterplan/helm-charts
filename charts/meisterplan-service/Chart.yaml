@@ -1,4 +1,4 @@
 apiVersion: v1
 name: meisterplan-service
 description: A generalized deployment for Meisterplan services in Kubernetes.
-version: 1.4.2
+version: 2.0.0

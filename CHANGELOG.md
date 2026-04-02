@@ -1,5 +1,12 @@
 # meisterplan-service
 
+## 2.0.0
+
+- Drop old `ingress` configuration in favor of `route` for Gateway API
+  - Compute env "External Base URL" from first hostname of `route.public`
+  - Fail fast on creation of empty routes without `allowAll: true`
+  - Fail fast on attempts to overwrite the private route
+
 ## 1.4.2
 
 - Fix issue when secrets would be created without content
