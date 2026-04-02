@@ -147,6 +147,14 @@ entries:
     version: 1.0.0
   meisterplan-service:
   - apiVersion: v1
+    created: "2026-04-02T12:43:25.867744664Z"
+    description: A generalized deployment for Meisterplan services in Kubernetes.
+    digest: b6365c1a6fc6cdfa012cde8fe8dd4a7a74958153e0523bc5a7c8ef91e1bdfbc1
+    name: meisterplan-service
+    urls:
+    - https://github.com/meisterplan/helm-charts/releases/download/meisterplan-service-2.0.0/meisterplan-service-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v1
     created: "2026-03-25T14:01:24.386514172Z"
     description: A generalized deployment for Meisterplan services in Kubernetes.
     digest: b50ba0159819e00fafc9160bc28a1c14f689bc0b0825f4b8e640a63548577511
@@ -685,4 +693,4 @@ entries:
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-25T14:01:24.387064724Z"
+generated: "2026-04-02T12:43:25.86819453Z"
