@@ -102,13 +102,6 @@ spec:
                 configMapKeyRef:
                   name: region
                   key: disaster-recovery-test
-
-            # Tracing environment configuration (Spring Boot 3.4+)
-            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
-              valueFrom:
-                configMapKeyRef:
-                  name: tracing
-                  key: otlp-endpoint
             # Sentry
             - name: 'SENTRY_DSN'
               valueFrom:

@@ -3,6 +3,11 @@
 {{- if eq $platform "spring" }}
 - name: "SPRING_PROFILES_ACTIVE"
   value: "prod,tracing"
+- name: "MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT" # Spring Boot 4.0+
+  valueFrom:
+    configMapKeyRef:
+      name: tracing
+      key: otlp-endpoint
   {{- if .Values.platform.spring.env.datasourceFromSecret }}
 - name: "SPRING_DATASOURCE_URL"
   valueFrom:
