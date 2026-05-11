@@ -112,3 +112,8 @@ spec:
                         
             - name: "TRACING_ENABLED"
               value: "true"
+            - name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+              valueFrom:
+                configMapKeyRef:
+                  name: tracing
+                  key: otlp-endpoint

@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.0.1
+
+- Fix tracing endpoint property missing in node and python
+
 ## 3.0.0
 
 - Change tracing property for Spring Boot 4.0
