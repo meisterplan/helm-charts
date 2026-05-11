@@ -105,6 +105,11 @@
   value: "production"
 - name: "TRACING_ENABLED"
   value: "true"
+- name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+  valueFrom:
+    configMapKeyRef:
+      name: tracing
+      key: otlp-endpoint
   {{- if .Values.platform.nodejs.env.datasourceFromSecretWithRLS }}
 - name: "DATASOURCE_URL"
   valueFrom:
@@ -164,6 +169,11 @@
 {{- else if eq $platform "python" }}
 - name: "TRACING_ENABLED"
   value: "true"
+- name: "MANAGEMENT_OTLP_TRACING_ENDPOINT"
+  valueFrom:
+    configMapKeyRef:
+      name: tracing
+      key: otlp-endpoint
 {{- else if eq $platform "nginx" }}
 {{- else }}{{ fail (printf "Platform %s: Envs not defined" $platform) }}
 {{- end }}
