@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.0.0
+
+- Change tracing property for Spring Boot 4.0
+
 ## 2.0.0
 
 - Drop old `ingress` configuration in favor of `route` for Gateway API
