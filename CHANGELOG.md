@@ -80,7 +80,99 @@
         - Expects an image with `check` utility and Liveness/Readiness probes via `check` utility and env vars `LIVENESS_CHECK`/`READINESS_CHECK` set
         - Simple tracing toggle `TRACING_ENABLED`
 
+
+# cronjob
+
+## 3.2.0
+
+- Add support for logging annotations
+
+## 3.1.1
+
+- Remove now unnecessary, confusing Helm chart labels on prom resources
+
+## 3.1.0
+
+- Update externalsecrets.io CRDs to v1.
+
+## 3.0.0
+
+- **Breaking change:** Rename `urgency` label to `severity`
+
+## 2.2.0
+
+- Add `urgency` under alertingRules
+- Support `extraLabels` under alertingRules
+
+## 2.1.0
+
+- Support `extraAnnotations` under alertingRules primarily for pint.
+- Add the deletion of alertingRules in the case none are set via the attribute.
+
+## 2.0.0
+
+- **Breaking change:** Rename `clusterName` to more appropriate `envName`
+- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled`, `serviceAccount.roleName` and `awsAccountId`
+
+## 1.7.0
+
+- Added ability to define `retriesBeforeFailure` so that jobs can retry before giving up completely.
+
+## 1.6.0
+
+- Remove pod CPU limits
+
+## 1.5.0
+
+**Breaking Changes**
+
+> External Secrets Operator must be installed on cluster
+
+- Migrate from KES to external-secrets-operator
+
+## 1.4.0
+
+- Add support for service account
+
+## 1.3.0
+
+- Add support for ghcr.io registry.
+
+## 1.2.0
+
+- Use future-proof CronJob API version (batch/v1), which is deprecated since 1.21 and will be removed in 1.25+
+
+## 1.1.1
+
+**Breaking Changes**
+
+> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined
+> summaries will no longer be propagated.
+
+## 1.1.0
+
+- add alerting rules for Prometheus
+
+## 1.0.2
+
+- add `args` to allow passing arguments to the container's entrypoint
+
+## 1.0.1
+
+- Fix missing quoting in schedule (asterisk has special meaning in YAML)
+
+## 1.0.0
+
+- Initial release
+
+
 # spring-service
+
+**DEPRECATED** in favor of meisterplan-service with the `spring` platform
+
+## 5.5.1
+
+- Dummy version to test workflow
 
 ## 5.5.0
 
@@ -322,87 +414,3 @@ deployment** with a short 503 service disruption due to a [bug in the ingress co
 - Repository is now mandatory
 - New mandatory parameter: `clusterName`, necessary for secret access
 - New mandatory parameter: `secretsRoleArn`, necessary for secret access
-
-# cronjob
-
-## 3.2.0
-
-- Add support for logging annotations
-
-## 3.1.1
-
-- Remove now unnecessary, confusing Helm chart labels on prom resources
-
-## 3.1.0
-
-- Update externalsecrets.io CRDs to v1.
-
-## 3.0.0
-
-- **Breaking change:** Rename `urgency` label to `severity`
-
-## 2.2.0
-
-- Add `urgency` under alertingRules
-- Support `extraLabels` under alertingRules
-
-## 2.1.0
-
-- Support `extraAnnotations` under alertingRules primarily for pint.
-- Add the deletion of alertingRules in the case none are set via the attribute.
-
-## 2.0.0
-
-- **Breaking change:** Rename `clusterName` to more appropriate `envName`
-- **Breaking change:** Simplify/clarify `podRoleArn` by replacing with `serviceAccount.enabled`, `serviceAccount.roleName` and `awsAccountId`
-
-## 1.7.0
-
-- Added ability to define `retriesBeforeFailure` so that jobs can retry before giving up completely.
-
-## 1.6.0
-
-- Remove pod CPU limits
-
-## 1.5.0
-
-**Breaking Changes**
-
-> External Secrets Operator must be installed on cluster
-
-- Migrate from KES to external-secrets-operator
-
-## 1.4.0
-
-- Add support for service account
-
-## 1.3.0
-
-- Add support for ghcr.io registry.
-
-## 1.2.0
-
-- Use future-proof CronJob API version (batch/v1), which is deprecated since 1.21 and will be removed in 1.25+
-
-## 1.1.1
-
-**Breaking Changes**
-
-> Support for `alertingRules[].summary` was dropped in favor of `alertingRules[].description`. Although backwards-compatible this is silently breaking: Defined
-> summaries will no longer be propagated.
-
-## 1.1.0
-
-- add alerting rules for Prometheus
-
-## 1.0.2
-
-- add `args` to allow passing arguments to the container's entrypoint
-
-## 1.0.1
-
-- Fix missing quoting in schedule (asterisk has special meaning in YAML)
-
-## 1.0.0
-
-- Initial release
