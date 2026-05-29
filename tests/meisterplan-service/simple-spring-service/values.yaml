@@ -9,7 +9,6 @@ platform:
     env:
       datasourceFromSecret: "rds/myservice"
       rabbitMQSecret: true
-      oAuth2PublicKey: false
 
 routing:
   clusterDomain: "mycompany.tld"
