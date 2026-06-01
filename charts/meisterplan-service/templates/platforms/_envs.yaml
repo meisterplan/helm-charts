@@ -93,12 +93,17 @@
       name: {{ .Release.Name }}-external-secret
       key: "RABBITMQ_PASSWORD"
   {{- end }}
-  {{- if .Values.platform.spring.env.oAuth2PublicKey }}
+  {{- if .Values.platform.spring.env.deprecatedOAuth2PublicKey_PleaseMigrateToJWKS }}
 - name: "SERVICE_OAUTH2_PUBLIC_KEY"
   valueFrom:
     secretKeyRef:
       name: "{{ .Release.Name }}-external-secret"
       key: SERVICE_OAUTH2_PUBLIC_KEY
+  {{- else if .Values.platform.spring.env.oauth2ResourceServer.enabled }}
+- name: "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES_0"
+  value: {{ replace "$clusterDomain" $.Values.routing.clusterDomain .Values.platform.spring.env.oauth2ResourceServer.audience }}
+- name: "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI"
+  value: "http://authenticorn.team-platform.svc.cluster.local/oauth2/jwks"
   {{- end }}
 {{- else if eq $platform "nodejs" }}
 - name: "NODE_ENV"
@@ -159,12 +164,17 @@
       name: {{ .Release.Name }}-external-secret
       key: "RABBITMQ_PASSWORD"
   {{- end }}
-  {{- if .Values.platform.nodejs.env.oAuth2PublicKey }}
+  {{- if .Values.platform.nodejs.env.deprecatedOAuth2PublicKey_PleaseMigrateToJWKS }}
 - name: "SERVICE_OAUTH2_PUBLIC_KEY"
   valueFrom:
     secretKeyRef:
       name: "{{ .Release.Name }}-external-secret"
       key: SERVICE_OAUTH2_PUBLIC_KEY
+  {{- else if .Values.platform.nodejs.env.oauth2ResourceServer.enabled }}
+- name: "OAUTH2_RESOURCESERVER_JWT_AUDIENCE"
+  value: {{ replace "$clusterDomain" $.Values.routing.clusterDomain .Values.platform.nodejs.env.oauth2ResourceServer.audience }}
+- name: "OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI"
+  value: "http://authenticorn.team-platform.svc.cluster.local/oauth2/jwks"
   {{- end }}
 {{- else if eq $platform "python" }}
 - name: "TRACING_ENABLED"

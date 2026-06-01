@@ -1,5 +1,19 @@
 # meisterplan-service
 
+## 3.1.0
+
+- Deprecate/remove/replace platform setting `env.oAuth2PublicKey`
+  - It can still be used with the deprecation warning as `deprecatedOAuth2PublicKey_PleaseMigrateToJWKS`.
+  - It is recommended to migrate to JWKS and instead using `env.oauth2ResourceServer.enabled`
+    - Future-proof by allowing to customize OAuth2 audience (no change necessary when using the current default)
+    - **Enabling this requires application migration**:
+      - The bundled OAuth2 Public Key should be removed
+      - The OAuth2 JWT Public Key must be retrieved via the JWK Set URI mechanism when the Helm chart provides the URL
+      - The JWT audience must be validated against the provided URL and tokens rejected which do not match
+      - For Spring, you can switch to the `spring-boot-starter-security-oauth2-resource-server` and remove all custom jwtDecoders
+        - The Authenticorn library 10.1+ provides easy support for local development and integration tests (i.e., when the Helm chart is not used)
+        - Recommended to follow the TemplateTiger example migration
+
 ## 3.0.1
 
 - Fix tracing endpoint property missing in node and python

@@ -19,13 +19,19 @@ platform:
       datasourceFromSecret: "" # "rds/templatetiger"
       datasourceFromSecretWithRLS: "" # "rds/templatetiger"
       rabbitMQSecret: false # set to true if you want RabbitMQ credentials that work out of the box with Spring
-      oAuth2PublicKey: true # set to false if this is a service that doesn't handle Authenticorn Tokens/requires no Authenticorn cert
+      deprecatedOAuth2PublicKey_PleaseMigrateToJWKS: false # set to true if your service still needs the "SERVICE_OAUTH2_PUBLIC_KEY" env (Migrate to JWKS instead)
+      oauth2ResourceServer:
+        enabled: true # set to false if this is a service that is not an OAuth2 resource server
+        audience: "$clusterDomain" # allows customizing the audience for which the access tokens are valid
   nodejs:
     enabled: false
     env:
       datasourceFromSecretWithRLS: "" # "rds/templatetiger"
       rabbitMQSecret: false # set to true if the service needs RabbitMQ
-      oAuth2PublicKey: false # opt in if you want to validate Authenticorn Tokens
+      deprecatedOAuth2PublicKey_PleaseMigrateToJWKS: false # set to true if your service still needs the "SERVICE_OAUTH2_PUBLIC_KEY" env (Migrate to JWKS instead)
+      oauth2ResourceServer:
+        enabled: false # set to true if this is a service that is an OAuth2 resource server
+        audience: "$clusterDomain" # allows customizing the audience for which the access tokens are valid
   python:
     enabled: false
   nginx:
