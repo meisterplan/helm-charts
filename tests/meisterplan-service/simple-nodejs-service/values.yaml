@@ -22,6 +22,8 @@ route:
         - /assets
       exact:
         - /index.html
+    extraCspDomains:
+      - https://cdn.mycompany.tld
 
 podConfiguration:
   resources:

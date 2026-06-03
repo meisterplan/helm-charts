@@ -70,6 +70,9 @@ route:
       # backendRequest: 30s
     # replaceErrorPageOnStatus: [] # default: [404, 500, 502, 503, 504]
       # This defines on which HTTP response status codes the response is replaced with fancy default error page
+    extraCspDomains: []
+      # Extra domains appended to the Content-Security-Policy frame-ancestors directive, e.g.:
+      # - https://other-domain.example.com
 
 deployment:
   # how many pods (= running instances of the service) to launch in parallel

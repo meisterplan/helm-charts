@@ -53,7 +53,7 @@ spec:
             # See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
-              value: "frame-ancestors 'self' {{ $.Values.routing.clusterDomain }}"
+              value: "frame-ancestors 'self' {{ $.Values.routing.clusterDomain }}{{- if $route.extraCspDomains }} {{ join " " $route.extraCspDomains }}{{- end }}"
       {{- if $route.replaceErrorPageOnStatus }}
             # add header to control our error-pages filter
             - name: "x-custom-error-handling"
