@@ -31,6 +31,9 @@ route:
     authorization:
       - type: oauth2
     replaceErrorPageOnStatus: ["404", "502"]
+    extraCspDomains:
+      - https://microfrontends.mycompany.tld
+      - https://other-partner.tld
 
 deployment:
   replicaCount: 5

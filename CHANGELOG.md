@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.2.0
+
+- Add `route.public.extraCspDomains` to allow appending additional domains to the enforced `Content-Security-Policy` `frame-ancestors` directive
+
 ## 3.1.0
 
 - Deprecate/remove/replace platform setting `env.oAuth2PublicKey`
