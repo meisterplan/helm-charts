@@ -5,9 +5,22 @@ metadata:
   name: "{{ .Values.cronJobName }}"
 spec:
   groups:
-{{- if or .Values.alertingRules .Values.additionalAlertingRules }}
     - name: "{{ .Values.cronJobName }}"
       rules:
+        - alert: KubeCronJobFailed
+          expr: kube_job_failed{job_name=~"{{ .Values.cronJobName }}-[0-9]+$", namespace="{{.Release.Namespace}}", condition="true"} > 0
+          annotations:
+            description: CronJob {{ "{{" }} $labels.namespace }}/{{ "{{" }} $labels.job_name }} failed to complete.
+            playbook_url: {{ .Values.alertOnFailing.playbookUrl | required "Must set alertOnFailing.playbookUrl!" }}
+            pint: pint disable promql/series(kube_job_failed) # Metric only appears after failing jobs
+          labels:
+            severity: {{ .Values.alertOnFailing.severity }}
+        # this prevents the global unknown job alert to trigger
+        - record: cronjob:known_cronjob
+          expr: vector(1)
+          labels:
+            namespace: {{ .Release.Namespace | quote }}
+            cronjob: {{ .Values.cronJobName | quote }}
         {{- range $key, $value := .Values.alertingRules }}
         - alert: "{{ $.Values.cronJobName }}_{{ $key }}"
           expr: {{ $value.expr | quote }}
@@ -30,4 +43,3 @@ spec:
             {{ $key }}: {{ $value | quote }}
             {{- end }}
         {{- end }}
-{{- end }}

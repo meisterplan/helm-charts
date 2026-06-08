@@ -49,10 +49,13 @@ env:
   additional: {}
   #  SOME_VARIABLE:
   #    value: 'some-value'
-
 alertingRules: {}
 # Errors:
 #   expr: service_errors > 1
 #   description: serviceName reports errors # use actual serviceName for alert routing here
 #   playbook_url: https://my-playbook.com/serviceName-Errors
 #   severity: warning # optional (one of "critical", "error", "warning" and "info")
+
+alertOnFailing: # Alert that will trigger when the job fails. Must be set since it will create garbage in Kubernetes to clean up.
+  playbookUrl: "" # Must be set to the playbook URL
+  severity: critical # can be set to warning for non-urgent alerts
