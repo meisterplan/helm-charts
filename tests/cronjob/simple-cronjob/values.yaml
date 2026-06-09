@@ -41,3 +41,7 @@ alertingRules:
     severity: warning
     extraLabels:
       some_label: Some Value
+
+alertOnFailing:
+  playbookUrl: "https://my-playbook-collection/failing"
+  severity: warning

@@ -9,6 +9,20 @@ spec:
   groups:
     - name: "simple-job-staging"
       rules:
+        - alert: KubeCronJobFailed
+          expr: kube_job_failed{job_name=~"simple-job-staging-[0-9]+$", namespace="default", condition="true"} > 0
+          annotations:
+            description: CronJob {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
+            playbook_url: https://my-playbook-collection/failing
+            pint: pint disable promql/series(kube_job_failed) # Metric only appears after failing jobs
+          labels:
+            severity: warning
+        # this prevents the global unknown job alert to trigger
+        - record: cronjob:known_cronjob
+          expr: vector(1)
+          labels:
+            namespace: "default"
+            cronjob: "simple-job-staging"
         - alert: "simple-job-staging_LowSeverityAlertWithExtraLabel"
           expr: "absent(cronjob_up)"
           for: "5m"

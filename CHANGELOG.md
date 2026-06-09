@@ -101,6 +101,13 @@
 
 # cronjob
 
+## 3.3.0
+
+- Add individual "job failed" alert together with the cronjob
+  - `alertOnFailing.playbookUrl` must be configured
+  - `alertOnFailing.severity` can be configured to warning
+  - The `cronjob:known_cronjob` recording is added for the global "unknown job" alert
+
 ## 3.2.0
 
 - Add support for logging annotations

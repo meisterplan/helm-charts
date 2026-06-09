@@ -37,3 +37,7 @@ alertingRules:
     summary: The job {{ $labels.job_name }} has failed
     description: The job {{ $labels.job_name }} has exited with failure exit code.
     playbook_url: https://my-playbook-collection/abc
+
+alertOnFailing:
+  playbookUrl: "https://my-playbook-collection/failing"
+  severity: warning
