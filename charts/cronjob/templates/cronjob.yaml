@@ -1,8 +1,8 @@
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: "{{ required "cronJobName must be set!" .Values.cronJobName }}"
-  namespace: "{{ required "Namespace must be set!" .Values.namespace }}"
+  name: "{{ .Release.Name }}"
+  namespace: "{{ .Release.Namespace }}"
   {{- $annotations := include "k8s.annotations" . -}}
   {{- if $annotations }}
   annotations:
@@ -20,14 +20,14 @@ spec:
       template:
         spec:
           {{- if .Values.serviceAccount.enabled }}
-          serviceAccountName: {{ .Values.cronJobName }}
+          serviceAccountName: {{ .Release.Name }}
           {{- end }}
           restartPolicy: {{ if eq (int .Values.retriesBeforeFailure) 0 }}Never{{ else }}OnFailure{{ end }}
           imagePullSecrets:
             - name: docker.pkg.github.com
             - name: ghcr.io
           containers:
-            - name: "{{ .Values.cronJobName }}"
+            - name: "{{ .Release.Name }}"
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               {{- if gt (len .Values.args) 0 }}
               args:
@@ -49,7 +49,7 @@ spec:
                 - name: "{{ $key }}"
                   valueFrom:
                     secretKeyRef:
-                      name: "{{ $.Values.cronJobName }}-external-secret"
+                      name: "{{ $.Release.Name }}-external-secret"
                       key: "{{ $key }}"
                 {{- end }}
                 {{- range $key, $value := .Values.env.additional }}

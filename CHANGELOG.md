@@ -101,6 +101,13 @@
 
 # cronjob
 
+## 4.0.0
+
+- Harmonize Name/Namespace with new meisterplan-service Chart
+    - `serviceName` is now Helm-native `.Release.Name`
+    - `namespace` is now Helm-native `.Release.Namespace`
+    - Fix `cronjob:known_cronjob` created for wrong namespace
+
 ## 3.3.0
 
 - Add individual "job failed" alert together with the cronjob

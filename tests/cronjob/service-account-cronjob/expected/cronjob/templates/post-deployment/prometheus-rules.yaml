@@ -10,7 +10,7 @@ spec:
     - name: "simple-job-staging"
       rules:
         - alert: KubeCronJobFailed
-          expr: kube_job_failed{job_name=~"simple-job-staging-[0-9]+$", namespace="default", condition="true"} > 0
+          expr: kube_job_failed{job_name=~"simple-job-staging-[0-9]+$", namespace="team-superpower", condition="true"} > 0
           annotations:
             description: CronJob {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
             playbook_url: https://my-playbook-collection/failing
@@ -21,7 +21,7 @@ spec:
         - record: cronjob:known_cronjob
           expr: vector(1)
           labels:
-            namespace: "default"
+            namespace: "team-superpower"
             cronjob: "simple-job-staging"
         - alert: "simple-job-staging_MyCronjobFailed"
           expr: "absent(cronjob_up)"
