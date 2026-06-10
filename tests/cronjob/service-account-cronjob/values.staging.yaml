@@ -1,4 +1,3 @@
-cronJobName: "simple-job-staging"
 serviceAccount:
   enabled: true
   roleName: executing-superpower-things

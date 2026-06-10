@@ -1,4 +1,3 @@
-cronJobName: "simple-job-staging"
 env:
   fromSecret:
     THIRD_PARTY_API_KEY:

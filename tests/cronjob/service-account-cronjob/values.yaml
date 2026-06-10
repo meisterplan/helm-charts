@@ -1,5 +1,4 @@
 namespace: team-superpower
-cronJobName: save-the-world
 
 envName: staging
 
