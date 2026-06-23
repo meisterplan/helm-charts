@@ -1,3 +1,4 @@
+{{- if .Values.prometheus.alertingRules }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -5,7 +6,6 @@ metadata:
   name: "{{ .Release.Name }}"
 spec:
   groups:
-{{- if .Values.prometheus.alertingRules }}
     - name: "{{ .Release.Name }}"
       rules:
         {{- range .Values.prometheus.alertingRules }}
