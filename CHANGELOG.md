@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.2.1
+
+- No longer output PrometheusRules if no alerts are defined (will not validate otherwise)
+
 ## 3.2.0
 
 - Add `route.public.extraCspDomains` to allow appending additional domains to the enforced `Content-Security-Policy` `frame-ancestors` directive
