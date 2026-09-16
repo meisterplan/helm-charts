@@ -108,3 +108,6 @@ spec:
                 secretKeyRef:
                   name: myservice-external-secret
                   key: "SENTRY_DSN"
+
+                        
+

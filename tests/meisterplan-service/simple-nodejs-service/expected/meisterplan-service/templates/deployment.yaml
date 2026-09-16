@@ -113,3 +113,4 @@ spec:
                 configMapKeyRef:
                   name: tracing
                   key: otlp-endpoint
+

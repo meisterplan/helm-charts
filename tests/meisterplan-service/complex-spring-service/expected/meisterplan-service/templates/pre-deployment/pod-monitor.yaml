@@ -12,3 +12,4 @@ spec:
   podMetricsEndpoints:
     - port: management
       path: /actuator/prometheus
+

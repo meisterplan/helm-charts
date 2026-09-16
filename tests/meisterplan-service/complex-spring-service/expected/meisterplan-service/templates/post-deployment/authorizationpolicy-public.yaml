@@ -20,3 +20,4 @@ spec:
             hosts:
               - mycompany.tld
               - myservice.othercompany.tld
+
