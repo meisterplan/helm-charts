@@ -9,3 +9,15 @@ podConfiguration:
           https://mycompany.tld/url2
           https://mycompany.tld/url3
           https://mycompany.tld/url4
+
+prometheus:
+  alertingRules:
+    HighLatency:
+      expr: avg(service_latency[5m]) > 10
+      severity: info
+    StagingOnlyAlert:
+      expr: up == 0
+      description: Staging instance of MyService is down
+      playbook_url: http://xconfluence/x/hIjKlM
+    NoisyBaseAlert:
+      enabled: false

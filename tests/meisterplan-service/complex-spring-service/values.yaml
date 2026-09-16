@@ -72,3 +72,24 @@ extraManifests:
         name: myservice-extra
     data:
       extra-data: "value"
+
+prometheus:
+  alertingRules:
+    HighLatency:
+      expr: avg(service_latency[5m]) > 2
+      for: 5m
+      description: Service MyService is slower than 200ms
+      playbook_url: http://xconfluence/x/aBcDeFg
+      severity: warning
+    ServiceDown:
+      expr: up{job="myservice"} == 0
+      description: Service MyService is down
+      playbook_url: http://xconfluence/x/aBcDeFg
+      extraLabels:
+        some_label: Some Value
+      extraAnnotations:
+        pint: pint disable promql/series(pint_problem)
+    NoisyBaseAlert:
+      expr: and absent(myservice_up)
+      description: Service MyService is noisy
+      playbook_url: http://xconfluence/x/aBcDeFg

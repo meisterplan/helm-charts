@@ -138,13 +138,19 @@ prometheus:
     # If enabled, an HTTP server must serve metrics under this port and path:
     port: management
     path: /actuator/prometheus
-  alertingRules: []
-  # - name: HighLatency
-  #   expr: avg(service_latency[5m]) > 2
-  #   for: 5m # optional
-  #   description: serviceName reports 95 percentile for Project Fields ACL endpoint was slower than 200ms in the last 1 hour # use actual serviceName for alert routing here
-  #   playbook_url: http://xconfluence/x/aBcDeFg
-  #   severity: low # optional (one of "critical", "error", "warning" and "info")
+  # alertingRules was historically a list (and that is still supported for backwards compatibility).
+  # However, when working with multiple environments and values.yamls, it is beneficial to have Helm's map merge logic to change one key only, and not replace
+  # the entire list.
+  # Therefore, it is recommended to use the new map form where the key is the alert name. (Note: Mixing both forms is not allowed)
+  # Mergeable map form (the key is the alert name):
+  # alertingRules:
+  #   HighLatency:
+  #     expr: avg(service_latency[5m]) > 2
+  #     for: 5m # optional
+  #     description: serviceName reports 95 percentile was slower than 200ms in the last 1 hour
+  #     playbook_url: http://xconfluence/x/aBcDeFg
+  #     severity: low # optional (one of "critical", "error", "warning" and "info")
+  #     enabled: true # optional, set to 'false' to not deploy this alert (e.g. in a single environment)
 
 service:
   # Optional: Additional ports that can be reached by other services inside the cluster, but not by requests from the load balancer

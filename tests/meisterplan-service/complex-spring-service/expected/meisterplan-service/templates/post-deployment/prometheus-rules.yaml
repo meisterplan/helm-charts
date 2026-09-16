@@ -1,0 +1,40 @@
+---
+# Source: meisterplan-service/templates/post-deployment/prometheus-rules.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  namespace: "team-supercool"
+  name: "myservice"
+spec:
+  groups:
+    - name: "myservice"
+      rules:
+        - alert: "myservice_HighLatency"
+          expr: "avg(service_latency[5m]) > 10"
+          for: "5m"
+          labels:
+            service: "myservice"
+            namespace: "team-supercool"
+            severity: "info"
+          annotations:
+            description: "Service MyService is slower than 200ms"
+            playbook_url: "http://xconfluence/x/aBcDeFg"
+        - alert: "myservice_ServiceDown"
+          expr: "up{job=\"myservice\"} == 0"
+          labels:
+            service: "myservice"
+            namespace: "team-supercool"
+            some_label: "Some Value"
+          annotations:
+            description: "Service MyService is down"
+            playbook_url: "http://xconfluence/x/aBcDeFg"
+            pint: "pint disable promql/series(pint_problem)"
+        - alert: "myservice_StagingOnlyAlert"
+          expr: "up == 0"
+          labels:
+            service: "myservice"
+            namespace: "team-supercool"
+          annotations:
+            description: "Staging instance of MyService is down"
+            playbook_url: "http://xconfluence/x/hIjKlM"
+
