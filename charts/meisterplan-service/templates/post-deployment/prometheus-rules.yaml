@@ -6,9 +6,11 @@ metadata:
   name: "{{ .Release.Name }}"
 spec:
   groups:
+{{- $alerts := include "alertingRulesFromMapOrList" . | fromYamlArray }}
+{{- if $alerts }}
     - name: "{{ .Release.Name }}"
       rules:
-        {{- range .Values.prometheus.alertingRules }}
+        {{- range $alerts }}
         - alert: "{{ $.Release.Name }}_{{ .name }}"
           expr: {{ .expr | quote }}
           {{- if .for }}
@@ -30,4 +32,5 @@ spec:
             {{ $key }}: {{ $value | quote }}
             {{- end }}
         {{- end }}
+{{- end }}
 {{- end }}

@@ -13,3 +13,4 @@ spec:
   selector:
     app.kubernetes.io/name: myservice
     app.kubernetes.io/version: 1.30.7
+

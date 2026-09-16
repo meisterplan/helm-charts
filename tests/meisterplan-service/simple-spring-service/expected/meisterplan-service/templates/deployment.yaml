@@ -192,3 +192,4 @@ spec:
             - name: URLS
               value: https://mycompany.tld/url1 https://mycompany.tld/url2 https://mycompany.tld/url3
                 https://mycompany.tld/url4
+

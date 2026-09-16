@@ -1,5 +1,10 @@
 # meisterplan-service
 
+## 3.3.0
+
+- Allow `prometheus.alertingRules` to be defined as a map keyed by the alert name, so that multiple alerts can be added, overridden or disabled,
+  similar to `env.additional` or the cronjob chart. (The existing list form remains supported, no migration is necessary, but mixing them is not allowed)
+
 ## 3.2.1
 
 - No longer output PrometheusRules if no alerts are defined (will not validate otherwise)

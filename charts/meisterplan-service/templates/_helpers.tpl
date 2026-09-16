@@ -38,3 +38,22 @@
 {{ fail "You have activated more than 1 platform which this chart is currently not designed to do. Disable the others or deploy multiple releases!" }}
 {{- end }}
 {{- end }}
+
+{{- define "alertingRulesFromMapOrList" }}
+{{- $rules := .Values.prometheus.alertingRules | default list }}
+{{- $normalized := list }}
+{{- if kindIs "slice" $rules }}
+{{-     range $rules }}
+{{-         $normalized = append $normalized . }}
+{{-     end }}
+{{- else if kindIs "map" $rules }}
+{{-     range $name, $rule := $rules }}
+{{-         if not (and (hasKey $rule "enabled") (not $rule.enabled)) }}
+{{-             $normalized = append $normalized (merge (dict "name" $name) (omit $rule "enabled")) }}
+{{-         end }}
+{{-     end }}
+{{- else }}
+{{-     fail "prometheus.alertingRules must be a list or a map keyed by alert name" }}
+{{- end }}
+{{- toYaml $normalized }}
+{{- end }}

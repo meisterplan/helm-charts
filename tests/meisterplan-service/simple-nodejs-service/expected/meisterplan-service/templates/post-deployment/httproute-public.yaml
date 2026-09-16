@@ -33,3 +33,4 @@ spec:
             # frame-ancestors are allowed to embed iframes from microfrontends.<clusterDomain> into the application on <clusterDomain>
             - name: "Content-Security-Policy"
               value: "frame-ancestors 'self' mycompany.tld https://cdn.mycompany.tld"
+

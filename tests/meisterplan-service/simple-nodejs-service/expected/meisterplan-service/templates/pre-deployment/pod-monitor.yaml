@@ -12,3 +12,4 @@ spec:
   podMetricsEndpoints:
     - port: service
       path: /metrics
+
