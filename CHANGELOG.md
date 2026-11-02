@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.4.0
+
+- Add `route.peering` to allow creating routes on the new dev platform peering network that is accessible from i12e only.
+
 ## 3.3.0
 
 - Allow `prometheus.alertingRules` to be defined as a map keyed by the alert name, so that multiple alerts can be added, overridden or disabled,

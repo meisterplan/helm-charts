@@ -73,6 +73,12 @@ route:
     extraCspDomains: []
       # Extra domains appended to the Content-Security-Policy frame-ancestors directive, e.g.:
       # - https://other-domain.example.com
+  peering:
+    enabled: false # allow cross-VPC access from i12e
+    paths:
+      allowAll: false # set to true to blanket allow all paths to be accessible in peering
+      exact: [] # a list of exact path matches to be made available in peering
+      prefixes: [] # list of prefixes with which the path must start to be made available in peering (must not contain "/")
 
 deployment:
   # how many pods (= running instances of the service) to launch in parallel
