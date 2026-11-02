@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.3.1
+
+- Derive the hard AZ topology spread skew from `deployment.replicaCount`, allowing all desired replicas to fit across two AZs when a third AZ has no capacity. Prefer an even spread across all AZs with a separate soft constraint.
+
 ## 3.3.0
 
 - Allow `prometheus.alertingRules` to be defined as a map keyed by the alert name, so that multiple alerts can be added, overridden or disabled,
