@@ -26,30 +26,26 @@ spec:
           whenUnsatisfiable: DoNotSchedule
           nodeTaintsPolicy: Honor
           labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - "myservice"
-              - key: app.kubernetes.io/version
-                operator: In
-                values:
-                  - "1.30.7"
+            matchLabels:
+              app.kubernetes.io/name: "myservice"
+              app.kubernetes.io/version: "1.30.7"
         - topologyKey: topology.kubernetes.io/zone
-          maxSkew: 1
+          maxSkew: 3
           minDomains: 2
           whenUnsatisfiable: DoNotSchedule
           nodeTaintsPolicy: Honor
           labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - "myservice"
-              - key: app.kubernetes.io/version
-                operator: In
-                values:
-                  - "1.30.7"
+            matchLabels:
+              app.kubernetes.io/name: "myservice"
+              app.kubernetes.io/version: "1.30.7"
+        - topologyKey: topology.kubernetes.io/zone
+          maxSkew: 1
+          whenUnsatisfiable: ScheduleAnyway
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: "myservice"
+              app.kubernetes.io/version: "1.30.7"
       enableServiceLinks: true
       containers:
         - name: myservice
