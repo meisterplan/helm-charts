@@ -30,41 +30,35 @@ spec:
       terminationGracePeriodSeconds: {{ .Values.podConfiguration.timeouts.terminationTimeBeforeKillSeconds }}
       {{- end }}
       topologySpreadConstraints:
-      {{- /* this causes pods to distribute evenly by applying these rules:
-      - schedule at most <maxSkew> pod more or less than the optimum per <topologyKey>
-      - schedule on at least <minDomains> topologies
-      - nodeTaintsPolicy is Ignore by default which would include unplacable nodes for calculation
-      */}}
+      {{- /* Spread pods evenly across hosts, excluding nodes with untolerated taints. */}}
         - topologyKey: kubernetes.io/hostname
           maxSkew: 1
           minDomains: 2
           whenUnsatisfiable: DoNotSchedule
           nodeTaintsPolicy: Honor
           labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - {{ .Release.Name | quote }}
-              - key: app.kubernetes.io/version
-                operator: In
-                values:
-                  - {{ .Values.image.tag | quote }}
+            matchLabels:
+              app.kubernetes.io/name: {{ .Release.Name | quote }}
+              app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+      {{- /* Allow all desired replicas to fit across two AZs if a third AZ has no capacity. */}}
         - topologyKey: topology.kubernetes.io/zone
-          maxSkew: 1
+          maxSkew: {{ max 1 (div (add .Values.deployment.replicaCount 1) 2) }}
           minDomains: 2
           whenUnsatisfiable: DoNotSchedule
           nodeTaintsPolicy: Honor
           labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - {{ .Release.Name | quote }}
-              - key: app.kubernetes.io/version
-                operator: In
-                values:
-                  - {{ .Values.image.tag | quote }}
+            matchLabels:
+              app.kubernetes.io/name: {{ .Release.Name | quote }}
+              app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+      {{- /* Prefer an even spread across all AZs without blocking scheduling. */}}
+        - topologyKey: topology.kubernetes.io/zone
+          maxSkew: 1
+          whenUnsatisfiable: ScheduleAnyway
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ .Release.Name | quote }}
+              app.kubernetes.io/version: {{ .Values.image.tag | quote }}
       enableServiceLinks: {{ .Values.podConfiguration.enableServiceLinks }}
       containers:
         - name: {{ .Release.Name }}
