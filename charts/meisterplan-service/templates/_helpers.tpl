@@ -9,6 +9,9 @@
 {{- define "get-private-hostname" }}
 {{- include "validate-hostname" (printf "%s.internal.%s" .Release.Name (required "routing.clusterDomain must be set!" .Values.routing.clusterDomain)) }}
 {{- end }}
+{{- define "get-peering-hostname" }}
+{{- include "validate-hostname" (printf "%s.peering.%s" .Release.Name (required "routing.clusterDomain must be set!" .Values.routing.clusterDomain)) }}
+{{- end }}
 
 {{- define "k8s.annotations" }}
 {{- $annotations := dict }}

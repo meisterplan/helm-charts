@@ -34,6 +34,13 @@ route:
     extraCspDomains:
       - https://microfrontends.mycompany.tld
       - https://other-partner.tld
+  peering:
+    enabled: true
+    paths:
+      exact:
+        - /api/v1/complexity
+      prefixes:
+        - /api/v1/peerings/
 
 deployment:
   replicaCount: 5

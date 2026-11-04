@@ -1,5 +1,9 @@
 # meisterplan-service
 
+## 3.4.0
+
+- Add `route.peering` to allow creating routes on the new dev platform peering network that is accessible from i12e only.
+- 
 ## 3.3.1
 
 - Derive the hard AZ topology spread skew from `deployment.replicaCount`, allowing all desired replicas to fit across two AZs when a third AZ has no capacity. Prefer an even spread across all AZs with a separate soft constraint.

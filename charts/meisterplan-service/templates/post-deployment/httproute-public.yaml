@@ -2,7 +2,7 @@
 {{- if eq $routeName "private"}}
   {{ fail "Route private is created internally and must not be configured." }}
 {{- end }}
-{{- if $route.enabled }}
+{{- if and ($route.enabled) (ne $routeName "peering") }}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
