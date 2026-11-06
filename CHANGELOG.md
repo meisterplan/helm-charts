@@ -118,6 +118,11 @@
 
 # cronjob
 
+## 4.1.0
+
+- Add configurable `concurrencyPolicy` (`Allow`, `Forbid`, or `Replace`), keeping `Replace` as the default.
+- Add optional `activeDeadlineSeconds` to limit each Job's total duration, including retries. Unset by default.
+
 ## 4.0.0
 
 - Harmonize Name/Namespace with new meisterplan-service Chart

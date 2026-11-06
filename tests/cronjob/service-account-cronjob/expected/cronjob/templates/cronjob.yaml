@@ -8,12 +8,13 @@ metadata:
   annotations:
     com.meisterplan.logs/collect: "false"
 spec:
-  concurrencyPolicy: "Replace"
+  concurrencyPolicy: "Forbid"
   schedule: "22 */5 * * *"
   suspend: false
   jobTemplate:
     spec:
       backoffLimit: 4
+      activeDeadlineSeconds: 300
       parallelism: 1
       completions: 1
       template:

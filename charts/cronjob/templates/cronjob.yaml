@@ -9,12 +9,15 @@ metadata:
     {{- $annotations | nindent 4 }}
   {{- end }}
 spec:
-  concurrencyPolicy: "Replace"
+  concurrencyPolicy: {{ .Values.concurrencyPolicy | quote }}
   schedule: {{ required "Schedule must be set!" .Values.schedule | quote }}
   suspend: false
   jobTemplate:
     spec:
       backoffLimit: {{ .Values.retriesBeforeFailure }}
+      {{- if ne .Values.activeDeadlineSeconds nil }}
+      activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
+      {{- end }}
       parallelism: 1
       completions: 1
       template:
