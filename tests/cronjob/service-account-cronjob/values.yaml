@@ -3,6 +3,8 @@ namespace: team-superpower
 envName: staging
 
 schedule: "22 */5 * * *"
+concurrencyPolicy: Forbid
+activeDeadlineSeconds: 300
 retriesBeforeFailure: 4
 
 image:
