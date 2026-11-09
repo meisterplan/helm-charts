@@ -118,6 +118,10 @@
 
 # cronjob
 
+## 4.2.0
+
+- Add optional `ttlSecondsAfterFinished` to automatically clean up finished Jobs and their Pods after a configurable delay. Unconfigured by default.
+
 ## 4.1.0
 
 - Add configurable `concurrencyPolicy` (`Allow`, `Forbid`, or `Replace`), keeping `Replace` as the default.

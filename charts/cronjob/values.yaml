@@ -27,6 +27,10 @@ concurrencyPolicy: Replace
 # when reached, running Pods are terminated and the Job fails with DeadlineExceeded; null leaves it unlimited
 activeDeadlineSeconds: null
 
+# optional cleanup delay in seconds for finished Jobs (successful or failed) and their Pods
+# non-negative integer; 0 allows immediate cleanup, null leaves TTL cleanup unconfigured
+ttlSecondsAfterFinished: null
+
 # how often to re-attempt running the job (at each scheduled point in time) - keep at 0, if the job should be run only once
 retriesBeforeFailure: 0
 

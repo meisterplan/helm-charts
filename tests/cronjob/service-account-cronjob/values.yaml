@@ -5,6 +5,7 @@ envName: staging
 schedule: "22 */5 * * *"
 concurrencyPolicy: Forbid
 activeDeadlineSeconds: 300
+ttlSecondsAfterFinished: 86400
 retriesBeforeFailure: 4
 
 image:
