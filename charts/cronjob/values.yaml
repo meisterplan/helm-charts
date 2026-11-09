@@ -68,6 +68,7 @@ alertingRules: {}
 #   playbook_url: https://my-playbook.com/serviceName-Errors
 #   severity: warning # optional (one of "critical", "error", "warning" and "info")
 
-alertOnFailing: # Alert that will trigger when the job fails. Must be set since it will create garbage in Kubernetes to clean up.
-  playbookUrl: "" # Must be set to the playbook URL
+alertOnFailing: # Alert that will trigger when the job fails.
+  enabled: true # Set to false to disable the job failure alert
+  playbookUrl: "" # Must be set to the playbook URL when enabled
   severity: critical # can be set to warning for non-urgent alerts

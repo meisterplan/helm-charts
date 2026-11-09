@@ -7,6 +7,7 @@ spec:
   groups:
     - name: "{{ .Release.Name }}"
       rules:
+        {{- if .Values.alertOnFailing.enabled }}
         - alert: KubeCronJobFailed
           expr: kube_job_failed{job_name=~"{{ .Release.Name }}-[0-9]+$", namespace="{{.Release.Namespace}}", condition="true"} > 0
           annotations:
@@ -15,6 +16,7 @@ spec:
             pint: pint disable promql/series(kube_job_failed) # Metric only appears after failing jobs
           labels:
             severity: {{ .Values.alertOnFailing.severity }}
+        {{- end }}
         # this prevents the global unknown job alert to trigger
         - record: cronjob:known_cronjob
           expr: vector(1)

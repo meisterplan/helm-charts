@@ -41,5 +41,4 @@ alertingRules:
     playbook_url: https://my-playbook-collection/abc
 
 alertOnFailing:
-  playbookUrl: "https://my-playbook-collection/failing"
-  severity: warning
+  enabled: false
