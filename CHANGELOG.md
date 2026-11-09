@@ -118,6 +118,10 @@
 
 # cronjob
 
+## 4.3.0
+
+- Add `alertOnFailing.enabled` to disable the job failure alert. Enabled by default; `alertOnFailing.playbookUrl` is only required when enabled.
+
 ## 4.2.0
 
 - Add optional `ttlSecondsAfterFinished` to automatically clean up finished Jobs and their Pods after a configurable delay. Unconfigured by default.
