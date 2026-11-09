@@ -2,6 +2,14 @@ apiVersion: v1
 entries:
   cronjob:
   - apiVersion: v1
+    created: "2026-11-09T08:47:06.332699082Z"
+    description: A generalized cronjob that can access secrets.
+    digest: 91a7ce045636b7b771ac8f2f999dd85e176c39b5927b4a21a25fca81e04d2abb
+    name: cronjob
+    urls:
+    - https://github.com/meisterplan/helm-charts/releases/download/cronjob-4.2.0/cronjob-4.2.0.tgz
+    version: 4.2.0
+  - apiVersion: v1
     created: "2026-11-06T14:31:01.376804656Z"
     description: A generalized cronjob that can access secrets.
     digest: 94926bbe0939ceea4480c00e3a82e5100d1caba66168b3e3a5397deb3bd6f156
@@ -782,4 +790,4 @@ entries:
     urls:
     - spring-service-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-06T14:31:01.377069504Z"
+generated: "2026-11-09T08:47:06.333195508Z"
