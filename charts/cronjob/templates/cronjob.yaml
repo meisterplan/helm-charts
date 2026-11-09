@@ -18,6 +18,9 @@ spec:
       {{- if ne .Values.activeDeadlineSeconds nil }}
       activeDeadlineSeconds: {{ .Values.activeDeadlineSeconds }}
       {{- end }}
+      {{- if ne .Values.ttlSecondsAfterFinished nil }}
+      ttlSecondsAfterFinished: {{ .Values.ttlSecondsAfterFinished }}
+      {{- end }}
       parallelism: 1
       completions: 1
       template:
